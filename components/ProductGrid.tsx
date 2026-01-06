@@ -1,0 +1,74 @@
+import Image from 'next/image';
+import { ArrowUpRight } from 'lucide-react';
+
+export default function ProductGrid() {
+    const products = [
+        { id: 1, name: 'AURORA SILVER', desc: 'REFLECTIVE PUFFER JACKET', price: '$999.99', image: '/images/hero.png' }, // Reusing hero for demo
+        { id: 2, name: 'FROST SILVER', desc: 'HIGH GLOSS PUFFER', price: '$1,299.99', image: '/images/hero.png' },
+        { id: 3, name: 'STEALTH BLACK', desc: 'HEAVY SHIELD PUFFER', price: '$1,199.99', image: '/images/hero.png' },
+        { id: 4, name: 'GLACIER WHITE', desc: 'INSULATED PUFFER JACKET', price: '$1,199.99', image: '/images/product_1.png' },
+        { id: 5, name: 'POLAR GLOSS', desc: 'BLUE PUFFER JACKET', price: '$899.99', image: '/images/product_1.png' },
+        { id: 6, name: 'DEEPFIELD BLUE', desc: 'TECH PUFFER JACKET', price: '$999.99', image: '/images/product_1.png' },
+        { id: 7, name: 'POLAR WHITE', desc: 'SHELL PUFFER JACKET', price: '$1,499.99', image: '/images/product_1.png' },
+    ];
+
+    return (
+        <section className="bg-arctic-base text-white py-24 px-6 md:px-12">
+            <div className="w-full max-w-[1400px] mx-auto">
+
+                {/* Section Header */}
+                <div className="flex justify-between items-end mb-16 border-b border-white/10 pb-8">
+                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">New Collection</h2>
+                    <div className="flex gap-12 text-[10px] tracking-widest uppercase opacity-60 hidden md:flex">
+                        <span>[ NEW COLLECTION ]</span>
+                        <span>[ SERIES 01 ]</span>
+                        <span>[ FUTURA ]</span>
+                    </div>
+                    <button className="px-6 py-2 bg-white text-arctic-dark text-xs font-bold uppercase rounded-sm hover:bg-arctic-cyan transition-colors">
+                        Filters
+                    </button>
+                </div>
+
+                {/* Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+                    {/* Featured 'Aurora' Card */}
+                    <div className="md:col-span-2 md:row-span-2 relative aspect-[4/3] md:aspect-auto bg-[#3e4c59]/50 rounded-sm overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
+                        <Image src="/images/product_1.png" alt="Aurora" fill className="object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+                        <div className="absolute bottom-8 left-8 z-20">
+                            <h3 className="text-3xl font-black mb-2">AURORA™</h3>
+                            <div className="flex items-center gap-4">
+                                <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
+                                    <ArrowUpRight className="w-4 h-4" />
+                                </div>
+                                <span className="font-mono text-sm">$1,999</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Standard Cards */}
+                    {products.map((p, i) => (
+                        <div key={i} className="group relative bg-[#3e4c59]/30 rounded-sm p-4 hover:bg-[#3e4c59]/60 transition-colors">
+                            <div className="relative aspect-[3/4] mb-4 overflow-hidden rounded-sm bg-white/5">
+                                <Image src={p.image} alt={p.name} fill className="object-contain p-4 group-hover:scale-110 transition-transform duration-500" />
+                            </div>
+                            <div className="space-y-1">
+                                <h4 className="font-bold text-sm tracking-wide">{p.name}</h4>
+                                <p className="text-[10px] text-white/50 tracking-wider uppercase">{p.desc}</p>
+                                <div className="flex justify-between items-center mt-3 border-t border-white/10 pt-3">
+                                    <div className="flex gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-white" />
+                                        <div className="w-2 h-2 rounded-full bg-blue-500" />
+                                    </div>
+                                    <span className="font-mono text-xs opacity-70">{p.price}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
+                </div>
+            </div>
+        </section>
+    )
+}

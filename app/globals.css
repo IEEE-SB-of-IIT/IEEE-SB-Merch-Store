@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 255 255 255;
+    --foreground: 15 23 42;
+  }
+
+  body {
+    @apply bg-arctic-base text-arctic-light antialiased selection:bg-arctic-cyan/30 selection:text-white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glass-nav {
+    @apply bg-white/80 backdrop-blur-lg border-b border-gray-100 shadow-sm sticky top-0 z-50;
+  }
+
+  .container-width {
+    @apply max-w-7xl mx-auto px-6 md:px-12;
+  }
+}
