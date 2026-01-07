@@ -30,12 +30,13 @@ module.exports = {
                 },
 
                 // Arctic Theme Colors
+                // Arctic Theme Colors (IEEE Blue Edition)
                 arctic: {
-                    base: '#536574', // Muted slate blue background
-                    dark: '#3E4C59', // Darker sections
+                    base: '#004B76', // Muted IEEE Blue
+                    dark: '#002F4B', // Darker navy-like blue
                     light: '#E2E8F0', // Text/Accents
-                    blue: '#8AA4B8', // Lighter blue accent
-                    cyan: '#82C3D3', // Bright highlight (like the eyes/lights)
+                    blue: '#4091C2', // Lighter blue accent
+                    cyan: '#00629B', // IEEE Bright Blue for highlights
                 }
             },
             backgroundImage: {

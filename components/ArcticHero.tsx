@@ -3,7 +3,7 @@ import { ArrowUpRight, Instagram, Facebook, Twitter } from 'lucide-react';
 
 export default function ArcticHero() {
     return (
-        <section className="relative w-full min-h-screen bg-arctic-base overflow-hidden flex flex-col items-center pt-24 pb-12 px-6 md:px-12">
+        <section className="relative w-full aspect-[16/9] bg-arctic-base overflow-hidden flex flex-col items-center pt-20 px-6 md:px-12">
             {/* Noise Overlay */}
             <div
                 className="absolute inset-0 z-50 pointer-events-none opacity-[0.15] mix-blend-overlay"
@@ -15,15 +15,15 @@ export default function ArcticHero() {
 
             {/* Background Graffiti Text */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none z-0 select-none">
-                <span className="font-spray text-[15vw] md:text-[20vw] leading-none text-white/5 blur-sm scale-y-150 inline-block tracking-tighter">
+                <span className="font-spray text-[15vw] md:text-[20vw] leading-none text-white/10 scale-y-150 inline-block tracking-tighter">
                     MERCHANDISE
                 </span>
             </div>
 
-            <div className="w-full max-w-[1400px] relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 h-full">
+            <div className="w-full max-w-[1400px] relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 h-full items-end pb-12">
 
                 {/* Left Column: Title & Controls */}
-                <div className="md:col-span-4 flex flex-col justify-center space-y-12 text-white">
+                <div className="md:col-span-4 flex flex-col justify-center space-y-12 text-white h-full pb-12">
                     <div className="space-y-2">
                         <div className="flex gap-4 text-[10px] md:text-xs tracking-[0.2em] text-arctic-light/60 uppercase">
                             <span>Special Stage No. 1</span>
@@ -71,16 +71,16 @@ export default function ArcticHero() {
                 </div>
 
                 {/* Center Column: Main Image */}
-                <div className="md:col-span-5 relative flex items-center justify-center">
+                <div className="md:col-span-5 relative flex items-end justify-center h-full">
                     {/* Background Glow */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] bg-blue-500/20 blur-[100px] rounded-full pointer-events-none" />
 
-                    <div className="relative w-full h-[500px] md:h-[800px]">
+                    <div className="relative w-full h-[90%] md:h-[95%] flex items-end">
                         <Image
                             src="/images/hero.png"
                             alt="Arctic Collection Hero"
                             fill
-                            className="object-contain scale-110 drop-shadow-2xl"
+                            className="object-contain object-bottom scale-110 drop-shadow-2xl"
                             priority
                         />
                         {/* Small Tag on Jacket */}
@@ -91,21 +91,31 @@ export default function ArcticHero() {
                 </div>
 
                 {/* Right Column: Mini Gallery & Social elements */}
-                <div className="md:col-span-3 flex flex-col justify-between py-12">
-                    <div className="flex gap-4 opacity-50 justify-end">
-                        <div className="w-24 h-32 bg-slate-700/50 rounded overflow-hidden relative border border-white/10">
-                            <Image src="/images/product_1.png" alt="Preview 1" fill className="object-cover opacity-60" />
+                <div className="md:col-span-3 flex flex-col h-full relative">
+                    {/* Centered Group: Tiles & Counter */}
+                    <div className="absolute top-1/2 right-0 -translate-y-1/2 flex flex-col gap-6 items-end">
+                        <div className="flex gap-4 opacity-80 justify-end">
+                            {/* Tile 1 */}
+                            <div className="relative w-32 h-40 bg-white/20 p-[1px]" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}>
+                                <div className="w-full h-full bg-arctic-dark relative" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}>
+                                    <Image src="/images/product_1.png" alt="Preview 1" fill className="object-cover opacity-80" />
+                                </div>
+                            </div>
+                            {/* Tile 2 */}
+                            <div className="relative w-32 h-40 bg-white/20 p-[1px]" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}>
+                                <div className="w-full h-full bg-arctic-dark relative" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}>
+                                    <Image src="/images/product_1.png" alt="Preview 2" fill className="object-cover opacity-80" />
+                                </div>
+                            </div>
                         </div>
-                        <div className="w-24 h-32 bg-slate-700/50 rounded overflow-hidden relative border border-white/10">
-                            <Image src="/images/product_1.png" alt="Preview 2" fill className="object-cover opacity-60" />
+
+                        <div className="flex flex-col items-end gap-2 text-[10px] tracking-widest text-arctic-light/50">
+                            <span>01 -------- 07</span>
                         </div>
                     </div>
 
-                    <div className="flex flex-col items-end gap-2 text-[10px] tracking-widest text-arctic-light/50">
-                        <span>01 -------- 07</span>
-                    </div>
-
-                    <div className="flex justify-end gap-6 text-white/50">
+                    {/* Bottom Socials */}
+                    <div className="absolute bottom-12 right-0 flex justify-end gap-6 text-white/50">
                         <Instagram className="w-5 h-5 hover:text-white cursor-pointer" />
                         <Facebook className="w-5 h-5 hover:text-white cursor-pointer" />
                         <Twitter className="w-5 h-5 hover:text-white cursor-pointer" />
