@@ -30,7 +30,7 @@ export default function ArcticHero() {
                             <span>|</span>
                             <span>Signed</span>
                         </div>
-                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9]">
+                        <h1 className="text-6xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-[0.9]">
                             COLLECTION<br />
                             ARTIC 01™
                         </h1>

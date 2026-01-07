@@ -18,7 +18,7 @@ export default function ProductGrid() {
 
                 {/* Section Header */}
                 <div className="flex justify-between items-end mb-16 border-b border-white/10 pb-8">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">New Collection</h2>
+                    <h2 className="text-4xl md:text-6xl font-black tracking-wider uppercase">New Collection</h2>
                     <div className="flex gap-12 text-[10px] tracking-widest uppercase opacity-60 hidden md:flex">
                         <span>[ NEW COLLECTION ]</span>
                         <span>[ SERIES 01 ]</span>

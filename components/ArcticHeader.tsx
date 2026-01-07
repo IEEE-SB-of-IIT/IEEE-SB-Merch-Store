@@ -4,7 +4,7 @@ import { Search, ShoppingBag } from 'lucide-react';
 
 export default function ArcticHeader() {
     return (
-        <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-4 text-white text-[10px] tracking-[0.2em] font-medium mix-blend-difference">
+        <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-4 text-white text-[12px] tracking-widest font-medium mix-blend-difference">
             {/* Left Brand - Logo */}
             <div className="relative w-80 h-24">
                 <Image
