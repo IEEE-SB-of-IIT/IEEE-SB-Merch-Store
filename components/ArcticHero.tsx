@@ -1,9 +1,60 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import { ArrowUpRight, Instagram, Facebook, Twitter } from 'lucide-react';
 
-export default function ArcticHero() {
+interface ArcticHeroProps {
+    theme?: 'default' | 'codesprint' | 'ix';
+}
+
+export default function ArcticHero({ theme = 'default' }: ArcticHeroProps) {
+    const [activeView, setActiveView] = useState(0); // 0 = Front, 1 = Back
+    const views = [
+        { id: 0, name: 'FRONT', image: '/images/hero.png' },
+        { id: 1, name: 'BACK', image: '/images/hero_back.png' }
+    ];
+
+    const themeConfig = {
+        default: {
+            bg: 'bg-arctic-base',
+            accent: 'text-arctic-cyan',
+            accentBg: 'bg-arctic-cyan',
+            accentShadow: 'shadow-arctic-cyan/20',
+            glow: 'shadow-[0_0_8px_rgba(34,211,238,0.8)]',
+            text: 'text-arctic-cyan',
+            hoverText: 'hover:text-arctic-cyan',
+            dimText: 'text-arctic-light/60',
+            bgGlow: 'bg-blue-500/20'
+        },
+        codesprint: {
+            bg: 'bg-[#602000]', // Deep Burnt Orange
+            accent: 'text-orange-500',
+            accentBg: 'bg-orange-500',
+            accentShadow: 'shadow-orange-500/20',
+            glow: 'drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]',
+            text: 'text-orange-500',
+            hoverText: 'hover:text-orange-500',
+            dimText: 'text-gray-400',
+            bgGlow: 'bg-orange-600/40' // Stronger glow
+        },
+        ix: {
+            bg: 'bg-[#450a25]', // Deep Magenta
+            accent: 'text-[#FF0879]',
+            accentBg: 'bg-[#FF0879]',
+            accentShadow: 'shadow-[#FF0879]/20',
+            glow: 'drop-shadow-[0_0_8px_rgba(172,213,248,0.8)]',
+            text: 'text-[#FF0879]',
+            hoverText: 'hover:text-[#FF0879]',
+            dimText: 'text-[#ACD5F8]/60',
+            bgGlow: 'bg-[#ACD5F8]/40' // Stronger blue glow for contrast
+        }
+    };
+
+    const styles = themeConfig[theme] || themeConfig.default;
+
     return (
-        <section className="relative w-full aspect-[16/9] bg-arctic-base overflow-hidden flex flex-col items-center pt-20 px-6 md:px-12">
+        <section className={`relative w-full aspect-[16/9] ${styles.bg} overflow-hidden flex flex-col items-center pt-20 px-6 md:px-12`}>
             {/* Noise Overlay */}
             <div
                 className="absolute inset-0 z-50 pointer-events-none opacity-[0.15] mix-blend-overlay"
@@ -25,42 +76,42 @@ export default function ArcticHero() {
                 {/* Left Column: Title & Controls */}
                 <div className="md:col-span-4 flex flex-col justify-center space-y-12 text-white h-full pb-12">
                     <div className="space-y-2">
-                        <div className="flex gap-4 text-[10px] md:text-xs tracking-[0.2em] text-arctic-light/60 uppercase">
+                        <div className={`flex gap-4 text-[10px] md:text-xs tracking-[0.2em] ${styles.dimText} uppercase`}>
                             <span>Special Stage No. 1</span>
                             <span>|</span>
                             <span>Signed</span>
                         </div>
                         <h1 className="text-6xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-[0.9]">
                             COLLECTION<br />
-                            ARTIC 01™
+                            <span className="tracking-tighter">ARTIC 01™</span>
                         </h1>
                     </div>
 
                     <div className="space-y-6">
                         {/* Size Selector */}
                         <div className="flex items-center gap-8 text-sm">
-                            <span className="text-arctic-light/60 uppercase tracking-widest text-xs">Size</span>
+                            <span className={`uppercase tracking-widest text-xs ${styles.dimText}`}>Size</span>
                             <div className="flex gap-6 font-bold">
-                                <span className="cursor-pointer hover:text-arctic-cyan">S</span>
-                                <span className="cursor-pointer hover:text-arctic-cyan">M</span>
-                                <span className="cursor-pointer hover:text-arctic-cyan">L</span>
-                                <span className="cursor-pointer hover:text-arctic-cyan">XL</span>
+                                <span className={`cursor-pointer ${styles.hoverText}`}>S</span>
+                                <span className={`cursor-pointer ${styles.hoverText}`}>M</span>
+                                <span className={`cursor-pointer ${styles.hoverText}`}>L</span>
+                                <span className={`cursor-pointer ${styles.hoverText}`}>XL</span>
                             </div>
                         </div>
 
                         {/* Colour Selector */}
                         <div className="flex items-center gap-8 text-sm">
-                            <span className="text-arctic-light/60 uppercase tracking-widest text-xs">Colour</span>
+                            <span className={`uppercase tracking-widest text-xs ${styles.dimText}`}>Colour</span>
                             <div className="flex gap-6 font-bold">
-                                <span className="cursor-pointer hover:text-arctic-cyan">White</span>
-                                <span className="cursor-pointer text-arctic-light/40">Silver</span>
+                                <span className={`cursor-pointer ${styles.hoverText}`}>White</span>
+                                <span className="cursor-pointer text-white/40">Silver</span>
                             </div>
                         </div>
                     </div>
 
                     {/* Add to Cart Circle */}
                     <div className="relative group cursor-pointer mt-8">
-                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border border-arctic-light/30 flex items-center justify-center relative overflow-hidden group-hover:bg-white/5 transition-all">
+                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border border-white/30 flex items-center justify-center relative overflow-hidden group-hover:bg-white/5 transition-all">
                             <ArrowUpRight className="w-8 h-8 text-white mb-4" />
                             <span className="absolute bottom-6 text-[10px] tracking-widest uppercase">Add to Cart</span>
                         </div>
@@ -73,16 +124,19 @@ export default function ArcticHero() {
                 {/* Center Column: Main Image */}
                 <div className="md:col-span-5 relative flex items-end justify-center h-full">
                     {/* Background Glow */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] bg-blue-500/20 blur-[100px] rounded-full pointer-events-none" />
+                    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] ${styles.bgGlow} blur-[100px] rounded-full pointer-events-none`} />
 
-                    <div className="relative w-full h-[90%] md:h-[95%] flex items-end">
-                        <Image
-                            src="/images/hero.png"
-                            alt="Arctic Collection Hero"
-                            fill
-                            className="object-contain object-bottom scale-110 drop-shadow-2xl"
-                            priority
-                        />
+                    <div className="relative w-full h-[90%] md:h-[95%] flex items-end transition-opacity duration-500 ease-in-out">
+                        <div className="relative w-full h-full">
+                            <Image
+                                key={activeView} // Remount on change for animation
+                                src={views[activeView].image}
+                                alt={`Arctic Collection ${views[activeView].name}`}
+                                fill
+                                className="object-contain object-bottom scale-110 drop-shadow-2xl animate-fade-in"
+                                priority
+                            />
+                        </div>
                         {/* Small Tag on Jacket */}
                         <div className="absolute top-[35%] right-[25%] text-white/30 font-spray text-4xl -rotate-12 z-20 mix-blend-overlay opacity-60">
                             TRN
@@ -95,22 +149,37 @@ export default function ArcticHero() {
                     {/* Centered Group: Tiles & Counter */}
                     <div className="absolute top-1/2 right-0 -translate-y-1/2 flex flex-col gap-6 items-end">
                         <div className="flex gap-4 opacity-80 justify-end">
-                            {/* Tile 1 */}
-                            <div className="relative w-32 h-40 bg-white/20 p-[1px]" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}>
+                            {/* Tile 1 - Front */}
+                            <div
+                                onClick={() => setActiveView(0)}
+                                className={`relative w-32 h-40 p-[1px] cursor-pointer transition-all duration-300 ${activeView === 0 ? `${styles.accentBg} scale-105 shadow-lg ${styles.accentShadow}` : 'bg-white/20 hover:bg-white/40'}`}
+                                style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}
+                            >
                                 <div className="w-full h-full bg-arctic-dark relative" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}>
-                                    <Image src="/images/product_1.png" alt="Preview 1" fill className="object-cover opacity-80" />
+                                    <Image src={views[0].image} alt="Front View" fill className="object-cover opacity-80" />
+                                    {activeView === 0 && <div className={`absolute inset-0 ${styles.accentBg}/10`} />}
                                 </div>
                             </div>
-                            {/* Tile 2 */}
-                            <div className="relative w-32 h-40 bg-white/20 p-[1px]" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}>
+
+                            {/* Tile 2 - Back */}
+                            <div
+                                onClick={() => setActiveView(1)}
+                                className={`relative w-32 h-40 p-[1px] cursor-pointer transition-all duration-300 ${activeView === 1 ? `${styles.accentBg} scale-105 shadow-lg ${styles.accentShadow}` : 'bg-white/20 hover:bg-white/40'}`}
+                                style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}
+                            >
                                 <div className="w-full h-full bg-arctic-dark relative" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}>
-                                    <Image src="/images/product_1.png" alt="Preview 2" fill className="object-cover opacity-80" />
+                                    <Image src={views[1].image} alt="Back View" fill className="object-cover opacity-80" />
+                                    {activeView === 1 && <div className={`absolute inset-0 ${styles.accentBg}/10`} />}
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex flex-col items-end gap-2 text-[10px] tracking-widest text-arctic-light/50">
-                            <span>01 -------- 07</span>
+                        <div className="flex flex-col items-end gap-2 text-[10px] tracking-widest text-white font-mono">
+                            <div className="flex items-center gap-2">
+                                <span className={`transition-colors duration-300 ${activeView === 0 ? `${styles.text} font-bold text-sm ${styles.glow}` : 'text-white'}`}>01</span>
+                                <span className="text-white">--------</span>
+                                <span className={`transition-colors duration-300 ${activeView === 1 ? `${styles.text} font-bold text-sm ${styles.glow}` : 'text-white'}`}>02</span>
+                            </div>
                         </div>
                     </div>
 

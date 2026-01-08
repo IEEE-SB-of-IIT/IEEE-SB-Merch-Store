@@ -1,9 +1,22 @@
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 
-export default function ProductGrid() {
-    const products = [
-        { id: 1, name: 'AURORA SILVER', desc: 'REFLECTIVE PUFFER JACKET', price: '$999.99', image: '/images/hero.png' }, // Reusing hero for demo
+interface Product {
+    id: number;
+    name: string;
+    desc: string;
+    price: string;
+    image: string;
+}
+
+interface ProductGridProps {
+    theme?: 'default' | 'codesprint' | 'ix';
+    products?: Product[];
+}
+
+export default function ProductGrid({ theme = 'default', products: customProducts }: ProductGridProps) {
+    const defaultProducts = [
+        { id: 1, name: 'AURORA SILVER', desc: 'REFLECTIVE PUFFER JACKET', price: '$999.99', image: '/images/hero.png' },
         { id: 2, name: 'FROST SILVER', desc: 'HIGH GLOSS PUFFER', price: '$1,299.99', image: '/images/hero.png' },
         { id: 3, name: 'STEALTH BLACK', desc: 'HEAVY SHIELD PUFFER', price: '$1,199.99', image: '/images/hero.png' },
         { id: 4, name: 'GLACIER WHITE', desc: 'INSULATED PUFFER JACKET', price: '$1,199.99', image: '/images/product_1.png' },
@@ -12,8 +25,45 @@ export default function ProductGrid() {
         { id: 7, name: 'POLAR WHITE', desc: 'SHELL PUFFER JACKET', price: '$1,499.99', image: '/images/product_1.png' },
     ];
 
+    const products = customProducts || defaultProducts;
+
+    const themeConfig = {
+        default: {
+            bg: 'bg-arctic-base',
+            accent: 'bg-arctic-cyan',
+            accentText: 'text-arctic-cyan',
+            cardBg: 'bg-[#3e4c59]/30',
+            cardHover: 'hover:bg-[#3e4c59]/60',
+            buttonBg: 'bg-white text-arctic-dark',
+            buttonHover: 'hover:bg-arctic-cyan',
+            blueDot: 'bg-blue-500' // Keeping original blue dot for default
+        },
+        codesprint: {
+            bg: 'bg-[#602000]',
+            accent: 'bg-orange-500',
+            accentText: 'text-orange-500',
+            cardBg: 'bg-white/5',
+            cardHover: 'hover:bg-white/10',
+            buttonBg: 'bg-orange-500 text-black',
+            buttonHover: 'hover:bg-white hover:text-black',
+            blueDot: 'bg-orange-500' // Orange dot for codesprint
+        },
+        ix: {
+            bg: 'bg-[#450a25]',
+            accent: 'bg-[#FF0879]',
+            accentText: 'text-[#FF0879]',
+            cardBg: 'bg-white/5',
+            cardHover: 'hover:bg-white/10',
+            buttonBg: 'bg-[#FF0879] text-white',
+            buttonHover: 'hover:bg-[#ACD5F8] hover:text-black',
+            blueDot: 'bg-[#ACD5F8]' // Blue dot for IX
+        }
+    };
+
+    const styles = themeConfig[theme] || themeConfig.default;
+
     return (
-        <section className="bg-arctic-base text-white py-24 px-6 md:px-12">
+        <section className={`${styles.bg} text-white py-24 px-6 md:px-12 transition-colors duration-500`}>
             <div className="w-full max-w-[1400px] mx-auto">
 
                 {/* Section Header */}
@@ -24,16 +74,19 @@ export default function ProductGrid() {
                         <span>[ SERIES 01 ]</span>
                         <span>[ FUTURA ]</span>
                     </div>
-                    <button className="px-6 py-2 bg-white text-arctic-dark text-xs font-bold uppercase rounded-sm hover:bg-arctic-cyan transition-colors">
+                    <button className={`px-6 py-2 text-xs font-bold uppercase rounded-sm transition-colors ${styles.buttonBg} ${styles.buttonHover}`}>
                         Filters
                     </button>
                 </div>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
 
                     {/* Featured 'Aurora' Card */}
-                    <div className="md:col-span-2 md:row-span-2 relative aspect-[4/3] md:aspect-auto bg-[#3e4c59]/50 rounded-sm overflow-hidden group">
+                    <div
+                        className={`col-span-2 md:col-span-2 row-span-1 relative aspect-auto ${styles.cardBg} rounded-sm overflow-hidden group`}
+                        style={{ clipPath: 'polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)' }}
+                    >
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
                         <Image src="/images/product_1.png" alt="Aurora" fill className="object-cover object-center group-hover:scale-105 transition-transform duration-700" />
                         <div className="absolute bottom-8 left-8 z-20">
@@ -49,7 +102,11 @@ export default function ProductGrid() {
 
                     {/* Standard Cards */}
                     {products.map((p, i) => (
-                        <div key={i} className="group relative bg-[#3e4c59]/30 rounded-sm p-4 hover:bg-[#3e4c59]/60 transition-colors">
+                        <div
+                            key={i}
+                            className={`group relative ${styles.cardBg} rounded-sm p-4 ${styles.cardHover} transition-colors`}
+                            style={{ clipPath: 'polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)' }}
+                        >
                             <div className="relative aspect-[3/4] mb-4 overflow-hidden rounded-sm bg-white/5">
                                 <Image src={p.image} alt={p.name} fill className="object-contain p-4 group-hover:scale-110 transition-transform duration-500" />
                             </div>
@@ -59,7 +116,7 @@ export default function ProductGrid() {
                                 <div className="flex justify-between items-center mt-3 border-t border-white/10 pt-3">
                                     <div className="flex gap-2">
                                         <div className="w-2 h-2 rounded-full bg-white" />
-                                        <div className="w-2 h-2 rounded-full bg-blue-500" />
+                                        <div className={`w-2 h-2 rounded-full ${styles.blueDot}`} />
                                     </div>
                                     <span className="font-mono text-xs opacity-70">{p.price}</span>
                                 </div>
