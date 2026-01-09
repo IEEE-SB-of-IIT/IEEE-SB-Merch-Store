@@ -48,8 +48,8 @@ export default function ProductGrid({ theme = 'default', products: customProduct
             bg: 'bg-arctic-base',
             accent: 'bg-arctic-cyan',
             accentText: 'text-arctic-cyan',
-            cardBg: 'bg-[#3e4c59]/30',
-            cardHover: 'hover:bg-[#3e4c59]/60',
+            cardBg: 'bg-[#3e4c59]/30 backdrop-blur-sm border border-white/5',
+            cardHover: 'hover:bg-[#3e4c59]/60 hover:border-arctic-cyan/50 hover:shadow-[0_0_30px_rgba(0,255,255,0.15)]',
             buttonBg: 'bg-white text-arctic-dark',
             buttonHover: 'hover:bg-arctic-cyan',
             blueDot: 'bg-blue-500' // Keeping original blue dot for default
@@ -85,7 +85,8 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                 {/* Section Header */}
                 <div className="flex justify-between items-end mb-16 border-b border-white/10 pb-8">
                     <h2 className="text-4xl md:text-6xl font-black tracking-wider uppercase">New Collection</h2>
-                    <div className="flex gap-12 text-[10px] tracking-widest uppercase opacity-60 hidden md:flex">
+                    <h2 className="text-4xl md:text-6xl font-black tracking-wider uppercase">New Collection</h2>
+                    <div className="flex gap-12 text-[10px] tracking-widest uppercase opacity-60 hidden md:flex font-secondary">
                         <span>[ NEW COLLECTION ]</span>
                         <span>[ SERIES 01 ]</span>
                         <span>[ FUTURA ]</span>
@@ -97,7 +98,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                             placeholder="Search products..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="bg-transparent border-none outline-none text-xs font-bold uppercase w-full placeholder:opacity-50"
+                            className="bg-transparent border-none outline-none text-xs font-bold uppercase w-full placeholder:opacity-50 font-secondary"
                         />
                     </div>
                 </div>
@@ -120,7 +121,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                                     <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
                                         <ArrowUpRight className="w-4 h-4" />
                                     </div>
-                                    <span className="font-mono text-sm">{featuredProduct.price}</span>
+                                    <span className="font-secondary text-sm tracking-tight">{featuredProduct.price}</span>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +146,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                                         <div className="w-2 h-2 rounded-full bg-white" />
                                         <div className={`w-2 h-2 rounded-full ${styles.blueDot}`} />
                                     </div>
-                                    <span className="font-mono text-xs opacity-70">{p.price}</span>
+                                    <span className="font-secondary text-xs opacity-70 tracking-tight">{p.price}</span>
                                 </div>
                             </div>
                         </div>

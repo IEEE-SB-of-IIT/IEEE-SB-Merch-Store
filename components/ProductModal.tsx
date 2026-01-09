@@ -31,8 +31,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     const { addToCart } = useCart();
     const [selectedColor, setSelectedColor] = useState(COLORS[0]);
     const [selectedSize, setSelectedSize] = useState('M');
-    const [sleeveLength, setSleeveLength] = useState(66);
-    const [chest, setChest] = useState(102);
+
 
     const handleAddToCart = () => {
         addToCart({
@@ -127,8 +126,8 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                                         key={size}
                                         onClick={() => setSelectedSize(size)}
                                         className={`w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-sm font-medium transition-all ${selectedSize === size
-                                                ? 'bg-[#D4AF37]/20 border-[#D4AF37] text-[#D4AF37]'
-                                                : 'hover:bg-white/10 text-white/80'
+                                            ? 'bg-[#D4AF37]/20 border-[#D4AF37] text-[#D4AF37]'
+                                            : 'hover:bg-white/10 text-white/80'
                                             }`}
                                     >
                                         {size}
@@ -137,37 +136,12 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                             </div>
                         </div>
 
-                        {/* Sliders (Decorative primarily, but could be functional) */}
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-xs font-bold text-white/60 tracking-widest uppercase">
-                                    <span>Sleeve Length</span>
-                                    <span>{sleeveLength} cm</span>
-                                </div>
-                                <input
-                                    type="range"
-                                    min="60"
-                                    max="75"
-                                    value={sleeveLength}
-                                    onChange={(e) => setSleeveLength(parseInt(e.target.value))}
-                                    className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-xs font-bold text-white/60 tracking-widest uppercase">
-                                    <span>Chest</span>
-                                    <span>{chest} cm</span>
-                                </div>
-                                <input
-                                    type="range"
-                                    min="90"
-                                    max="120"
-                                    value={chest}
-                                    onChange={(e) => setChest(parseInt(e.target.value))}
-                                    className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
-                                />
-                            </div>
+                        {/* Product Description */}
+                        <div className="space-y-4">
+                            <span className="text-xs font-bold text-white/60 tracking-widest uppercase font-secondary">Description</span>
+                            <p className="text-sm leading-relaxed text-white/80 font-secondary text-justify">
+                                {product.desc}
+                            </p>
                         </div>
                     </div>
 

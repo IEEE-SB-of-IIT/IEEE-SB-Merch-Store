@@ -3,6 +3,7 @@
 import { useCart } from '../context/CartContext';
 import { X, Trash2, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function CartDrawer() {
     const { isCartOpen, toggleCart, cartItems, removeFromCart, cartCount } = useCart();
@@ -96,9 +97,9 @@ export default function CartDrawer() {
                             <span className="text-xl font-bold font-mono">${subtotal.toFixed(2)}</span>
                         </div>
                         <p className="text-[10px] text-white/40 text-center">Shipping and taxes calculated at checkout</p>
-                        <button className="w-full py-4 bg-arctic-cyan text-black font-bold uppercase tracking-widest hover:bg-white transition-colors rounded-sm">
+                        <Link href="/checkout" onClick={toggleCart} className="block w-full text-center py-4 bg-arctic-cyan text-black font-bold uppercase tracking-widest hover:bg-white transition-colors rounded-sm">
                             Checkout
-                        </button>
+                        </Link>
                     </div>
                 )}
             </div>

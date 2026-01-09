@@ -10,6 +10,7 @@ export interface ThemeColors {
 export interface ThemeFonts {
     main: string;
     heading: string;
+    secondary: string;
 }
 
 export interface Theme {
@@ -35,6 +36,7 @@ export const themes: Record<string, Theme> = {
         fonts: {
             main: 'var(--font-outfit)',
             heading: 'var(--font-outfit)',
+            secondary: 'var(--font-space-mono)',
         }
     },
     codesprint: {
@@ -51,6 +53,7 @@ export const themes: Record<string, Theme> = {
         fonts: {
             main: 'var(--font-space)', // Tech Monospace
             heading: 'var(--font-space)',
+            secondary: 'var(--font-space-mono)',
         }
     },
     ix: {
@@ -67,6 +70,7 @@ export const themes: Record<string, Theme> = {
         fonts: {
             main: 'var(--font-outfit)',
             heading: 'var(--font-outfit)',
+            secondary: 'var(--font-space-mono)',
         }
     }
 };

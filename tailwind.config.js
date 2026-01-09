@@ -13,6 +13,7 @@ module.exports = {
                 mono: ['var(--font-space)', 'monospace'],
                 spray: ['var(--font-aerosoldier)', 'sans-serif'],
                 courier: ['var(--font-courier)', 'monospace'],
+                secondary: ['var(--font-secondary)', 'monospace'],
             },
             colors: {
                 // Base colors

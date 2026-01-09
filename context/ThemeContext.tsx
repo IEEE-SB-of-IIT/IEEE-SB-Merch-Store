@@ -34,6 +34,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         // Apply variable fonts
         root.style.setProperty('--font-main', theme.fonts.main);
         root.style.setProperty('--font-heading', theme.fonts.heading);
+        root.style.setProperty('--font-secondary', theme.fonts.secondary);
 
     }, [currentEvent, theme]);
 
