@@ -1,5 +1,9 @@
+'use client';
+
 import Image from 'next/image';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Search } from 'lucide-react';
+import { useState } from 'react';
+import ProductModal from './ProductModal';
 
 interface Product {
     id: number;
@@ -15,6 +19,9 @@ interface ProductGridProps {
 }
 
 export default function ProductGrid({ theme = 'default', products: customProducts }: ProductGridProps) {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
     const defaultProducts = [
         { id: 1, name: 'AURORA SILVER', desc: 'REFLECTIVE PUFFER JACKET', price: '$999.99', image: '/images/hero.png' },
         { id: 2, name: 'FROST SILVER', desc: 'HIGH GLOSS PUFFER', price: '$1,299.99', image: '/images/hero.png' },
@@ -25,7 +32,16 @@ export default function ProductGrid({ theme = 'default', products: customProduct
         { id: 7, name: 'POLAR WHITE', desc: 'SHELL PUFFER JACKET', price: '$1,499.99', image: '/images/product_1.png' },
     ];
 
-    const products = customProducts || defaultProducts;
+    const allProducts = customProducts || defaultProducts;
+    const featuredProduct = allProducts[0];
+
+    const showFeatured = featuredProduct.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        featuredProduct.desc.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const filteredProducts = allProducts.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.desc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const themeConfig = {
         default: {
@@ -74,37 +90,48 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                         <span>[ SERIES 01 ]</span>
                         <span>[ FUTURA ]</span>
                     </div>
-                    <button className={`px-6 py-2 text-xs font-bold uppercase rounded-sm transition-colors ${styles.buttonBg} ${styles.buttonHover}`}>
-                        Filters
-                    </button>
+                    <div className={`relative flex items-center px-4 py-2 rounded-sm border ${theme === 'default' ? 'border-white/20 bg-white/5' : 'border-black/20 bg-black/5'} w-64`}>
+                        <Search className="w-4 h-4 opacity-50 mr-2" />
+                        <input
+                            type="text"
+                            placeholder="Search products..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="bg-transparent border-none outline-none text-xs font-bold uppercase w-full placeholder:opacity-50"
+                        />
+                    </div>
                 </div>
 
                 {/* Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
 
-                    {/* Featured 'Aurora' Card */}
-                    <div
-                        className={`col-span-2 md:col-span-2 row-span-1 relative aspect-auto ${styles.cardBg} rounded-sm overflow-hidden group`}
-                        style={{ clipPath: 'polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)' }}
-                    >
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-                        <Image src="/images/product_1.png" alt="Aurora" fill className="object-cover object-center group-hover:scale-105 transition-transform duration-700" />
-                        <div className="absolute bottom-8 left-8 z-20">
-                            <h3 className="text-3xl font-black mb-2">AURORA™</h3>
-                            <div className="flex items-center gap-4">
-                                <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
-                                    <ArrowUpRight className="w-4 h-4" />
+                    {/* Featured Card (Only show if matches search) */}
+                    {showFeatured && (
+                        <div
+                            onClick={() => setSelectedProduct(featuredProduct)}
+                            className={`col-span-2 md:col-span-2 row-span-1 relative aspect-auto ${styles.cardBg} rounded-sm overflow-hidden group cursor-pointer`}
+                            style={{ clipPath: 'polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)' }}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
+                            <Image src={featuredProduct.image} alt={featuredProduct.name} fill className="object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+                            <div className="absolute bottom-8 left-8 z-20">
+                                <h3 className="text-3xl font-black mb-2">{featuredProduct.name}</h3>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
+                                        <ArrowUpRight className="w-4 h-4" />
+                                    </div>
+                                    <span className="font-mono text-sm">{featuredProduct.price}</span>
                                 </div>
-                                <span className="font-mono text-sm">$1,999</span>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Standard Cards */}
-                    {products.map((p, i) => (
+                    {filteredProducts.filter(p => p.id !== featuredProduct.id).map((p, i) => (
                         <div
-                            key={i}
-                            className={`group relative ${styles.cardBg} rounded-sm p-4 ${styles.cardHover} transition-colors`}
+                            key={p.id}
+                            onClick={() => setSelectedProduct(p)}
+                            className={`group relative ${styles.cardBg} rounded-sm p-4 ${styles.cardHover} transition-colors cursor-pointer`}
                             style={{ clipPath: 'polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)' }}
                         >
                             <div className="relative aspect-[3/4] mb-4 overflow-hidden rounded-sm bg-white/5">
@@ -126,6 +153,13 @@ export default function ProductGrid({ theme = 'default', products: customProduct
 
                 </div>
             </div>
+            {/* Product Modal */}
+            {selectedProduct && (
+                <ProductModal
+                    product={selectedProduct}
+                    onClose={() => setSelectedProduct(null)}
+                />
+            )}
         </section>
     )
 }

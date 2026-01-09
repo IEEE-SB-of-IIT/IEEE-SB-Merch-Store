@@ -12,6 +12,7 @@ module.exports = {
                 sans: ['var(--font-bebas)', 'sans-serif'],
                 mono: ['var(--font-space)', 'monospace'],
                 spray: ['var(--font-aerosoldier)', 'sans-serif'],
+                courier: ['var(--font-courier)', 'monospace'],
             },
             colors: {
                 // Base colors

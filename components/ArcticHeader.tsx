@@ -4,9 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, ShoppingBag, Menu } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import CartDrawer from './CartDrawer';
 
 export default function ArcticHeader() {
     const [isScrolled, setIsScrolled] = useState(false);
+    const { toggleCart, cartCount } = useCart();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -64,12 +67,19 @@ export default function ArcticHeader() {
                     <button className="hover:text-black transition-colors">
                         <Search className="w-6 h-6 md:w-7 md:h-7" strokeWidth={1.5} />
                     </button>
-                    <button className="relative hover:text-black transition-colors group">
+                    <button
+                        onClick={toggleCart}
+                        className="relative hover:text-black transition-colors group"
+                    >
                         <ShoppingBag className="w-6 h-6 md:w-7 md:h-7" strokeWidth={1.5} />
-                        <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-arctic-cyan opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-arctic-cyan"></span>
-                        </span>
+                        {cartCount > 0 && (
+                            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-arctic-cyan opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-4 w-4 bg-arctic-cyan text-[9px] text-black font-bold items-center justify-center">
+                                    {cartCount}
+                                </span>
+                            </span>
+                        )}
                     </button>
                     {/* Mobile Menu Toggle */}
                     <button className="md:hidden hover:text-black transition-colors">
@@ -77,6 +87,7 @@ export default function ArcticHeader() {
                     </button>
                 </div>
             </div>
-        </nav>
+            <CartDrawer />
+        </nav >
     );
 }
