@@ -83,30 +83,18 @@ export default function ArcticHero({ theme = 'default' }: ArcticHeroProps) {
                         </div>
                         <h1 className="text-6xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-[0.9]">
                             COLLECTION<br />
-                            <span className="tracking-tighter">ARTIC 01™</span>
+                            <span className="">ARTIC 01™</span>
                         </h1>
                     </div>
 
-                    <div className="space-y-6">
-                        {/* Size Selector */}
-                        <div className="flex items-center gap-8 text-sm">
-                            <span className={`uppercase tracking-widest text-xs ${styles.dimText}`}>Size</span>
-                            <div className="flex gap-6 font-bold">
-                                <span className={`cursor-pointer ${styles.hoverText}`}>S</span>
-                                <span className={`cursor-pointer ${styles.hoverText}`}>M</span>
-                                <span className={`cursor-pointer ${styles.hoverText}`}>L</span>
-                                <span className={`cursor-pointer ${styles.hoverText}`}>XL</span>
-                            </div>
-                        </div>
-
-                        {/* Colour Selector */}
-                        <div className="flex items-center gap-8 text-sm">
-                            <span className={`uppercase tracking-widest text-xs ${styles.dimText}`}>Colour</span>
-                            <div className="flex gap-6 font-bold">
-                                <span className={`cursor-pointer ${styles.hoverText}`}>White</span>
-                                <span className="cursor-pointer text-white/40">Silver</span>
-                            </div>
-                        </div>
+                    {/* Barcode Image */}
+                    <div className="relative w-48 h-24 opacity-80 hover:opacity-100 transition-opacity">
+                        <Image
+                            src="/images/barcode.png"
+                            alt="Product Barcode"
+                            fill
+                            className="object-contain object-left"
+                        />
                     </div>
 
                     {/* Add to Cart Circle */}

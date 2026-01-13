@@ -8,9 +8,10 @@ import ProductModal from './ProductModal';
 interface Product {
     id: number;
     name: string;
-    desc: string;
+    description: string;
     price: string;
     image: string;
+    sold_out?: boolean;
 }
 
 interface ProductGridProps {
@@ -23,24 +24,34 @@ export default function ProductGrid({ theme = 'default', products: customProduct
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     const defaultProducts = [
-        { id: 1, name: 'AURORA SILVER', desc: 'REFLECTIVE PUFFER JACKET', price: '$999.99', image: '/images/hero.png' },
-        { id: 2, name: 'FROST SILVER', desc: 'HIGH GLOSS PUFFER', price: '$1,299.99', image: '/images/hero.png' },
-        { id: 3, name: 'STEALTH BLACK', desc: 'HEAVY SHIELD PUFFER', price: '$1,199.99', image: '/images/hero.png' },
-        { id: 4, name: 'GLACIER WHITE', desc: 'INSULATED PUFFER JACKET', price: '$1,199.99', image: '/images/product_1.png' },
-        { id: 5, name: 'POLAR GLOSS', desc: 'BLUE PUFFER JACKET', price: '$899.99', image: '/images/product_1.png' },
-        { id: 6, name: 'DEEPFIELD BLUE', desc: 'TECH PUFFER JACKET', price: '$999.99', image: '/images/product_1.png' },
-        { id: 7, name: 'POLAR WHITE', desc: 'SHELL PUFFER JACKET', price: '$1,499.99', image: '/images/product_1.png' },
+        { id: 1, name: 'AURORA SILVER', description: 'REFLECTIVE PUFFER JACKET', price: '$999.99', image: '/images/hero.png', sold_out: false },
+        { id: 2, name: 'FROST SILVER', description: 'HIGH GLOSS PUFFER', price: '$1,299.99', image: '/images/hero.png', sold_out: false },
+        { id: 3, name: 'STEALTH BLACK', description: 'HEAVY SHIELD PUFFER', price: '$1,199.99', image: '/images/hero.png', sold_out: false },
+        { id: 4, name: 'GLACIER WHITE', description: 'INSULATED PUFFER JACKET', price: '$1,199.99', image: '/images/product_1.png', sold_out: false },
+        { id: 5, name: 'POLAR GLOSS', description: 'BLUE PUFFER JACKET', price: '$899.99', image: '/images/product_1.png', sold_out: true },
+        { id: 6, name: 'DEEPFIELD BLUE', description: 'TECH PUFFER JACKET', price: '$999.99', image: '/images/product_1.png', sold_out: false },
+        { id: 7, name: 'POLAR WHITE', description: 'SHELL PUFFER JACKET', price: '$1,499.99', image: '/images/product_1.png', sold_out: false },
     ];
 
     const allProducts = customProducts || defaultProducts;
+
+    if (!allProducts || allProducts.length === 0) {
+        return (
+            <section className={`text-white py-24 px-6 md:px-12 bg-black/50 text-center`}>
+                <h2 className="text-2xl font-bold opacity-50">No products found for this collection yet.</h2>
+                <p className="text-sm mt-2 opacity-30">Check back later or add products via Admin.</p>
+            </section>
+        );
+    }
+
     const featuredProduct = allProducts[0];
 
-    const showFeatured = featuredProduct.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        featuredProduct.desc.toLowerCase().includes(searchQuery.toLowerCase());
+    const showFeatured = featuredProduct && (featuredProduct.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        featuredProduct.description.toLowerCase().includes(searchQuery.toLowerCase()));
 
     const filteredProducts = allProducts.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.desc.toLowerCase().includes(searchQuery.toLowerCase())
+        product.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     const themeConfig = {
@@ -110,7 +121,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                     {showFeatured && (
                         <div
                             onClick={() => setSelectedProduct(featuredProduct)}
-                            className={`col-span-2 md:col-span-2 row-span-1 relative aspect-auto ${styles.cardBg} rounded-sm overflow-hidden group cursor-pointer`}
+                            className={`col-span-2 md:col-span-2 row-span-1 relative aspect-[5/4] ${styles.cardBg} rounded-sm overflow-hidden group cursor-pointer`}
                             style={{ clipPath: 'polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)' }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
@@ -123,6 +134,11 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                                     </div>
                                     <span className="font-secondary text-sm tracking-tight">{featuredProduct.price}</span>
                                 </div>
+                                {featuredProduct.sold_out && (
+                                    <div className="mt-4 px-3 py-1 bg-red-600/80 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-widest w-fit border border-red-500/50">
+                                        Sold Out
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
@@ -131,21 +147,22 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                     {filteredProducts.filter(p => p.id !== featuredProduct.id).map((p, i) => (
                         <div
                             key={p.id}
-                            onClick={() => setSelectedProduct(p)}
-                            className={`group relative ${styles.cardBg} rounded-sm p-4 ${styles.cardHover} transition-colors cursor-pointer`}
+                            onClick={() => !p.sold_out && setSelectedProduct(p)}
+                            className={`group relative ${styles.cardBg} rounded-sm p-4 ${styles.cardHover} transition-colors ${p.sold_out ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                             style={{ clipPath: 'polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)' }}
                         >
+                            {p.sold_out && (
+                                <div className="absolute top-4 right-4 z-20 px-2 py-1 bg-red-600/90 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm border border-red-500/30">
+                                    Sold Out
+                                </div>
+                            )}
                             <div className="relative aspect-[3/4] mb-4 overflow-hidden rounded-sm bg-white/5">
                                 <Image src={p.image} alt={p.name} fill className="object-contain p-4 group-hover:scale-110 transition-transform duration-500" />
                             </div>
                             <div className="space-y-1">
                                 <h4 className="font-bold text-sm tracking-wide">{p.name}</h4>
-                                <p className="text-[10px] text-white/50 tracking-wider uppercase">{p.desc}</p>
-                                <div className="flex justify-between items-center mt-3 border-t border-white/10 pt-3">
-                                    <div className="flex gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-white" />
-                                        <div className={`w-2 h-2 rounded-full ${styles.blueDot}`} />
-                                    </div>
+                                <p className="text-[10px] text-white/50 tracking-wider uppercase">{p.description}</p>
+                                <div className="flex justify-end items-center mt-3 border-t border-white/10 pt-3">
                                     <span className="font-secondary text-xs opacity-70 tracking-tight">{p.price}</span>
                                 </div>
                             </div>

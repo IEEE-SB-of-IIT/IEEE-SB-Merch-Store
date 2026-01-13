@@ -8,9 +8,10 @@ import { useCart } from '../context/CartContext';
 interface Product {
     id: number;
     name: string;
-    desc: string;
+    description: string;
     price: string;
     image: string;
+    sold_out?: boolean;
 }
 
 interface ProductModalProps {
@@ -140,7 +141,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                         <div className="space-y-4">
                             <span className="text-xs font-bold text-white/60 tracking-widest uppercase font-secondary">Description</span>
                             <p className="text-sm leading-relaxed text-white/80 font-secondary text-justify">
-                                {product.desc}
+                                {product.description}
                             </p>
                         </div>
                     </div>

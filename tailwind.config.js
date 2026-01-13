@@ -9,11 +9,12 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['var(--font-bebas)', 'sans-serif'],
+                sans: ['var(--font-druk)', 'sans-serif'],
                 mono: ['var(--font-space)', 'monospace'],
                 spray: ['var(--font-aerosoldier)', 'sans-serif'],
                 courier: ['var(--font-courier)', 'monospace'],
-                secondary: ['var(--font-secondary)', 'monospace'],
+                secondary: ['var(--font-space-mono)', 'monospace'],
+                bebas: ['var(--font-druk)', 'sans-serif'], // Mapping existing usage to new main font
             },
             colors: {
                 // Base colors
