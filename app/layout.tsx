@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "../context/ThemeContext";
 import { CartProvider } from "../context/CartContext";
 import { AuthProvider } from "../components/AuthProvider";
+import CartDrawer from "../components/CartDrawer";
 
 const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: '--font-space' });
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     <AuthProvider>
                         <CartProvider>
                             {children}
+                            <CartDrawer />
                         </CartProvider>
                     </AuthProvider>
                 </ThemeProvider>

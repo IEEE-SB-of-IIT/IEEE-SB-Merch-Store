@@ -77,13 +77,13 @@ export default function ArcticHero({ theme = 'default' }: ArcticHeroProps) {
                 <div className="md:col-span-4 flex flex-col justify-center space-y-12 text-white h-full pb-12">
                     <div className="space-y-2">
                         <div className={`flex gap-4 text-[10px] md:text-xs tracking-[0.2em] ${styles.dimText} uppercase`}>
-                            <span>Special Stage No. 1</span>
+                            <span>Est. 2024</span>
                             <span>|</span>
-                            <span>Signed</span>
+                            <span>Official</span>
                         </div>
                         <h1 className="text-6xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-[0.9]">
-                            COLLECTION<br />
-                            <span className="">ARTIC 01™</span>
+                            IEEE SB<br />
+                            <span className="">MERCH 01™</span>
                         </h1>
                     </div>
 

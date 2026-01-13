@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Search, ShoppingBag, Menu } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import CartDrawer from './CartDrawer';
 
 export default function ArcticHeader() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -87,7 +86,6 @@ export default function ArcticHeader() {
                     </button>
                 </div>
             </div>
-            <CartDrawer />
         </nav >
     );
 }

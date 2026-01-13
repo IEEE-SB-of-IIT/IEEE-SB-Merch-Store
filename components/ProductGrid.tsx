@@ -24,13 +24,13 @@ export default function ProductGrid({ theme = 'default', products: customProduct
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     const defaultProducts = [
-        { id: 1, name: 'AURORA SILVER', description: 'REFLECTIVE PUFFER JACKET', price: '$999.99', image: '/images/hero.png', sold_out: false },
-        { id: 2, name: 'FROST SILVER', description: 'HIGH GLOSS PUFFER', price: '$1,299.99', image: '/images/hero.png', sold_out: false },
-        { id: 3, name: 'STEALTH BLACK', description: 'HEAVY SHIELD PUFFER', price: '$1,199.99', image: '/images/hero.png', sold_out: false },
-        { id: 4, name: 'GLACIER WHITE', description: 'INSULATED PUFFER JACKET', price: '$1,199.99', image: '/images/product_1.png', sold_out: false },
-        { id: 5, name: 'POLAR GLOSS', description: 'BLUE PUFFER JACKET', price: '$899.99', image: '/images/product_1.png', sold_out: true },
-        { id: 6, name: 'DEEPFIELD BLUE', description: 'TECH PUFFER JACKET', price: '$999.99', image: '/images/product_1.png', sold_out: false },
-        { id: 7, name: 'POLAR WHITE', description: 'SHELL PUFFER JACKET', price: '$1,499.99', image: '/images/product_1.png', sold_out: false },
+        { id: 1, name: 'DEV OVERSIZED', description: 'PREMIUM COTTON TEE', price: '$25.00', image: '/images/hero.png', sold_out: false },
+        { id: 2, name: 'CODE HOODIE', description: 'HEAVYWEIGHT COTTON', price: '$45.00', image: '/images/hero.png', sold_out: false },
+        { id: 3, name: 'SYSTEM BLACK', description: 'TECH CARGO PANTS', price: '$55.00', image: '/images/hero.png', sold_out: false },
+        { id: 4, name: 'IEEE CLASSIC', description: 'SIGNATURE WHITE TEE', price: '$20.00', image: '/images/product_1.png', sold_out: false },
+        { id: 5, name: 'BLUEPRINT', description: 'GRAPHIC LONG SLEEVE', price: '$35.00', image: '/images/product_1.png', sold_out: true },
+        { id: 6, name: 'TECH CAP', description: 'EMBROIDERED SNAPBACK', price: '$15.00', image: '/images/product_1.png', sold_out: false },
+        { id: 7, name: 'VARSITY', description: 'LIMITED EDITION JACKET', price: '$85.00', image: '/images/product_1.png', sold_out: false },
     ];
 
     const allProducts = customProducts || defaultProducts;
@@ -90,12 +90,19 @@ export default function ProductGrid({ theme = 'default', products: customProduct
     const styles = themeConfig[theme] || themeConfig.default;
 
     return (
-        <section className={`${styles.bg} text-white py-24 px-6 md:px-12 transition-colors duration-500`}>
-            <div className="w-full max-w-[1400px] mx-auto">
+        <section className={`${styles.bg} text-white py-24 px-6 md:px-12 transition-colors duration-500 relative overflow-hidden`}>
+            {/* Noise Overlay */}
+            <div
+                className="absolute inset-0 z-0 pointer-events-none opacity-[0.15] mix-blend-overlay"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`,
+                    backgroundRepeat: 'repeat',
+                }}
+            />
+            <div className="w-full max-w-[1400px] mx-auto relative z-10">
 
                 {/* Section Header */}
                 <div className="flex justify-between items-end mb-16 border-b border-white/10 pb-8">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-wider uppercase">New Collection</h2>
                     <h2 className="text-4xl md:text-6xl font-black tracking-wider uppercase">New Collection</h2>
                     <div className="flex gap-12 text-[10px] tracking-widest uppercase opacity-60 hidden md:flex font-secondary">
                         <span>[ NEW COLLECTION ]</span>

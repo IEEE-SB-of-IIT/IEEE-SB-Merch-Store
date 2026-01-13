@@ -25,7 +25,12 @@ export default function CheckoutPage() {
     };
 
     const subtotal = cartItems.reduce((acc, item) => {
-        const price = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+        const rawPrice = item.price;
+        const price = typeof rawPrice === 'string'
+            ? parseFloat(rawPrice.replace(/[^0-9.]/g, ''))
+            : typeof rawPrice === 'number'
+                ? rawPrice
+                : 0;
         return acc + price * item.quantity;
     }, 0);
 
