@@ -140,7 +140,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                                     <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
                                         <ArrowUpRight className="w-4 h-4" />
                                     </div>
-                                    <span className="font-secondary text-sm tracking-tight">{featuredProduct.price}</span>
+                                    <span className="font-secondary text-sm">{featuredProduct.price}</span>
                                 </div>
                                 {featuredProduct.sold_out && (
                                     <div className="mt-4 px-3 py-1 bg-red-600/80 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-widest w-fit border border-red-500/50">
@@ -171,7 +171,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                                 <h4 className="font-bold text-sm tracking-wide">{p.name}</h4>
                                 <p className="text-[10px] text-white/50 tracking-wider uppercase">{p.description}</p>
                                 <div className="flex justify-end items-center mt-3 border-t border-white/10 pt-3">
-                                    <span className="font-secondary text-xs opacity-70 tracking-tight">{p.price}</span>
+                                    <span className="font-secondary text-xs opacity-70">{p.price}</span>
                                 </div>
                             </div>
                         </div>

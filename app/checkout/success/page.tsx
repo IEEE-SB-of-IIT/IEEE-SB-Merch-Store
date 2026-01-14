@@ -16,7 +16,7 @@ export default function CheckoutSuccessPage() {
                 </div>
 
                 <div className="space-y-4">
-                    <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Order Confirmed!</h1>
+                    <h1 className="text-4xl md:text-5xl font-black uppercase">Order Confirmed!</h1>
                     <p className="text-white/60 text-lg">
                         Thank you for your purchase. Your order <span className="text-white font-mono font-bold">#IEEE-{Math.floor(100000 + Math.random() * 900000)}</span> has been confirmed.
                     </p>

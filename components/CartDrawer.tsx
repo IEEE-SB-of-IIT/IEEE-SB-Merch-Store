@@ -78,7 +78,7 @@ export default function CartDrawer() {
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
                                         </div>
-                                        <p className="text-sm text-arctic-cyan mt-1 font-secondary tracking-tight">{item.price}</p>
+                                        <p className="text-sm text-arctic-cyan mt-1 font-secondary">{item.price}</p>
                                     </div>
 
                                     <div className="flex items-center justify-between text-xs text-white/60 mt-3">
@@ -116,7 +116,7 @@ export default function CartDrawer() {
                     <div className="p-6 border-t border-white/10 bg-black/40 backdrop-blur-xl space-y-4">
                         <div className="flex justify-between items-center text-white">
                             <span className="text-white/60 text-sm uppercase tracking-wider font-secondary">Subtotal</span>
-                            <span className="text-xl font-bold font-secondary tracking-tight text-white">LKR {subtotal.toFixed(2)}</span>
+                            <span className="text-xl font-bold font-secondary text-white">LKR {subtotal.toFixed(2)}</span>
                         </div>
                         <p className="text-[10px] text-white/40 text-center font-secondary">Shipping and taxes calculated at checkout</p>
                         <Link href="/checkout" onClick={toggleCart} className="block w-full text-center py-4 bg-arctic-cyan text-black font-bold uppercase tracking-widest hover:bg-white transition-colors rounded-sm">

@@ -66,7 +66,7 @@ export default function Hero({ theme = 'default' }: HeroProps) {
 
             {/* Background Graffiti Text */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none z-0 select-none">
-                <span className="font-spray text-[15vw] md:text-[20vw] leading-none text-white/10 scale-y-150 inline-block tracking-tighter">
+                <span className="font-spray text-[15vw] md:text-[20vw] leading-none text-white/10 scale-y-150 inline-block">
                     MERCHANDISE
                 </span>
             </div>

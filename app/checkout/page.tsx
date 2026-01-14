@@ -92,7 +92,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="space-y-2">
-                        <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">Checkout</h1>
+                        <h1 className="text-4xl md:text-5xl font-black uppercase">Checkout</h1>
                         <p className="text-white/60">Complete your order to receive your gear.</p>
                     </div>
 

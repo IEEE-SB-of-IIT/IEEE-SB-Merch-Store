@@ -15,6 +15,7 @@ module.exports = {
                 courier: ['var(--font-courier)', 'monospace'],
                 secondary: ['var(--font-space-mono)', 'monospace'],
                 bebas: ['var(--font-druk)', 'sans-serif'], // Mapping existing usage to new main font
+                system: ['ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
             },
             colors: {
                 // Base colors
