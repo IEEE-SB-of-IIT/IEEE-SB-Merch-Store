@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { ArrowUpRight, Search } from 'lucide-react';
 import { useState } from 'react';
-import ProductModal from './ProductModal';
+import { useUI } from '../context/UIContext';
 
 interface Product {
     id: number;
@@ -21,16 +21,17 @@ interface ProductGridProps {
 
 export default function ProductGrid({ theme = 'default', products: customProducts }: ProductGridProps) {
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const { openProductModal } = useUI();
+    // const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Removed local state
 
     const defaultProducts = [
-        { id: 1, name: 'DEV OVERSIZED', description: 'PREMIUM COTTON TEE', price: '$25.00', image: '/images/hero.png', sold_out: false },
-        { id: 2, name: 'CODE HOODIE', description: 'HEAVYWEIGHT COTTON', price: '$45.00', image: '/images/hero.png', sold_out: false },
-        { id: 3, name: 'SYSTEM BLACK', description: 'TECH CARGO PANTS', price: '$55.00', image: '/images/hero.png', sold_out: false },
-        { id: 4, name: 'IEEE CLASSIC', description: 'SIGNATURE WHITE TEE', price: '$20.00', image: '/images/product_1.png', sold_out: false },
-        { id: 5, name: 'BLUEPRINT', description: 'GRAPHIC LONG SLEEVE', price: '$35.00', image: '/images/product_1.png', sold_out: true },
-        { id: 6, name: 'TECH CAP', description: 'EMBROIDERED SNAPBACK', price: '$15.00', image: '/images/product_1.png', sold_out: false },
-        { id: 7, name: 'VARSITY', description: 'LIMITED EDITION JACKET', price: '$85.00', image: '/images/product_1.png', sold_out: false },
+        { id: 1, name: 'DEV OVERSIZED', description: 'PREMIUM COTTON TEE', price: 'LKR 2,500.00', image: '/images/hero.png', sold_out: false },
+        { id: 2, name: 'CODE HOODIE', description: 'HEAVYWEIGHT COTTON', price: 'LKR 4,500.00', image: '/images/hero.png', sold_out: false },
+        { id: 3, name: 'SYSTEM BLACK', description: 'TECH CARGO PANTS', price: 'LKR 5,500.00', image: '/images/hero.png', sold_out: false },
+        { id: 4, name: 'IEEE CLASSIC', description: 'SIGNATURE WHITE TEE', price: 'LKR 2,000.00', image: '/images/product_1.png', sold_out: false },
+        { id: 5, name: 'BLUEPRINT', description: 'GRAPHIC LONG SLEEVE', price: 'LKR 3,500.00', image: '/images/product_1.png', sold_out: true },
+        { id: 6, name: 'TECH CAP', description: 'EMBROIDERED SNAPBACK', price: 'LKR 1,500.00', image: '/images/product_1.png', sold_out: false },
+        { id: 7, name: 'VARSITY', description: 'LIMITED EDITION JACKET', price: 'LKR 8,500.00', image: '/images/product_1.png', sold_out: false },
     ];
 
     const allProducts = customProducts || defaultProducts;
@@ -127,7 +128,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                     {/* Featured Card (Only show if matches search) */}
                     {showFeatured && (
                         <div
-                            onClick={() => setSelectedProduct(featuredProduct)}
+                            onClick={() => openProductModal(featuredProduct)}
                             className={`col-span-2 md:col-span-2 row-span-1 relative aspect-[5/4] ${styles.cardBg} rounded-sm overflow-hidden group cursor-pointer`}
                             style={{ clipPath: 'polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)' }}
                         >
@@ -154,7 +155,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                     {filteredProducts.filter(p => p.id !== featuredProduct.id).map((p, i) => (
                         <div
                             key={p.id}
-                            onClick={() => !p.sold_out && setSelectedProduct(p)}
+                            onClick={() => !p.sold_out && openProductModal(p)}
                             className={`group relative ${styles.cardBg} rounded-sm p-4 ${styles.cardHover} transition-colors ${p.sold_out ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                             style={{ clipPath: 'polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)' }}
                         >
@@ -178,13 +179,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
 
                 </div>
             </div>
-            {/* Product Modal */}
-            {selectedProduct && (
-                <ProductModal
-                    product={selectedProduct}
-                    onClose={() => setSelectedProduct(null)}
-                />
-            )}
+            {/* Local Modal Removed */}
         </section>
     )
 }

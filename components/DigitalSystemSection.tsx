@@ -2,9 +2,33 @@
 
 import { motion } from "framer-motion";
 
-export default function DigitalSystemSection() {
+interface DigitalSystemSectionProps {
+    theme?: 'default' | 'codesprint' | 'ix';
+}
+
+export default function DigitalSystemSection({ theme = 'default' }: DigitalSystemSectionProps) {
+    const themeConfig = {
+        default: {
+            bg: 'bg-arctic-base',
+            accent: 'text-white/90',
+            barcode: 'bg-white'
+        },
+        codesprint: {
+            bg: 'bg-[#602000]',
+            accent: 'text-orange-500',
+            barcode: 'bg-orange-200'
+        },
+        ix: {
+            bg: 'bg-[#450a25]',
+            accent: 'text-[#FF0879]',
+            barcode: 'bg-[#ACD5F8]'
+        }
+    };
+
+    const styles = themeConfig[theme] || themeConfig.default;
+
     return (
-        <section className="w-full bg-arctic-base text-white py-24 md:py-32 overflow-hidden relative">
+        <section className={`w-full ${styles.bg} text-white py-24 md:py-32 overflow-hidden relative`}>
             <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
 
                 {/* Main Typography Block */}
@@ -28,7 +52,7 @@ export default function DigitalSystemSection() {
                                 whileInView={{ scale: 1, rotate: -12, opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6, delay: 0.4, type: "spring" }}
-                                className="absolute -top-16 -left-4 text-6xl text-white/90 font-spray whitespace-nowrap drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+                                className={`absolute -top-16 -left-4 text-6xl ${styles.accent} font-spray whitespace-nowrap drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]`}
                             >
                                 IEEE SB
                             </motion.span>
@@ -101,7 +125,7 @@ export default function DigitalSystemSection() {
                                 {Array.from({ length: 40 }).map((_, i) => (
                                     <div
                                         key={i}
-                                        className="bg-white h-full"
+                                        className={`${styles.barcode} h-full`}
                                         style={{
                                             width: Math.random() > 0.5 ? '4px' : '1px',
                                             height: `${Math.max(40, Math.random() * 100)}%`

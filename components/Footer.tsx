@@ -1,10 +1,10 @@
 import Image from 'next/image';
 
-interface GraffitiFooterProps {
+interface FooterProps {
     theme?: 'default' | 'codesprint' | 'ix';
 }
 
-export default function GraffitiFooter({ theme = 'default' }: GraffitiFooterProps) {
+export default function Footer({ theme = 'default' }: FooterProps) {
     const bgColor = theme === 'codesprint' ? 'bg-[#602000]' : theme === 'ix' ? 'bg-[#450a25]' : 'bg-arctic-dark';
 
     return (

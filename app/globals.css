@@ -9,7 +9,10 @@
   }
 
   body {
-    @apply bg-arctic-base text-arctic-light antialiased selection:bg-arctic-cyan/30 selection:text-white overflow-x-hidden relative;
+    @apply antialiased selection:bg-arctic-cyan/30 selection:text-white overflow-x-hidden relative;
+    background-color: var(--background-color, #004B76);
+    color: var(--text-color, #ffffff);
+    transition: background-color 0.7s ease-in-out;
   }
 
   /* Global Noise Texture */

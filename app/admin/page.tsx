@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
@@ -283,7 +284,7 @@ export default function AdminPage() {
                                                         </div>
                                                     ))}
                                                 </td>
-                                                <td className="p-4 font-secondary font-bold text-arctic-cyan">${order.total}</td>
+                                                <td className="p-4 font-secondary font-bold text-arctic-cyan">LKR {order.total}</td>
                                                 <td className="p-4">
                                                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${getStatusColor(order.status)}`}>
                                                         {order.status === 'pending' && <Clock className="w-3 h-3" />}
@@ -338,12 +339,12 @@ export default function AdminPage() {
                                         <tr key={product.id} className="hover:bg-white/[0.02] transition-colors">
                                             <td className="p-4">
                                                 <div className="w-12 h-12 bg-white/5 rounded overflow-hidden relative">
-                                                    <img src={product.image} alt={product.name} className="object-cover w-full h-full" />
+                                                    <Image src={product.image} alt={product.name} fill className="object-cover" />
                                                 </div>
                                             </td>
                                             <td className="p-4 font-bold">{product.name}</td>
                                             <td className="p-4 text-sm opacity-60 uppercase">{product.collection}</td>
-                                            <td className="p-4 font-secondary text-arctic-cyan">${product.price}</td>
+                                            <td className="p-4 font-secondary text-arctic-cyan">LKR {product.price}</td>
                                             <td className="p-4">
                                                 <button
                                                     onClick={() => toggleSoldOut(product.id, product.sold_out)}
@@ -417,7 +418,7 @@ export default function AdminPage() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="text-xs uppercase font-bold text-white/60 block mb-2">Price ($)</label>
+                                        <label className="text-xs uppercase font-bold text-white/60 block mb-2">Price (LKR)</label>
                                         <input
                                             type="text"
                                             required
@@ -436,7 +437,7 @@ export default function AdminPage() {
                                         >
                                             <option value="main">Main Store</option>
                                             <option value="codesprint">CodeSprint</option>
-                                            <option value="ix">IX '26</option>
+                                            <option value="ix">IX &apos;26</option>
                                         </select>
                                     </div>
                                 </div>

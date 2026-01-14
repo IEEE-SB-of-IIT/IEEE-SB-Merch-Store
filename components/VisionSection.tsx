@@ -3,9 +3,36 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export default function ColdSection() {
+interface VisionSectionProps {
+    theme?: 'default' | 'codesprint' | 'ix';
+}
+
+export default function VisionSection({ theme = 'default' }: VisionSectionProps) {
+    const themeConfig = {
+        default: {
+            bg: 'bg-arctic-base',
+            accent: 'text-white/40',
+            highlight: 'text-white',
+            details: 'text-white/60'
+        },
+        codesprint: {
+            bg: 'bg-[#602000]',
+            accent: 'text-orange-500/60',
+            highlight: 'text-orange-500',
+            details: 'text-orange-200/60'
+        },
+        ix: {
+            bg: 'bg-[#450a25]',
+            accent: 'text-[#FF0879]/60',
+            highlight: 'text-[#FF0879]',
+            details: 'text-[#ACD5F8]/60'
+        }
+    };
+
+    const styles = themeConfig[theme] || themeConfig.default;
+
     return (
-        <section className="w-full bg-arctic-base text-white py-24 md:py-32 overflow-hidden relative min-h-[90vh] flex items-center">
+        <section className={`w-full ${styles.bg} text-white py-24 md:py-32 overflow-hidden relative min-h-[90vh] flex items-center`}>
             {/* Background elements */}
             <div className="absolute inset-0 pointer-events-none">
             </div>
@@ -21,9 +48,9 @@ export default function ColdSection() {
                         transition={{ duration: 0.8 }}
                         className="text-6xl md:text-8xl font-bebas font-black  leading-[0.85] uppercase text-white/90"
                     >
-                        WEAR THE <span className="text-white/40">VISION,</span><br />
+                        WEAR THE <span className={styles.accent}>VISION,</span><br />
                         SHAPE <br />
-                        THE <span className="text-white/40">FUTURE</span>
+                        THE <span className={styles.accent}>FUTURE</span>
                     </motion.h2>
                 </div>
 
@@ -57,7 +84,7 @@ export default function ColdSection() {
                         transition={{ delay: 0.5, type: "spring" }}
                         className="absolute bottom-20 left-0 md:-left-10 z-30 opacity-90"
                     >
-                        <span className="font-spray text-6xl md:text-8xl text-white drop-shadow-md">IEEE SB</span>
+                        <span className={`font-spray text-6xl md:text-8xl ${styles.highlight} drop-shadow-md`}>IEEE SB</span>
                     </motion.div>
                 </motion.div>
 
@@ -71,12 +98,12 @@ export default function ColdSection() {
                         className="text-5xl md:text-7xl font-bebas font-black  leading-[0.85] uppercase text-white/80"
                     >
                         POWERED BY <br />
-                        <span className="text-white/40">IDEAS</span> DRIVEN BY <span className="text-white">YOU</span>
+                        <span className={styles.accent}>IDEAS</span> DRIVEN BY <span className={styles.highlight}>YOU</span>
                     </motion.h2>
                 </div>
 
                 {/* Technical Details (Absolute decorative) */}
-                <div className="absolute bottom-16 left-6 md:left-12 space-y-2 hidden md:block opacity-60">
+                <div className={`absolute bottom-16 left-6 md:left-12 space-y-2 hidden md:block ${styles.details}`}>
                     {['[ IEEE IIT SB ]', '[ INNOVATION ]', '[ TECHNOLOGY ]', '[ COMMUNITY ]'].map((text, i) => (
                         <motion.p
                             key={i}
@@ -90,11 +117,11 @@ export default function ColdSection() {
                     ))}
                 </div>
 
-                <div className="absolute bottom-6 left-6 md:left-12 opacity-40 font-secondary text-[10px] tracking-widest uppercase">
+                <div className={`absolute bottom-6 left-6 md:left-12 font-secondary text-[10px] tracking-widest uppercase ${styles.details}`}>
                     [ STATUS: ONLINE ] [ VERIFIED ]
                 </div>
 
-                <div className="absolute top-10 right-6 md:right-12 opacity-60 font-secondary text-xs text-right hidden md:block max-w-[200px]">
+                <div className={`absolute top-10 right-6 md:right-12 font-secondary text-xs text-right hidden md:block max-w-[200px] ${styles.details}`}>
                     THE OFFICIAL MERCHANDISE OF IEEE IIT STUDENT BRANCH.
                 </div>
 

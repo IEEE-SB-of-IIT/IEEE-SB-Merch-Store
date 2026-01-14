@@ -1,5 +1,6 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { themes, Theme } from '../constants/themes';
 
 interface ThemeContextType {
@@ -12,12 +13,24 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [currentEvent, setCurrentEvent] = useState<string>('general');
+    const pathname = usePathname();
 
     const switchEvent = (eventId: string) => {
         if (themes[eventId]) {
             setCurrentEvent(eventId);
         }
     };
+
+    // Auto-switch theme based on path
+    useEffect(() => {
+        if (pathname === '/codesprint' || pathname.startsWith('/codesprint/')) {
+            switchEvent('codesprint');
+        } else if (pathname === '/ix' || pathname.startsWith('/ix/')) {
+            switchEvent('ix');
+        } else {
+            switchEvent('general');
+        }
+    }, [pathname]);
 
     const theme = themes[currentEvent];
 

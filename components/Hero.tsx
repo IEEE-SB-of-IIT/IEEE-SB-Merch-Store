@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { ArrowUpRight, Instagram, Facebook, Twitter } from 'lucide-react';
 
-interface ArcticHeroProps {
+interface HeroProps {
     theme?: 'default' | 'codesprint' | 'ix';
 }
 
-export default function ArcticHero({ theme = 'default' }: ArcticHeroProps) {
+export default function Hero({ theme = 'default' }: HeroProps) {
     const [activeView, setActiveView] = useState(0); // 0 = Front, 1 = Back
     const views = [
         { id: 0, name: 'FRONT', image: '/images/hero.png' },
@@ -54,7 +54,7 @@ export default function ArcticHero({ theme = 'default' }: ArcticHeroProps) {
     const styles = themeConfig[theme] || themeConfig.default;
 
     return (
-        <section className={`relative w-full aspect-[16/9] ${styles.bg} overflow-hidden flex flex-col items-center pt-20 px-6 md:px-12`}>
+        <section className={`relative w-full min-h-screen md:min-h-0 md:aspect-[16/9] ${styles.bg} overflow-hidden flex flex-col items-center pt-24 px-6 md:px-12`}>
             {/* Noise Overlay */}
             <div
                 className="absolute inset-0 z-50 pointer-events-none opacity-[0.15] mix-blend-overlay"
@@ -74,7 +74,7 @@ export default function ArcticHero({ theme = 'default' }: ArcticHeroProps) {
             <div className="w-full max-w-[1400px] relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 h-full items-end pb-12">
 
                 {/* Left Column: Title & Controls */}
-                <div className="md:col-span-4 flex flex-col justify-center space-y-12 text-white h-full pb-12">
+                <div className="md:col-span-4 flex flex-col justify-center space-y-12 text-white md:h-full pb-12">
                     <div className="space-y-2">
                         <div className={`flex gap-4 text-[10px] md:text-xs tracking-[0.2em] ${styles.dimText} uppercase`}>
                             <span>Est. 2024</span>
@@ -104,13 +104,13 @@ export default function ArcticHero({ theme = 'default' }: ArcticHeroProps) {
                             <span className="absolute bottom-6 text-[10px] tracking-widest uppercase">Add to Cart</span>
                         </div>
                         <div className="absolute top-1/2 left-32 md:left-40 -translate-y-1/2 text-2xl font-mono">
-                            $899.99
+                            LKR 8,999.00
                         </div>
                     </div>
                 </div>
 
                 {/* Center Column: Main Image */}
-                <div className="md:col-span-5 relative flex items-end justify-center h-full">
+                <div className="md:col-span-5 relative flex items-end justify-center h-[50vh] md:h-full">
                     {/* Background Glow */}
                     <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] ${styles.bgGlow} blur-[100px] rounded-full pointer-events-none`} />
 
@@ -133,7 +133,7 @@ export default function ArcticHero({ theme = 'default' }: ArcticHeroProps) {
                 </div>
 
                 {/* Right Column: Mini Gallery & Social elements */}
-                <div className="md:col-span-3 flex flex-col h-full relative">
+                <div className="hidden md:flex md:col-span-3 flex-col h-full relative">
                     {/* Centered Group: Tiles & Counter */}
                     <div className="absolute top-1/2 right-0 -translate-y-1/2 flex flex-col gap-6 items-end">
                         <div className="flex gap-4 opacity-80 justify-end">

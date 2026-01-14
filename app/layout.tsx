@@ -22,25 +22,33 @@ const drukBold = localFont({
     variable: '--font-druk'
 });
 
+import { UIProvider } from "../context/UIContext";
+import SearchOverlay from "../components/SearchOverlay";
+import GlobalProductModalWrapper from "@/components/GlobalProductModalWrapper";
+import Preloader from "@/components/Preloader";
+
 export const metadata = {
     title: "IEEE SB Merch Store",
     description: "Official Merchandise Store for IEEE Student Branch",
 };
 
-
-
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en" className="scroll-smooth">
             <body className={`${outfit.variable} ${spaceGrotesk.variable} ${aerosoldier.variable} ${drukBold.variable} ${courierPrime.variable} ${spaceMono.variable} font-sans antialiased`}>
-                <ThemeProvider>
-                    <AuthProvider>
-                        <CartProvider>
-                            {children}
-                            <CartDrawer />
-                        </CartProvider>
-                    </AuthProvider>
-                </ThemeProvider>
+                <UIProvider>
+                    <ThemeProvider>
+                        <AuthProvider>
+                            <CartProvider>
+                                {children}
+                                <CartDrawer />
+                                <SearchOverlay />
+                                <GlobalProductModalWrapper />
+                                <Preloader />
+                            </CartProvider>
+                        </AuthProvider>
+                    </ThemeProvider>
+                </UIProvider>
             </body>
         </html>
     );

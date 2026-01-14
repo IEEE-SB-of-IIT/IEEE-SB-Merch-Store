@@ -196,15 +196,15 @@ export default function CheckoutPage() {
                         <div className="space-y-3 border-t border-white/10 pt-6 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-white/60">Subtotal</span>
-                                <span className="font-mono">${subtotal.toFixed(2)}</span>
+                                <span className="font-mono">LKR {subtotal.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-white/60">Shipping</span>
-                                <span className="font-mono">${shipping.toFixed(2)}</span>
+                                <span className="font-mono">LKR {shipping.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-lg font-bold border-t border-white/10 pt-4 mt-4">
                                 <span>Total</span>
-                                <span className="font-mono text-arctic-cyan">${total.toFixed(2)}</span>
+                                <span className="font-mono text-arctic-cyan">LKR {total.toFixed(2)}</span>
                             </div>
                         </div>
 

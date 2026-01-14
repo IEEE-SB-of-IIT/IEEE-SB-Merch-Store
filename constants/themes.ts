@@ -27,11 +27,11 @@ export const themes: Record<string, Theme> = {
         colors: {
             // primary: '#00629B', // IEEE Blue
             primary: '#00f3ff', // Next Gen Cyan for primary actions
-            background: '#050505', // Deep Dark
+            background: '#004B76', // Arctic Base
             text: '#ffffff',
             textSecondary: '#9ca3af', // gray-400
             accent: '#171717', // neutral-900
-            headerBg: 'rgba(5, 5, 5, 0.8)',
+            headerBg: 'rgba(0, 75, 118, 0.8)',
         },
         fonts: {
             main: 'var(--font-outfit)',
@@ -44,11 +44,11 @@ export const themes: Record<string, Theme> = {
         name: 'Codesprint',
         colors: {
             primary: '#FF3333', // Bright Neon Red
-            background: '#0a0000', // Very dark red tint
+            background: '#602000', // Deep Orange/Brown
             text: '#ffffff',
             textSecondary: '#e5e7eb', // gray-200 for better contrast on dark
             accent: '#2a0a0a', // Dark red accent
-            headerBg: 'rgba(10, 0, 0, 0.9)',
+            headerBg: 'rgba(96, 32, 0, 0.9)',
         },
         fonts: {
             main: 'var(--font-space)', // Tech Monospace
@@ -61,11 +61,11 @@ export const themes: Record<string, Theme> = {
         name: 'IX',
         colors: {
             primary: '#bc13fe', // Neon Magenta
-            background: '#05000a', // Very dark purple tint
+            background: '#450a25', // Deep Purple
             text: '#ffffff',
             textSecondary: '#e5e7eb', // gray-200
             accent: '#1a0525', // Dark purple accent
-            headerBg: 'rgba(5, 0, 10, 0.9)',
+            headerBg: 'rgba(69, 10, 37, 0.9)',
         },
         fonts: {
             main: 'var(--font-outfit)',
