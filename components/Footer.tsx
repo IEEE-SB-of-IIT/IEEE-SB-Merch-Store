@@ -5,7 +5,7 @@ interface FooterProps {
 }
 
 export default function Footer({ theme = 'default' }: FooterProps) {
-    const bgColor = theme === 'codesprint' ? 'bg-[#602000]' : theme === 'ix' ? 'bg-[#450a25]' : 'bg-arctic-dark';
+    const bgColor = theme === 'codesprint' ? 'bg-cs-midnight' : theme === 'ix' ? 'bg-[#450a25]' : 'bg-arctic-dark';
 
     return (
         <section className={`relative w-full h-[600px] md:h-[800px] ${bgColor} py-24 px-6 overflow-hidden flex items-end`}>
@@ -16,14 +16,10 @@ export default function Footer({ theme = 'default' }: FooterProps) {
                 fill
                 className="object-cover opacity-60 mix-blend-overlay"
             />
-            <div className={`absolute inset-0 bg-gradient-to-t ${theme === 'codesprint' ? 'from-[#602000]' : theme === 'ix' ? 'from-[#450a25]' : 'from-arctic-base'} via-transparent to-transparent opacity-90`} />
+            <div className={`absolute inset-0 bg-gradient-to-t ${theme === 'codesprint' ? 'from-cs-midnight' : theme === 'ix' ? 'from-[#450a25]' : 'from-arctic-base'} via-transparent to-transparent opacity-90`} />
 
             <div className="relative z-10 w-full max-w-[1400px] mx-auto text-white">
                 <div className="md:w-1/2 space-y-4">
-                    <div className="flex gap-4 text-[10px] tracking-widest uppercase opacity-60">
-                        <span>[ PROTOCOL: ALTITUDE ]</span>
-                        <span>[ SPEC-01 ]</span>
-                    </div>
                     <h2 className="text-5xl md:text-7xl font-black leading-[0.85]  uppercase">
                         Built for Innovation<br />
                         Designed for Impact<br />
