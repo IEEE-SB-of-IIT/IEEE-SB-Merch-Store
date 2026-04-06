@@ -13,19 +13,22 @@ export default function VisionSection({ theme = 'default' }: VisionSectionProps)
             bg: 'bg-arctic-base',
             accent: 'text-white/40',
             highlight: 'text-white',
-            details: 'text-white/60'
+            details: 'text-white/60',
+            headingFont: 'font-bebas'
         },
         codesprint: {
-            bg: 'bg-[#602000]',
-            accent: 'text-orange-500/60',
-            highlight: 'text-orange-500',
-            details: 'text-orange-200/60'
+            bg: 'bg-cs-midnight',
+            accent: 'text-cs-coral/70',
+            highlight: 'text-cs-coral',
+            details: 'text-cs-mist/50',
+            headingFont: 'font-mortend'
         },
         ix: {
             bg: 'bg-[#450a25]',
             accent: 'text-[#FF0879]/60',
             highlight: 'text-[#FF0879]',
-            details: 'text-[#ACD5F8]/60'
+            details: 'text-[#ACD5F8]/60',
+            headingFont: 'font-bebas'
         }
     };
 
@@ -46,7 +49,7 @@ export default function VisionSection({ theme = 'default' }: VisionSectionProps)
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="text-6xl md:text-8xl font-bebas font-black  leading-[0.85] uppercase text-white/90"
+                        className={`text-6xl md:text-8xl ${styles.headingFont} font-black leading-[0.85] uppercase text-white/90`}
                     >
                         WEAR THE <span className={styles.accent}>VISION,</span><br />
                         SHAPE <br />
@@ -95,7 +98,7 @@ export default function VisionSection({ theme = 'default' }: VisionSectionProps)
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-5xl md:text-7xl font-bebas font-black  leading-[0.85] uppercase text-white/80"
+                        className={`text-5xl md:text-7xl ${styles.headingFont} font-black leading-[0.85] uppercase text-white/80`}
                     >
                         POWERED BY <br />
                         <span className={styles.accent}>IDEAS</span> DRIVEN BY <span className={styles.highlight}>YOU</span>
