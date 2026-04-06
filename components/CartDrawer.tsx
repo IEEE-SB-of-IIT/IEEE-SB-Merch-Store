@@ -83,8 +83,10 @@ export default function CartDrawer() {
 
                                     <div className="flex items-center justify-between text-xs text-white/60 mt-3">
                                         <div className="flex items-center gap-2 bg-black/20 px-2 py-1 rounded border border-white/5">
-                                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.selectedColor }} />
-                                            <span className="font-secondary uppercase">{item.selectedSize}</span>
+                                            {item.selectedColor && item.selectedColor !== 'Default' && (
+                                                <span className="text-white/50 text-xs">{item.selectedColor}</span>
+                                            )}
+                                            <span className="font-secondary uppercase text-xs font-bold text-arctic-cyan border border-arctic-cyan/30 bg-arctic-cyan/10 px-1.5 py-0.5 rounded-sm">{item.selectedSize}</span>
                                         </div>
 
                                         {/* Quantity Controls */}
