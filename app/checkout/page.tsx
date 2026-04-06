@@ -97,8 +97,8 @@ export default function CheckoutPage() {
             };
 
             clearCart();
-            const encoded = encodeURIComponent(btoa(JSON.stringify(orderPayload)));
-            router.push(`/checkout/success?order=${encoded}`);
+            const encoded = btoa(encodeURIComponent(JSON.stringify(orderPayload)));
+            router.push(`/checkout/success?order=${encodeURIComponent(encoded)}`);
         } catch {
             setError('Network error. Please check your connection and try again.');
         } finally {
