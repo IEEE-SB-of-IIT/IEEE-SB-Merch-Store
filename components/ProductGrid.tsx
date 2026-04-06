@@ -91,7 +91,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
     const styles = themeConfig[theme] || themeConfig.default;
 
     return (
-        <section className={`${styles.bg} text-white py-24 px-6 md:px-12 transition-colors duration-500 relative overflow-hidden`}>
+        <section id="product-grid" className={`${styles.bg} text-white py-24 px-6 md:px-12 transition-colors duration-500 relative overflow-hidden`}>
             {/* Noise Overlay */}
             <div
                 className="absolute inset-0 z-0 pointer-events-none opacity-[0.15] mix-blend-overlay"
@@ -128,8 +128,8 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                     {/* Featured Card (Only show if matches search) */}
                     {showFeatured && (
                         <div
-                            onClick={() => openProductModal(featuredProduct)}
-                            className={`col-span-2 md:col-span-2 row-span-1 relative aspect-[5/4] ${styles.cardBg} rounded-sm overflow-hidden group cursor-pointer`}
+                            onClick={() => !featuredProduct.sold_out && openProductModal(featuredProduct)}
+                            className={`col-span-2 md:col-span-2 row-span-1 relative aspect-[5/4] ${styles.cardBg} rounded-sm overflow-hidden group ${featuredProduct.sold_out ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
                             style={{ clipPath: 'polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)' }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
