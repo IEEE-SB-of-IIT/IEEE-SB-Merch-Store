@@ -97,14 +97,14 @@ export default function Hero({ theme = 'default' }: HeroProps) {
                         />
                     </div>
 
-                    {/* Add to Cart Circle */}
-                    <div className="relative group cursor-pointer mt-8">
+                    {/* Shop Now Circle */}
+                    <div
+                        className="relative group cursor-pointer mt-8"
+                        onClick={() => document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' })}
+                    >
                         <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border border-white/30 flex items-center justify-center relative overflow-hidden group-hover:bg-white/5 transition-all">
                             <ArrowUpRight className="w-8 h-8 text-white mb-4" />
-                            <span className="absolute bottom-6 text-[10px] tracking-widest uppercase">Add to Cart</span>
-                        </div>
-                        <div className="absolute top-1/2 left-32 md:left-40 -translate-y-1/2 text-2xl font-mono">
-                            LKR 8,999.00
+                            <span className="absolute bottom-6 text-[10px] tracking-widest uppercase">Shop Now</span>
                         </div>
                     </div>
                 </div>
