@@ -65,10 +65,21 @@ function ReceiptUpload({ orderId, orderRef, total }: { orderId: string; orderRef
     const [file, setFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
-    const [uploaded, setUploaded] = useState(false);
+    const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
+    const [checking, setChecking] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [copiedField, setCopiedField] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    // On mount, fetch real payment_status from DB so reload always shows correct state
+    useEffect(() => {
+        if (!orderId) { setChecking(false); return; }
+        fetch(`/api/orders/status?orderId=${orderId}`)
+            .then(r => r.json())
+            .then(data => { if (data.payment_status) setPaymentStatus(data.payment_status); })
+            .catch(() => { /* fall back to upload UI */ })
+            .finally(() => setChecking(false));
+    }, [orderId]);
 
     const copyToClipboard = (value: string, field: string) => {
         navigator.clipboard.writeText(value).then(() => {
@@ -129,7 +140,7 @@ function ReceiptUpload({ orderId, orderRef, total }: { orderId: string; orderRef
                 return;
             }
 
-            setUploaded(true);
+            setPaymentStatus('receipt_uploaded');
         } catch {
             setError('Network error. Please try again.');
         } finally {
@@ -137,17 +148,65 @@ function ReceiptUpload({ orderId, orderRef, total }: { orderId: string; orderRef
         }
     };
 
-    if (uploaded) {
+    if (checking) {
         return (
-            <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-8 text-center space-y-4">
-                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto ring-1 ring-green-500/40">
-                    <ShieldCheck className="w-8 h-8 text-green-400" />
+            <div className="flex items-center justify-center py-12 text-white/30">
+                <Loader2 className="w-6 h-6 animate-spin mr-2" /> Checking status…
+            </div>
+        );
+    }
+
+    if (paymentStatus === 'rejected') {
+        return (
+            <div className="space-y-4">
+                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-8 text-center space-y-4">
+                    <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto ring-1 ring-red-500/40">
+                        <AlertCircle className="w-8 h-8 text-red-400" />
+                    </div>
+                    <h3 className="text-xl font-black text-white uppercase">Receipt Rejected</h3>
+                    <p className="text-white/50 text-sm max-w-sm mx-auto leading-relaxed">
+                        Your payment receipt could not be verified. Please upload a clear, valid receipt and try again.
+                    </p>
+                    <button
+                        onClick={() => setPaymentStatus('awaiting_payment')}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white text-xs font-bold uppercase tracking-widest transition-colors"
+                    >
+                        <Upload className="w-3.5 h-3.5" /> Upload New Receipt
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (paymentStatus === 'verified') {
+        return (
+            <div className="bg-emerald-500/10 border border-emerald-500/40 rounded-xl p-8 text-center space-y-4">
+                <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto ring-2 ring-emerald-500/50">
+                    <ShieldCheck className="w-8 h-8 text-emerald-400" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase">Payment Verified!</h3>
+                <p className="text-white/50 text-sm max-w-sm mx-auto leading-relaxed">
+                    Your payment has been confirmed by our team. Your order is now being processed.
+                </p>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-400 text-xs font-bold uppercase tracking-widest">
+                    <CheckCircle className="w-3.5 h-3.5" />
+                    Payment Confirmed
+                </div>
+            </div>
+        );
+    }
+
+    if (paymentStatus === 'receipt_uploaded') {
+        return (
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-8 text-center space-y-4">
+                <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto ring-1 ring-yellow-500/40">
+                    <ShieldCheck className="w-8 h-8 text-yellow-400" />
                 </div>
                 <h3 className="text-xl font-black text-white uppercase">Receipt Uploaded!</h3>
                 <p className="text-white/50 text-sm max-w-sm mx-auto leading-relaxed">
-                    Your payment receipt has been submitted successfully. Our team will verify your payment and update your order status within 24 hours.
+                    Your payment receipt has been submitted. Our team will verify your payment and update your order status within 24 hours.
                 </p>
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-xs font-bold uppercase tracking-widest">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-yellow-400 text-xs font-bold uppercase tracking-widest">
                     <CheckCircle className="w-3.5 h-3.5" />
                     Awaiting Verification
                 </div>
@@ -288,7 +347,15 @@ function SuccessContent() {
         const raw = searchParams.get('order');
         if (raw) {
             try {
-                setOrder(JSON.parse(atob(decodeURIComponent(raw))));
+                const parsed = JSON.parse(decodeURIComponent(atob(decodeURIComponent(raw))));
+                setOrder(parsed);
+                sessionStorage.setItem('ieee_last_order', JSON.stringify(parsed));
+            } catch { /* fall through to sessionStorage */ }
+        } else {
+            // Reload without URL params — restore from sessionStorage
+            try {
+                const saved = sessionStorage.getItem('ieee_last_order');
+                if (saved) setOrder(JSON.parse(saved));
             } catch { /* no data */ }
         }
     }, [searchParams]);
