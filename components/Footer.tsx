@@ -26,7 +26,7 @@ export default function Footer({ theme = 'default' }: FooterProps) {
                     </div>
                     <h2 className="text-5xl md:text-7xl font-black leading-[0.85]  uppercase">
                         Built for Innovation<br />
-                        Designed for Impactight<br />
+                        Designed for Impact<br />
                         Forged to Last
                     </h2>
                     <p className="text-xs md:text-sm text-white/60 max-w-md pt-4 leading-relaxed uppercase tracking-wider">
