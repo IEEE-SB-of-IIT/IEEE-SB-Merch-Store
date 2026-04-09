@@ -67,14 +67,14 @@ export default function ProductGrid({ theme = 'default', products: customProduct
             blueDot: 'bg-blue-500' // Keeping original blue dot for default
         },
         codesprint: {
-            bg: 'bg-[#602000]',
-            accent: 'bg-orange-500',
-            accentText: 'text-orange-500',
-            cardBg: 'bg-white/5',
-            cardHover: 'hover:bg-white/10',
-            buttonBg: 'bg-orange-500 text-black',
-            buttonHover: 'hover:bg-white hover:text-black',
-            blueDot: 'bg-orange-500' // Orange dot for codesprint
+            bg: 'bg-cs-midnight',
+            accent: 'bg-cs-coral',
+            accentText: 'text-cs-coral',
+            cardBg: 'bg-white/5 border border-cs-storm/30',
+            cardHover: 'hover:bg-white/10 hover:border-cs-coral/40 hover:shadow-[0_0_20px_rgba(255,91,65,0.1)]',
+            buttonBg: 'bg-cs-coral text-white',
+            buttonHover: 'hover:bg-cs-amber hover:text-black',
+            blueDot: 'bg-cs-coral'
         },
         ix: {
             bg: 'bg-[#450a25]',
@@ -91,7 +91,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
     const styles = themeConfig[theme] || themeConfig.default;
 
     return (
-        <section className={`${styles.bg} text-white py-24 px-6 md:px-12 transition-colors duration-500 relative overflow-hidden`}>
+        <section id="product-grid" className={`${styles.bg} text-white py-24 px-6 md:px-12 transition-colors duration-500 relative overflow-hidden`}>
             {/* Noise Overlay */}
             <div
                 className="absolute inset-0 z-0 pointer-events-none opacity-[0.15] mix-blend-overlay"
@@ -104,12 +104,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
 
                 {/* Section Header */}
                 <div className="flex justify-between items-end mb-16 border-b border-white/10 pb-8">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-wider uppercase">New Collection</h2>
-                    <div className="flex gap-12 text-[10px] tracking-widest uppercase opacity-60 hidden md:flex font-secondary">
-                        <span>[ NEW COLLECTION ]</span>
-                        <span>[ SERIES 01 ]</span>
-                        <span>[ FUTURA ]</span>
-                    </div>
+                    <h2 className={`text-4xl md:text-6xl font-black tracking-wider uppercase ${theme === 'codesprint' ? 'font-mortend' : ''}`}>New Collection</h2>
                     <div className={`relative flex items-center px-4 py-2 rounded-sm border ${theme === 'default' ? 'border-white/20 bg-white/5' : 'border-black/20 bg-black/5'} w-64`}>
                         <Search className="w-4 h-4 opacity-50 mr-2" />
                         <input
@@ -128,8 +123,8 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                     {/* Featured Card (Only show if matches search) */}
                     {showFeatured && (
                         <div
-                            onClick={() => openProductModal(featuredProduct)}
-                            className={`col-span-2 md:col-span-2 row-span-1 relative aspect-[5/4] ${styles.cardBg} rounded-sm overflow-hidden group cursor-pointer`}
+                            onClick={() => !featuredProduct.sold_out && openProductModal(featuredProduct)}
+                            className={`col-span-2 md:col-span-2 row-span-1 relative aspect-[5/4] ${styles.cardBg} rounded-sm overflow-hidden group ${featuredProduct.sold_out ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
                             style={{ clipPath: 'polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)' }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />

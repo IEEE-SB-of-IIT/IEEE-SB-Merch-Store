@@ -25,18 +25,22 @@ export default function Hero({ theme = 'default' }: HeroProps) {
             text: 'text-arctic-cyan',
             hoverText: 'hover:text-arctic-cyan',
             dimText: 'text-arctic-light/60',
-            bgGlow: 'bg-blue-500/20'
+            bgGlow: 'bg-blue-500/20',
+            headingFont: 'font-bebas',
+            bodyFont: ''
         },
         codesprint: {
-            bg: 'bg-[#602000]', // Deep Burnt Orange
-            accent: 'text-orange-500',
-            accentBg: 'bg-orange-500',
-            accentShadow: 'shadow-orange-500/20',
-            glow: 'drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]',
-            text: 'text-orange-500',
-            hoverText: 'hover:text-orange-500',
-            dimText: 'text-gray-400',
-            bgGlow: 'bg-orange-600/40' // Stronger glow
+            bg: 'bg-cs-midnight',
+            accent: 'text-cs-coral',
+            accentBg: 'bg-cs-coral',
+            accentShadow: 'shadow-cs-coral/20',
+            glow: 'drop-shadow-[0_0_8px_rgba(255,91,65,0.8)]',
+            text: 'text-cs-coral',
+            hoverText: 'hover:text-cs-coral',
+            dimText: 'text-cs-mist/60',
+            bgGlow: 'bg-cs-coral/20',
+            headingFont: 'font-mortend',
+            bodyFont: 'font-tommy'
         },
         ix: {
             bg: 'bg-[#450a25]', // Deep Magenta
@@ -47,7 +51,9 @@ export default function Hero({ theme = 'default' }: HeroProps) {
             text: 'text-[#FF0879]',
             hoverText: 'hover:text-[#FF0879]',
             dimText: 'text-[#ACD5F8]/60',
-            bgGlow: 'bg-[#ACD5F8]/40' // Stronger blue glow for contrast
+            bgGlow: 'bg-[#ACD5F8]/40', // Stronger blue glow for contrast
+            headingFont: 'font-bebas',
+            bodyFont: ''
         }
     };
 
@@ -55,56 +61,64 @@ export default function Hero({ theme = 'default' }: HeroProps) {
 
     return (
         <section className={`relative w-full min-h-screen md:min-h-0 md:aspect-[16/9] ${styles.bg} overflow-hidden flex flex-col items-center pt-24 px-6 md:px-12`}>
-            {/* Noise Overlay */}
-            <div
-                className="absolute inset-0 z-50 pointer-events-none opacity-[0.15] mix-blend-overlay"
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`,
-                    backgroundRepeat: 'repeat',
-                }}
-            />
+            {/* Noise Overlay — hidden on codesprint */}
+            {theme !== 'codesprint' && (
+                <div
+                    className="absolute inset-0 z-50 pointer-events-none opacity-[0.15] mix-blend-overlay"
+                    style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`,
+                        backgroundRepeat: 'repeat',
+                    }}
+                />
+            )}
 
-            {/* Background Graffiti Text */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none z-0 select-none">
-                <span className="font-spray text-[15vw] md:text-[20vw] leading-none text-white/10 scale-y-150 inline-block">
-                    MERCHANDISE
-                </span>
-            </div>
+            {/* Background Graffiti Text — hidden on codesprint */}
+            {theme !== 'codesprint' && (
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none z-0 select-none">
+                    <span className="font-spray text-[15vw] md:text-[20vw] leading-none text-white/10 scale-y-150 inline-block">
+                        MERCHANDISE
+                    </span>
+                </div>
+            )}
 
             <div className="w-full max-w-[1400px] relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 h-full items-end pb-12">
 
                 {/* Left Column: Title & Controls */}
                 <div className="md:col-span-4 flex flex-col justify-center space-y-12 text-white md:h-full pb-12">
                     <div className="space-y-2">
-                        <div className={`flex gap-4 text-[10px] md:text-xs tracking-[0.2em] ${styles.dimText} uppercase`}>
-                            <span>Est. 2024</span>
-                            <span>|</span>
-                            <span>Official</span>
-                        </div>
-                        <h1 className="text-6xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-[0.9]">
+                        {theme !== 'codesprint' && (
+                            <div className={`flex gap-4 text-[10px] md:text-xs tracking-[0.2em] ${styles.dimText} uppercase`}>
+                                <span>Est. 2024</span>
+                                <span>|</span>
+                                <span>Official</span>
+                            </div>
+                        )}
+                        <h1 className={`text-6xl md:text-8xl lg:text-9xl ${styles.headingFont} tracking-wide leading-[0.9]`}>
                             IEEE SB<br />
                             <span className="">MERCH 01™</span>
                         </h1>
                     </div>
 
-                    {/* Barcode Image */}
-                    <div className="relative w-48 h-24 opacity-80 hover:opacity-100 transition-opacity">
-                        <Image
-                            src="/images/barcode.png"
-                            alt="Product Barcode"
-                            fill
-                            className="object-contain object-left"
-                        />
-                    </div>
+                    {/* Barcode Image — hidden on codesprint */}
+                    {theme !== 'codesprint' && (
+                        <div className="relative w-48 h-24 opacity-80 hover:opacity-100 transition-opacity">
+                            <Image
+                                src="/images/barcode.png"
+                                alt="Product Barcode"
+                                fill
+                                className="object-contain object-left"
+                            />
+                        </div>
+                    )}
 
-                    {/* Add to Cart Circle */}
-                    <div className="relative group cursor-pointer mt-8">
+                    {/* Shop Now Circle */}
+                    <div
+                        className="relative group cursor-pointer mt-8"
+                        onClick={() => document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' })}
+                    >
                         <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border border-white/30 flex items-center justify-center relative overflow-hidden group-hover:bg-white/5 transition-all">
                             <ArrowUpRight className="w-8 h-8 text-white mb-4" />
-                            <span className="absolute bottom-6 text-[10px] tracking-widest uppercase">Add to Cart</span>
-                        </div>
-                        <div className="absolute top-1/2 left-32 md:left-40 -translate-y-1/2 text-2xl font-mono">
-                            LKR 8,999.00
+                            <span className="absolute bottom-6 text-[10px] tracking-widest uppercase">Shop Now</span>
                         </div>
                     </div>
                 </div>
@@ -125,10 +139,12 @@ export default function Hero({ theme = 'default' }: HeroProps) {
                                 priority
                             />
                         </div>
-                        {/* Small Tag on Jacket */}
-                        <div className="absolute top-[35%] right-[25%] text-white/30 font-spray text-4xl -rotate-12 z-20 mix-blend-overlay opacity-60">
-                            TRN
-                        </div>
+                        {/* Small Tag on Jacket — hidden on codesprint */}
+                        {theme !== 'codesprint' && (
+                            <div className="absolute top-[35%] right-[25%] text-white/30 font-spray text-4xl -rotate-12 z-20 mix-blend-overlay opacity-60">
+                                TRN
+                            </div>
+                        )}
                     </div>
                 </div>
 

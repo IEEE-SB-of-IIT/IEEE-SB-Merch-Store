@@ -14,8 +14,11 @@ module.exports = {
                 spray: ['var(--font-aerosoldier)', 'sans-serif'],
                 courier: ['var(--font-courier)', 'monospace'],
                 secondary: ['var(--font-space-mono)', 'monospace'],
-                bebas: ['var(--font-druk)', 'sans-serif'], // Mapping existing usage to new main font
+                bebas: ['var(--font-druk)', 'sans-serif'],
                 system: ['ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                // CodeSprint fonts
+                mortend: ['Mortend', 'var(--font-druk)', 'sans-serif'],
+                tommy: ['var(--font-tommy)', 'var(--font-outfit)', 'sans-serif'],
             },
             colors: {
                 // Base colors
@@ -36,11 +39,19 @@ module.exports = {
                 // Arctic Theme Colors
                 // Arctic Theme Colors (IEEE Blue Edition)
                 arctic: {
-                    base: '#004B76', // Muted IEEE Blue
-                    dark: '#002F4B', // Darker navy-like blue
-                    light: '#E2E8F0', // Text/Accents
-                    blue: '#4091C2', // Lighter blue accent
-                    cyan: '#00629B', // IEEE Bright Blue for highlights
+                    base: '#004B76',
+                    dark: '#002F4B',
+                    light: '#E2E8F0',
+                    blue: '#4091C2',
+                    cyan: '#00629B',
+                },
+                // CodeSprint palette
+                cs: {
+                    midnight: '#151922',
+                    coral:    '#ff5b41',
+                    amber:    '#F2A265',
+                    storm:    '#4A5059',
+                    mist:     '#EAECEF',
                 }
             },
             backgroundImage: {

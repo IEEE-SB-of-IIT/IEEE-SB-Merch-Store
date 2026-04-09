@@ -11,9 +11,15 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function eventFromPath(path: string): string {
+    if (path === '/codesprint' || path.startsWith('/codesprint/')) return 'codesprint';
+    if (path === '/ix' || path.startsWith('/ix/')) return 'ix';
+    return 'general';
+}
+
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-    const [currentEvent, setCurrentEvent] = useState<string>('general');
     const pathname = usePathname();
+    const [currentEvent, setCurrentEvent] = useState<string>(() => eventFromPath(pathname));
 
     const switchEvent = (eventId: string) => {
         if (themes[eventId]) {
@@ -21,15 +27,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    // Auto-switch theme based on path
+    // Auto-switch theme on navigation
     useEffect(() => {
-        if (pathname === '/codesprint' || pathname.startsWith('/codesprint/')) {
-            switchEvent('codesprint');
-        } else if (pathname === '/ix' || pathname.startsWith('/ix/')) {
-            switchEvent('ix');
-        } else {
-            switchEvent('general');
-        }
+        switchEvent(eventFromPath(pathname));
     }, [pathname]);
 
     const theme = themes[currentEvent];

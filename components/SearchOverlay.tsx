@@ -14,6 +14,15 @@ export default function SearchOverlay() {
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Close on Escape key
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') closeSearch();
+        };
+        if (isSearchOpen) window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isSearchOpen, closeSearch]);
+
     // Fetch all products on mount (or only when opened if perf matters, but mount is simpler for now)
     useEffect(() => {
         const fetchProducts = async () => {
@@ -109,9 +118,9 @@ export default function SearchOverlay() {
                                         <div className="relative w-16 h-16 bg-white/5 rounded-md overflow-hidden flex-shrink-0">
                                             <Image src={product.image} alt={product.name} fill className="object-cover" />
                                         </div>
-                                        <div className="flex-1">
-                                            <h4 className="text-white font-bold tracking-wide">{product.name}</h4>
-                                            <p className="text-white/40 text-xs font-mono">{product.description}</p>
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="text-white font-bold tracking-wide truncate">{product.name}</h4>
+                                            <p className="text-white/40 text-xs font-mono line-clamp-1">{product.description}</p>
                                         </div>
                                         <div className="text-right">
                                             <span className="text-white/70 font-mono text-sm block">{product.price}</span>

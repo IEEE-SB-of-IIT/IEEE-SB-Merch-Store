@@ -43,17 +43,17 @@ export const themes: Record<string, Theme> = {
         id: 'codesprint',
         name: 'Codesprint',
         colors: {
-            primary: '#FF3333', // Bright Neon Red
-            background: '#602000', // Deep Orange/Brown
-            text: '#ffffff',
-            textSecondary: '#e5e7eb', // gray-200 for better contrast on dark
-            accent: '#2a0a0a', // Dark red accent
-            headerBg: 'rgba(96, 32, 0, 0.9)',
+            primary: '#ff5b41',    // Dream Coral — CTA / accent
+            background: '#151922', // Midnight Slate — primary bg
+            text: '#EAECEF',       // Mist White — body text
+            textSecondary: '#4A5059', // Storm Gray — secondary text / borders
+            accent: '#F2A265',     // Sunset Amber — hover / gradient
+            headerBg: 'rgba(21, 25, 34, 0.85)',
         },
         fonts: {
-            main: 'var(--font-space)', // Tech Monospace
-            heading: 'var(--font-space)',
-            secondary: 'var(--font-space-mono)',
+            main: 'var(--font-tommy)',
+            heading: 'Mortend, var(--font-druk), sans-serif',
+            secondary: 'var(--font-tommy)',
         }
     },
     ix: {

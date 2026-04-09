@@ -26,11 +26,11 @@ export default function Header({ theme = 'default' }: HeaderProps) {
             hoverText: 'hover:text-cyan-400'
         },
         codesprint: {
-            bg: 'bg-[#602000]/80',
-            border: 'border-orange-500/20',
-            badge: 'bg-orange-500',
-            text: 'text-orange-500',
-            hoverText: 'hover:text-orange-500'
+            bg: 'bg-cs-midnight/80',
+            border: 'border-cs-coral/20',
+            badge: 'bg-cs-coral',
+            text: 'text-cs-coral',
+            hoverText: 'hover:text-cs-coral'
         },
         ix: {
             bg: 'bg-[#450a25]/80',

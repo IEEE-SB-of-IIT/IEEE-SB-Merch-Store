@@ -11,17 +11,20 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
         default: {
             bg: 'bg-arctic-base',
             accent: 'text-white/90',
-            barcode: 'bg-white'
+            barcode: 'bg-white',
+            headingFont: 'font-bebas'
         },
         codesprint: {
-            bg: 'bg-[#602000]',
-            accent: 'text-orange-500',
-            barcode: 'bg-orange-200'
+            bg: 'bg-cs-midnight',
+            accent: 'text-cs-coral',
+            barcode: 'bg-cs-mist',
+            headingFont: 'font-mortend'
         },
         ix: {
             bg: 'bg-[#450a25]',
             accent: 'text-[#FF0879]',
-            barcode: 'bg-[#ACD5F8]'
+            barcode: 'bg-[#ACD5F8]',
+            headingFont: 'font-bebas'
         }
     };
 
@@ -40,7 +43,7 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
                             whileInView={{ y: 0, opacity: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                            className="text-[12vw] md:text-[8rem] font-bebas font-black "
+                            className={`text-[12vw] md:text-[8rem] ${styles.headingFont} font-black`}
                         >
                             STREET ENERGY
                         </motion.h2>
@@ -61,7 +64,7 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                                className="text-[12vw] md:text-[8rem] font-bebas font-black "
+                                className={`text-[12vw] md:text-[8rem] ${styles.headingFont} font-black`}
                             >
                                 KEPT
                             </motion.h2>
@@ -73,7 +76,7 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
                             whileInView={{ y: 0, opacity: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                            className="md:hidden text-[12vw] md:text-[8rem] font-bebas font-black "
+                            className={`md:hidden text-[12vw] md:text-[8rem] ${styles.headingFont} font-black`}
                         >
                             KEPT
                         </motion.h2>
@@ -85,7 +88,7 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
                         whileInView={{ y: 0, opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-[12vw] md:text-[8rem] font-bebas font-black  text-left"
+                        className={`text-[12vw] md:text-[8rem] ${styles.headingFont} font-black text-left`}
                     >
                         INTACT, JUST ALIGNED
                     </motion.h2>
@@ -97,7 +100,7 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
                             whileInView={{ y: 0, opacity: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                            className="text-[12vw] md:text-[8rem] font-bebas font-black leading-[0.85]"
+                            className={`text-[12vw] md:text-[8rem] ${styles.headingFont} font-black leading-[0.85]`}
                         >
                             INTO A DIGITAL <br className="hidden md:block" /> SYSTEM
                         </motion.h2>

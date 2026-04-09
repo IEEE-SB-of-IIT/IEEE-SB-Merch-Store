@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, Check, Minus, Plus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -40,18 +40,27 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     const activeColor = NAV_COLORS[theme.id] || theme.colors.accent;
 
     const handleAddToCart = () => {
+        if (product.sold_out) return;
         addToCart({
             id: `${product.id}-${selectedSize}`,
             productId: product.id,
             name: product.name,
             price: product.price,
             image: product.image,
-            selectedColor: 'Default', // Removed color selection
+            selectedColor: 'Default',
             selectedSize,
             quantity: quantity
         });
         onClose();
     };
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onClose]);
 
     const adjustQuantity = (delta: number) => {
         setQuantity(prev => Math.max(1, prev + delta));
@@ -178,17 +187,23 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     </div>
 
                     <div className="mt-auto pt-6">
-                        <button
-                            onClick={handleAddToCart}
-                            className="w-full py-4 text-[#3e3229] font-black rounded-full shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-widest text-sm"
-                            style={{
-                                backgroundColor: activeColor,
-                                color: '#000', // Ensure nice contrast
-                                boxShadow: `0 0 20px ${activeColor}40`
-                            }}
-                        >
-                            Add to Cart
-                        </button>
+                        {product.sold_out ? (
+                            <div className="w-full py-4 text-center font-black rounded-full uppercase tracking-widest text-sm bg-white/5 text-white/40 border border-white/10 cursor-not-allowed select-none">
+                                Sold Out
+                            </div>
+                        ) : (
+                            <button
+                                onClick={handleAddToCart}
+                                className="w-full py-4 font-black rounded-full shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-widest text-sm"
+                                style={{
+                                    backgroundColor: activeColor,
+                                    color: '#000',
+                                    boxShadow: `0 0 20px ${activeColor}40`
+                                }}
+                            >
+                                Add to Cart
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

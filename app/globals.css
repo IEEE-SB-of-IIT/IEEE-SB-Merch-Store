@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Mortend Bold — drop Mortend-Bold.otf into /public/fonts/ ── */
+@font-face {
+    font-family: 'Mortend';
+    src: url('/fonts/Mortend-Bold.otf') format('opentype'),
+         url('/fonts/Mortend Bold.otf') format('opentype'),
+         url('/fonts/Mortend.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ── CodeSprint palette CSS vars ── */
+:root {
+    --cs-midnight: #151922;
+    --cs-coral:    #ff5b41;
+    --cs-amber:    #F2A265;
+    --cs-storm:    #4A5059;
+    --cs-mist:     #EAECEF;
+}
+
 @layer base {
   :root {
     --background: 255 255 255;

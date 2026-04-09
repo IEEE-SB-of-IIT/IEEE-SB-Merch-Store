@@ -22,6 +22,12 @@ const drukBold = localFont({
     variable: '--font-druk'
 });
 
+const madeTommy = localFont({
+    src: '../public/fonts/MADE TOMMY Bold_PERSONAL USE.otf',
+    variable: '--font-tommy',
+    weight: '700',
+});
+
 import { UIProvider } from "../context/UIContext";
 import SearchOverlay from "../components/SearchOverlay";
 import GlobalProductModalWrapper from "@/components/GlobalProductModalWrapper";
@@ -35,7 +41,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en" className="scroll-smooth">
-            <body className={`${outfit.variable} ${spaceGrotesk.variable} ${aerosoldier.variable} ${drukBold.variable} ${courierPrime.variable} ${spaceMono.variable} font-sans antialiased`}>
+            <body className={`${outfit.variable} ${spaceGrotesk.variable} ${aerosoldier.variable} ${drukBold.variable} ${courierPrime.variable} ${spaceMono.variable} ${madeTommy.variable} font-sans antialiased`}>
                 <UIProvider>
                     <ThemeProvider>
                         <AuthProvider>
