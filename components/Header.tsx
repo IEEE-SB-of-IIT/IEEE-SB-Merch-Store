@@ -72,30 +72,29 @@ export default function Header({ theme = 'default' }: HeaderProps) {
                     />
                 </Link>
 
-                {/* Center Nav */}
-                <div className="hidden md:flex items-center gap-12 lg:gap-16 absolute left-1/2 -translate-x-1/2">
-                    {[
-                        { name: 'HOME', path: '/' },
-                        { name: 'CODESPRINT', path: '/codesprint' },
-                        { name: 'IX 26', path: '/ix' }
-                    ].map((item) => (
-                        <Link
-                            key={item.name}
-                            href={item.path}
-                            className="relative group text-lg md:text-xl font-bebas tracking-wider text-white overflow-hidden"
-                        >
-                            <span className="block transition-transform duration-300 group-hover:-translate-y-full">
-                                {item.name}
-                            </span>
-                            <span className={`absolute top-0 left-0 block translate-y-full transition-transform duration-300 ${styles.text} group-hover:translate-y-0`}>
-                                {item.name}
-                            </span>
-                        </Link>
-                    ))}
-                </div>
-
-                {/* Right Actions */}
+                {/* Right Section: Nav + Actions */}
                 <div className="flex items-center gap-6 md:gap-8 text-white">
+                    {/* Desktop Nav Links */}
+                    <div className="hidden md:flex items-center gap-8 lg:gap-12 mr-4">
+                        {[
+                            { name: 'HOME', path: '/' },
+                            { name: 'CODESPRINT', path: '/codesprint' }
+                        ].map((item) => (
+                            <Link
+                                key={item.name}
+                                href={item.path}
+                                className="relative group text-lg md:text-xl font-bebas tracking-wider text-white overflow-hidden"
+                            >
+                                <span className="block transition-transform duration-300 group-hover:-translate-y-full">
+                                    {item.name}
+                                </span>
+                                <span className={`absolute top-0 left-0 block translate-y-full transition-transform duration-300 ${styles.text} group-hover:translate-y-0`}>
+                                    {item.name}
+                                </span>
+                            </Link>
+                        ))}
+                    </div>
+
                     <button
                         onClick={openSearch}
                         className={`${styles.hoverText} transition-colors`}
@@ -135,8 +134,7 @@ export default function Header({ theme = 'default' }: HeaderProps) {
             >
                 {[
                     { name: 'HOME', path: '/' },
-                    { name: 'CODESPRINT', path: '/codesprint' },
-                    { name: 'IX 26', path: '/ix' }
+                    { name: 'CODESPRINT', path: '/codesprint' }
                 ].map((item, i) => (
                     <Link
                         key={item.name}
