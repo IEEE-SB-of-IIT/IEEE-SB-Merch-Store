@@ -82,4 +82,17 @@
   .container-width {
     @apply max-w-7xl mx-auto px-6 md:px-12;
   }
+
+  /* GPU-accelerated layer — use on continuously animated elements */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Offscreen sections skip rendering until near viewport */
+  .content-lazy {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+  }
 }

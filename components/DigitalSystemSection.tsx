@@ -1,9 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 
 interface DigitalSystemSectionProps {
     theme?: 'default' | 'codesprint' | 'ix';
+}
+
+// Deterministic pseudo-random to avoid hydration mismatch
+function seededRandom(seed: number) {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
 }
 
 export default function DigitalSystemSection({ theme = 'default' }: DigitalSystemSectionProps) {
@@ -30,8 +37,16 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
 
     const styles = themeConfig[theme] || themeConfig.default;
 
+    // Generate barcode deterministically to avoid hydration mismatch
+    const barcodeWidths = useMemo(() =>
+        Array.from({ length: 40 }, (_, i) => ({
+            width: seededRandom(i + 1) > 0.5 ? '4px' : '1px',
+            height: `${Math.max(40, seededRandom(i + 100) * 100)}%`,
+        })),
+    []);
+
     return (
-        <section className={`w-full ${styles.bg} text-white py-24 md:py-32 overflow-hidden relative`}>
+        <section className={`w-full ${styles.bg} text-white py-24 md:py-32 overflow-hidden relative content-lazy`}>
             <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
 
                 {/* Main Typography Block */}
@@ -44,6 +59,7 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                             className={`text-[12vw] md:text-[8rem] ${styles.headingFont} font-black`}
+                            style={{ willChange: 'transform, opacity' }}
                         >
                             STREET ENERGY
                         </motion.h2>
@@ -117,7 +133,7 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
                                 This is a conceptual e-commerce build for IEEE SB. The goal was to digitize a raw street brand without smoothing its edges — keeping the aggression, but structuring it into a usable system.
                             </motion.p>
 
-                            {/* Barcode Visual */}
+                            {/* Barcode Visual — deterministic widths */}
                             <motion.div
                                 initial={{ scaleX: 0, opacity: 0 }}
                                 whileInView={{ scaleX: 1, opacity: 1 }}
@@ -125,13 +141,13 @@ export default function DigitalSystemSection({ theme = 'default' }: DigitalSyste
                                 transition={{ duration: 0.8, delay: 0.8 }}
                                 className="h-16 w-full flex items-end gap-[2px] opacity-80 origin-left"
                             >
-                                {Array.from({ length: 40 }).map((_, i) => (
+                                {barcodeWidths.map((bar, i) => (
                                     <div
                                         key={i}
                                         className={`${styles.barcode} h-full`}
                                         style={{
-                                            width: Math.random() > 0.5 ? '4px' : '1px',
-                                            height: `${Math.max(40, Math.random() * 100)}%`
+                                            width: bar.width,
+                                            height: bar.height,
                                         }}
                                     />
                                 ))}

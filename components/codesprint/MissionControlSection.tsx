@@ -47,7 +47,7 @@ export default function MissionControlSection() {
 
     useEffect(() => {
         setDebris(
-            Array.from({ length: 15 }, (_, i) => ({
+            Array.from({ length: 10 }, (_, i) => ({
                 id: i,
                 delay: Math.random() * 4,
                 x: `${Math.random() * 100}%`,

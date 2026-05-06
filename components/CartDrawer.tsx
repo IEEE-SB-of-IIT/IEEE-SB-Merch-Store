@@ -35,10 +35,12 @@ export default function CartDrawer() {
             <div
                 className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] transition-opacity duration-300 ${isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
                 onClick={toggleCart}
+                style={{ willChange: 'opacity' }}
             />
 
             <div
                 className={`fixed top-0 right-0 h-full w-full md:w-[450px] ${drawerBg} backdrop-blur-xl border-l border-white/10 z-[70] transform transition-transform duration-300 ease-out flex flex-col ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                style={{ willChange: 'transform' }}
             >
                 {/* Header */}
                 <div className={`flex items-center justify-between p-6 border-b ${isCS ? 'border-cs-coral/15' : 'border-white/10'}`}>

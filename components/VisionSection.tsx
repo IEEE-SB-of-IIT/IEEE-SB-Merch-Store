@@ -70,6 +70,7 @@ export default function VisionSection({ theme = 'default' }: VisionSectionProps)
                         animate={{ y: [0, -20, 0] }}
                         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                         className="relative w-full h-full"
+                        style={{ willChange: 'transform' }}
                     >
                         <Image
                             src="/images/hero.png"

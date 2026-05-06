@@ -84,7 +84,7 @@ export default function SpaceParallaxBanner() {
 
     useEffect(() => {
         const colors = ['#ff5b41', '#F2A265', '#ff8866', '#ffaa77', '#ff6644'];
-        const generated = Array.from({ length: 40 }, (_, i) => ({
+        const generated = Array.from({ length: 25 }, (_, i) => ({
             id: i,
             delay: Math.random() * 5,
             size: Math.random() * 4 + 2,

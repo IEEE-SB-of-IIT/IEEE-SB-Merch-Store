@@ -160,7 +160,7 @@ export default function ProductGrid({ theme = 'default', products: customProduct
                                 </div>
                             )}
                             <div className="relative aspect-[3/4] mb-4 overflow-hidden rounded-sm bg-white/5">
-                                <Image src={p.image} alt={p.name} fill className="object-contain p-4 group-hover:scale-110 transition-transform duration-500" />
+                                <Image src={p.image} alt={p.name} fill className="object-contain p-4 group-hover:scale-110 transition-transform duration-500 gpu-accelerated" />
                             </div>
                             <div className="space-y-1">
                                 <h4 className="font-bold text-sm tracking-wide">{p.name}</h4>

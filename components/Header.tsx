@@ -44,11 +44,18 @@ export default function Header({ theme = 'default' }: HeaderProps) {
     const styles = themeConfig[theme] || themeConfig.default;
 
     useEffect(() => {
+        let ticking = false;
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    setIsScrolled(window.scrollY > 20);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -58,6 +65,7 @@ export default function Header({ theme = 'default' }: HeaderProps) {
                 ? `py-4 ${styles.bg} backdrop-blur-xl ${styles.border} shadow-[0_4px_30px_rgba(0,0,0,0.1)]`
                 : 'py-8 bg-transparent border-transparent'
                 }`}
+            style={{ willChange: 'padding, background-color' }}
         >
             <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between relative">
 

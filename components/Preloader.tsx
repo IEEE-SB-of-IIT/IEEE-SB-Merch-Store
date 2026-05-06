@@ -69,7 +69,8 @@ export default function Preloader() {
 
     useEffect(() => {
         if (!isLoading) {
-            setTimeout(() => setIsVisible(false), 200);
+            const timeout = setTimeout(() => setIsVisible(false), 200);
+            return () => clearTimeout(timeout);
         }
     }, [isLoading]);
 
@@ -84,7 +85,7 @@ export default function Preloader() {
     return (
         <div
             className={`fixed inset-0 z-[100] font-mono flex flex-col items-center justify-center p-4 transition-all duration-700 ease-in-out ${!isLoading ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100'}`}
-            style={{ backgroundColor: bg, color: theme.colors.text }}
+            style={{ backgroundColor: bg, color: theme.colors.text, willChange: 'opacity, transform' }}
         >
             <div className="w-full max-w-md space-y-8">
 

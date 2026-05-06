@@ -66,7 +66,7 @@ export default function CosmicFeatureStrip() {
 
     useEffect(() => {
         setAstronauts(
-            Array.from({ length: 6 }, (_, i) => ({
+            Array.from({ length: 4 }, (_, i) => ({
                 id: i,
                 x: `${10 + Math.random() * 80}%`,
                 y: `${10 + Math.random() * 80}%`,

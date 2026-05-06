@@ -72,6 +72,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-md"
                 onClick={onClose}
+                style={{ willChange: 'opacity' }}
             />
 
             {/* Modal Container */}
@@ -82,7 +83,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     {/* Background abstract shape */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] opacity-20 pointer-events-none">
                         <div
-                            className="w-full h-full blur-[100px] rounded-full transition-colors duration-500"
+                            className="w-full h-full blur-[100px] rounded-full transition-colors duration-500 gpu-accelerated"
                             style={{ backgroundColor: activeColor }}
                         />
                     </div>

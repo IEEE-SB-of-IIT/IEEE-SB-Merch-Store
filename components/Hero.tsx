@@ -126,7 +126,7 @@ export default function Hero({ theme = 'default' }: HeroProps) {
                 {/* Center Column: Main Image */}
                 <div className="md:col-span-5 relative flex items-end justify-center h-[50vh] md:h-full">
                     {/* Background Glow */}
-                    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] ${styles.bgGlow} blur-[100px] rounded-full pointer-events-none`} />
+                    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] ${styles.bgGlow} blur-[100px] rounded-full pointer-events-none gpu-accelerated`} />
 
                     <div className="relative w-full h-[90%] md:h-[95%] flex items-end transition-opacity duration-500 ease-in-out">
                         <div className="relative w-full h-full">

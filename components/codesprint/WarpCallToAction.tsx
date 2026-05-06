@@ -50,7 +50,7 @@ export default function WarpCallToAction() {
     useEffect(() => {
         const colors = ['rgba(255,91,65,0.4)', 'rgba(242,162,101,0.3)', 'rgba(255,136,102,0.3)', 'rgba(255,170,119,0.2)'];
         setStreaks(
-            Array.from({ length: 20 }, (_, i) => ({
+            Array.from({ length: 12 }, (_, i) => ({
                 id: i,
                 delay: Math.random() * 6,
                 x: `${Math.random() * 100}%`,
