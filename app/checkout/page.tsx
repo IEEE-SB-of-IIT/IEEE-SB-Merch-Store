@@ -191,7 +191,7 @@ export default function CheckoutPage() {
                             <div className={`flex gap-3 p-4 ${accentBg} border ${accentBorder} rounded-lg`}>
                                 <Info className={`w-5 h-5 ${accentText} flex-shrink-0 mt-0.5`} />
                                 <p className={`text-sm text-white/70 leading-relaxed ${bodyFont}`}>
-                                    After placing your order you'll receive an <strong className="text-white">Order ID</strong>. Transfer the exact amount using it as the payment reference, then upload your receipt.
+                                    After placing your order you&apos;ll receive an <strong className="text-white">Order ID</strong>. Transfer the exact amount using it as the payment reference, then upload your receipt.
                                 </p>
                             </div>
 
