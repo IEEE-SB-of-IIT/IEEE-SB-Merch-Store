@@ -1,11 +1,14 @@
-node_modules
-.next
+# Dependencies
+node_modules/
 
-.env.local
+# Next.js build output
+.next/
+
+# Environment files
 .env
-*env
-.idea/
-.idea
-*idea
-*env.local
+.env.local
+*.env
+*.env.local
 
+# JetBrains IDE files
+.idea/
