@@ -5,13 +5,14 @@ import { useTheme } from '../context/ThemeContext';
 import { X, Trash2, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { formatPrice } from '../lib/format';
 
 export default function CartDrawer() {
     const { isCartOpen, toggleCart, cartItems, removeFromCart, updateQuantity, cartCount } = useCart();
     const { currentEvent } = useTheme();
     const isCS = currentEvent === 'codesprint';
 
-    const accent       = isCS ? '#ff5b41' : '#00f3ff';
+    const accent       = isCS ? '#ff6a3d' : '#00f3ff';
     const accentClass  = isCS ? 'text-cs-coral' : 'text-arctic-cyan';
     const borderAccent = isCS ? 'border-cs-coral/30' : 'border-arctic-cyan/30';
     const bgAccent     = isCS ? 'bg-cs-coral/10' : 'bg-arctic-cyan/10';
@@ -77,7 +78,7 @@ export default function CartDrawer() {
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
                                         </div>
-                                        <p className={`text-sm ${accentClass} mt-1 font-secondary`}>{item.price}</p>
+                                        <p className={`text-sm ${accentClass} mt-1 font-secondary`}>{formatPrice(item.price)}</p>
                                     </div>
 
                                     <div className="flex items-center justify-between text-xs text-white/60 mt-3">

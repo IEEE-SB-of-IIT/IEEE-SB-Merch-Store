@@ -10,7 +10,7 @@ interface Product {
     id: number;
     name: string;
     description: string;
-    price: string;
+    price: string | number;
     image: string;
     sold_out?: boolean;
 }
@@ -25,9 +25,7 @@ interface ProductModalProps {
 const SIZES = ['S', 'M', 'L', 'XL'];
 
 const NAV_COLORS: Record<string, string> = {
-    general: '#22d3ee', // Cyan-400 (Matches Nav Hover)
-    codesprint: '#f97316', // Orange-500 (Matches Nav Hover)
-    ix: '#FF0879' // Neon Pink (Matches Nav Hover)
+    codesprint: '#ff6a3d', // CS11 orange (matches codesprint.lk accent)
 };
 
 export default function ProductModal({ product, onClose }: ProductModalProps) {

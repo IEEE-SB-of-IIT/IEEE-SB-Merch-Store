@@ -2,37 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Mortend Bold — drop Mortend-Bold.otf into /public/fonts/ ── */
-@font-face {
-    font-family: 'Mortend';
-    src: url('/fonts/Mortend-Bold.otf') format('opentype'),
-         url('/fonts/Mortend Bold.otf') format('opentype'),
-         url('/fonts/Mortend.otf') format('opentype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-}
-
-/* ── CodeSprint palette CSS vars ── */
+/* ── CodeSprint 11 palette CSS vars (matches codesprint.lk) ── */
 :root {
-    --cs-midnight: #151922;
-    --cs-coral:    #ff5b41;
-    --cs-amber:    #F2A265;
+    --cs-midnight: #000000;
+    --cs-coral:    #ff6a3d;
+    --cs-amber:    #ffc371;
     --cs-storm:    #4A5059;
     --cs-mist:     #EAECEF;
 }
 
 @layer base {
   :root {
-    --background: 255 255 255;
-    --foreground: 15 23 42;
+    --background: 0 0 0;
+    --foreground: 255 255 255;
   }
 
   body {
-    @apply antialiased selection:bg-arctic-cyan/30 selection:text-white overflow-x-hidden relative;
-    background-color: var(--background-color, #004B76);
+    @apply antialiased selection:bg-cs11-orange/40 selection:text-white overflow-x-hidden relative;
+    background-color: var(--background-color, #000000);
     color: var(--text-color, #ffffff);
-    transition: background-color 0.7s ease-in-out;
   }
 
   /* Global Noise Texture */
@@ -56,27 +44,22 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #0f172a;
+    background: #000000;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #334155;
+    background: #222222;
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #00629B;
-    /* IEEE Blue */
+    background: #ff6a3d;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
-
-  .glass-nav {
-    @apply bg-white/80 backdrop-blur-lg border-b border-gray-100 shadow-sm sticky top-0 z-50;
   }
 
   .container-width {
@@ -94,5 +77,61 @@
   .content-lazy {
     content-visibility: auto;
     contain-intrinsic-size: auto 600px;
+  }
+
+  /* ── CodeSprint 11 utilities ── */
+
+  /* Outline display type (Ranboo-style stroke text) */
+  .cs11-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
+  }
+  .cs11-outline-orange {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 106, 61, 0.6);
+  }
+
+  /* Continuous marquee track. Track holds two identical groups; shifts one group's width. */
+  @keyframes cs11-marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .cs11-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: cs11-marquee var(--marquee-duration, 30s) linear infinite;
+    will-change: transform;
+  }
+  .cs11-marquee-track.is-reverse {
+    animation-direction: reverse;
+  }
+
+  /* Slow vertical float for hero product */
+  @keyframes cs11-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-2.5%); }
+  }
+  .cs11-float {
+    animation: cs11-float 7s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Grain/noise overlay for cinematic texture */
+  .cs11-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    z-index: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cs11-marquee-track,
+    .cs11-float {
+      animation: none;
+    }
   }
 }

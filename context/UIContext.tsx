@@ -7,7 +7,7 @@ export interface Product {
     id: number;
     name: string;
     description: string;
-    price: string;
+    price: string | number;
     image: string;
     sold_out?: boolean;
 }

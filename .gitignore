@@ -15,3 +15,7 @@ node_modules/
 
 
 .DS_Store
+.gstack/
+
+# Third-party design reference (downloaded site, do not commit)
+aexlab.com/

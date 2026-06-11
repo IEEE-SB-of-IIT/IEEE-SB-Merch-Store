@@ -1,180 +1,169 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowUpRight, Search } from 'lucide-react';
-import { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useUI } from '../context/UIContext';
+import { formatPrice } from '../lib/format';
 
 interface Product {
     id: number;
     name: string;
     description: string;
-    price: string;
+    price: string | number;
     image: string;
     sold_out?: boolean;
 }
 
 interface ProductGridProps {
-    theme?: 'default' | 'codesprint' | 'ix';
     products?: Product[];
 }
 
-export default function ProductGrid({ theme = 'default', products: customProducts }: ProductGridProps) {
-    const [searchQuery, setSearchQuery] = useState('');
+const reveal = {
+    hidden: { opacity: 0, y: 36 },
+    visible: (i: number) => ({
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.8, delay: (i % 2) * 0.1, ease: [0.16, 1, 0.3, 1] as const },
+    }),
+};
+
+/* CodeSprint 11 lineup — products float free on black, no card chrome. */
+export default function ProductGrid({ products }: ProductGridProps) {
     const { openProductModal } = useUI();
-    // const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Removed local state
+    const reduceMotion = useReducedMotion();
 
-    const defaultProducts = [
-        { id: 1, name: 'DEV OVERSIZED', description: 'PREMIUM COTTON TEE', price: 'LKR 2,500.00', image: '/images/hero.png', sold_out: false },
-        { id: 2, name: 'CODE HOODIE', description: 'HEAVYWEIGHT COTTON', price: 'LKR 4,500.00', image: '/images/hero.png', sold_out: false },
-        { id: 3, name: 'SYSTEM BLACK', description: 'TECH CARGO PANTS', price: 'LKR 5,500.00', image: '/images/hero.png', sold_out: false },
-        { id: 4, name: 'IEEE CLASSIC', description: 'SIGNATURE WHITE TEE', price: 'LKR 2,000.00', image: '/images/product_1.png', sold_out: false },
-        { id: 5, name: 'BLUEPRINT', description: 'GRAPHIC LONG SLEEVE', price: 'LKR 3,500.00', image: '/images/product_1.png', sold_out: true },
-        { id: 6, name: 'TECH CAP', description: 'EMBROIDERED SNAPBACK', price: 'LKR 1,500.00', image: '/images/product_1.png', sold_out: false },
-        { id: 7, name: 'VARSITY', description: 'LIMITED EDITION JACKET', price: 'LKR 8,500.00', image: '/images/product_1.png', sold_out: false },
-    ];
+    const allProducts = products || [];
 
-    const allProducts = customProducts || defaultProducts;
+    const anim = (i: number) => ({
+        variants: reveal,
+        custom: i,
+        initial: reduceMotion ? false : ('hidden' as const),
+        whileInView: 'visible' as const,
+        viewport: { once: true, margin: '-60px' },
+    });
 
-    if (!allProducts || allProducts.length === 0) {
+    if (allProducts.length === 0) {
         return (
-            <section className={`text-white py-24 px-6 md:px-12 bg-black/50 text-center`}>
-                <h2 className="text-2xl font-bold opacity-50">No products found for this collection yet.</h2>
-                <p className="text-sm mt-2 opacity-30">Check back later or add products via Admin.</p>
+            <section id="product-grid" className="text-white py-32 px-5 md:px-12 bg-cs11-bg border-t border-white/[0.06] text-center">
+                <p className="font-garamond italic text-3xl text-white/60">Nothing on the rack yet.</p>
+                <p className="mt-3 font-manrope text-sm text-white/40">The drop is being stocked. Check back soon.</p>
             </section>
         );
     }
 
-    const featuredProduct = allProducts[0];
-
-    const showFeatured = featuredProduct && (featuredProduct.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        featuredProduct.description.toLowerCase().includes(searchQuery.toLowerCase()));
-
-    const filteredProducts = allProducts.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const themeConfig = {
-        default: {
-            bg: 'bg-arctic-base',
-            accent: 'bg-arctic-cyan',
-            accentText: 'text-arctic-cyan',
-            cardBg: 'bg-[#3e4c59]/30 backdrop-blur-sm border border-white/5',
-            cardHover: 'hover:bg-[#3e4c59]/60 hover:border-arctic-cyan/50 hover:shadow-[0_0_30px_rgba(0,255,255,0.15)]',
-            buttonBg: 'bg-white text-arctic-dark',
-            buttonHover: 'hover:bg-arctic-cyan',
-            blueDot: 'bg-blue-500' // Keeping original blue dot for default
-        },
-        codesprint: {
-            bg: 'bg-cs-midnight',
-            accent: 'bg-cs-coral',
-            accentText: 'text-cs-coral',
-            cardBg: 'bg-white/5 border border-cs-storm/30',
-            cardHover: 'hover:bg-white/10 hover:border-cs-coral/40 hover:shadow-[0_0_20px_rgba(255,91,65,0.1)]',
-            buttonBg: 'bg-cs-coral text-white',
-            buttonHover: 'hover:bg-cs-amber hover:text-black',
-            blueDot: 'bg-cs-coral'
-        },
-        ix: {
-            bg: 'bg-[#450a25]',
-            accent: 'bg-[#FF0879]',
-            accentText: 'text-[#FF0879]',
-            cardBg: 'bg-white/5',
-            cardHover: 'hover:bg-white/10',
-            buttonBg: 'bg-[#FF0879] text-white',
-            buttonHover: 'hover:bg-[#ACD5F8] hover:text-black',
-            blueDot: 'bg-[#ACD5F8]' // Blue dot for IX
-        }
-    };
-
-    const styles = themeConfig[theme] || themeConfig.default;
+    const [featured, ...rest] = allProducts;
 
     return (
-        <section id="product-grid" className={`${styles.bg} text-white py-24 px-6 md:px-12 transition-colors duration-500 relative overflow-hidden`}>
-            {/* Noise Overlay */}
-            <div
-                className="absolute inset-0 z-0 pointer-events-none opacity-[0.15] mix-blend-overlay"
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`,
-                    backgroundRepeat: 'repeat',
-                }}
-            />
-            <div className="w-full max-w-[1400px] mx-auto relative z-10">
+        <section id="product-grid" className="bg-cs11-bg text-white py-24 md:py-36 px-5 md:px-12 relative overflow-hidden">
+            <div className="w-full max-w-[1500px] mx-auto relative z-10">
 
-                {/* Section Header */}
-                <div className="flex justify-between items-end mb-16 border-b border-white/10 pb-8">
-                    <h2 className={`text-4xl md:text-6xl font-black tracking-wider uppercase ${theme === 'codesprint' ? 'font-mortend' : ''}`}>New Collection</h2>
-                    <div className={`relative flex items-center px-4 py-2 rounded-sm border ${theme === 'default' ? 'border-white/20 bg-white/5' : 'border-black/20 bg-black/5'} w-64`}>
-                        <Search className="w-4 h-4 opacity-50 mr-2" />
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="bg-transparent border-none outline-none text-xs font-bold uppercase w-full placeholder:opacity-50 font-secondary"
-                        />
-                    </div>
-                </div>
+                {/* Section header */}
+                <motion.div {...anim(0)} className="mb-16 md:mb-24 flex flex-wrap items-baseline gap-x-6 gap-y-2">
+                    <h2
+                        className="font-manrope font-extrabold uppercase tracking-[-0.02em] leading-none"
+                        style={{ fontSize: 'clamp(2.8rem, 8vw, 7rem)' }}
+                    >
+                        The line<span className="cs11-outline">up</span>
+                    </h2>
+                    <p className="font-garamond italic text-xl md:text-3xl text-white/60">
+                        {allProducts.length} {allProducts.length === 1 ? 'piece' : 'pieces'}, one run.
+                    </p>
+                </motion.div>
 
-                {/* Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-
-                    {/* Featured Card (Only show if matches search) */}
-                    {showFeatured && (
-                        <div
-                            onClick={() => !featuredProduct.sold_out && openProductModal(featuredProduct)}
-                            className={`col-span-2 md:col-span-2 row-span-1 relative aspect-[5/4] ${styles.cardBg} rounded-sm overflow-hidden group ${featuredProduct.sold_out ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
-                            style={{ clipPath: 'polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)' }}
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-                            <Image src={featuredProduct.image} alt={featuredProduct.name} fill className="object-cover object-center group-hover:scale-105 transition-transform duration-700" />
-                            <div className="absolute bottom-8 left-8 z-20">
-                                <h3 className="text-3xl font-black mb-2">{featuredProduct.name}</h3>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
-                                        <ArrowUpRight className="w-4 h-4" />
-                                    </div>
-                                    <span className="font-secondary text-sm">{featuredProduct.price}</span>
-                                </div>
-                                {featuredProduct.sold_out && (
-                                    <div className="mt-4 px-3 py-1 bg-red-600/80 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-widest w-fit border border-red-500/50">
-                                        Sold Out
-                                    </div>
+                {/* Featured piece — full width */}
+                <motion.article {...anim(0)} className="group mb-8 md:mb-12">
+                    <button
+                        type="button"
+                        onClick={() => !featured.sold_out && openProductModal(featured)}
+                        disabled={featured.sold_out}
+                        className="block w-full text-left disabled:cursor-not-allowed"
+                        aria-label={`${featured.name}, ${formatPrice(featured.price)}${featured.sold_out ? ', sold out' : ''}`}
+                    >
+                        <div className="relative aspect-[16/9] md:aspect-[21/9]">
+                            <div
+                                aria-hidden
+                                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[80%] rounded-full opacity-0 group-hover:opacity-25 transition-opacity duration-700 blur-3xl pointer-events-none"
+                                style={{ background: 'radial-gradient(circle, #ff6a3d 0%, transparent 70%)' }}
+                            />
+                            <Image
+                                src={featured.image}
+                                alt={`${featured.name} — ${featured.description}`}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 1400px"
+                                className={`object-contain drop-shadow-[0_50px_70px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-out ${featured.sold_out ? 'opacity-40 grayscale' : 'group-hover:scale-[1.03]'}`}
+                            />
+                        </div>
+                        <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-baseline justify-between gap-3">
+                            <div className="flex items-baseline gap-4">
+                                <h3 className="font-manrope font-extrabold uppercase text-2xl md:text-4xl tracking-tight">
+                                    {featured.name}
+                                </h3>
+                                {featured.sold_out && (
+                                    <span className="font-rajdhani font-semibold uppercase tracking-[0.2em] text-xs text-white/50">
+                                        Sold out
+                                    </span>
                                 )}
                             </div>
+                            <div className="flex items-baseline gap-6">
+                                <p className="font-garamond italic text-white/50 text-base md:text-lg hidden sm:block">
+                                    {featured.description}
+                                </p>
+                                <span className="font-rajdhani font-semibold tracking-[0.15em] text-cs11-orange text-lg md:text-2xl">
+                                    {formatPrice(featured.price)}
+                                </span>
+                            </div>
                         </div>
-                    )}
+                    </button>
+                </motion.article>
 
-                    {/* Standard Cards */}
-                    {filteredProducts.filter(p => p.id !== featuredProduct.id).map((p, i) => (
-                        <div
-                            key={p.id}
-                            onClick={() => !p.sold_out && openProductModal(p)}
-                            className={`group relative ${styles.cardBg} rounded-sm p-4 ${styles.cardHover} transition-colors ${p.sold_out ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                            style={{ clipPath: 'polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)' }}
-                        >
-                            {p.sold_out && (
-                                <div className="absolute top-4 right-4 z-20 px-2 py-1 bg-red-600/90 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm border border-red-500/30">
-                                    Sold Out
+                {/* Remaining pieces */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-14 md:gap-y-20">
+                    {rest.map((p, i) => (
+                        <motion.article key={p.id} {...anim(i)} className="group">
+                            <button
+                                type="button"
+                                onClick={() => !p.sold_out && openProductModal(p)}
+                                disabled={p.sold_out}
+                                className="block w-full text-left disabled:cursor-not-allowed"
+                                aria-label={`${p.name}, ${formatPrice(p.price)}${p.sold_out ? ', sold out' : ''}`}
+                            >
+                                <div className="relative aspect-[4/3]">
+                                    <div
+                                        aria-hidden
+                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[80%] rounded-full opacity-0 group-hover:opacity-25 transition-opacity duration-700 blur-3xl pointer-events-none"
+                                        style={{ background: 'radial-gradient(circle, #ff6a3d 0%, transparent 70%)' }}
+                                    />
+                                    <Image
+                                        src={p.image}
+                                        alt={`${p.name} — ${p.description}`}
+                                        fill
+                                        sizes="(max-width: 640px) 100vw, 700px"
+                                        className={`object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.7)] transition-transform duration-700 ease-out ${p.sold_out ? 'opacity-40 grayscale' : 'group-hover:scale-[1.04] group-hover:-rotate-1'}`}
+                                    />
                                 </div>
-                            )}
-                            <div className="relative aspect-[3/4] mb-4 overflow-hidden rounded-sm bg-white/5">
-                                <Image src={p.image} alt={p.name} fill className="object-contain p-4 group-hover:scale-110 transition-transform duration-500 gpu-accelerated" />
-                            </div>
-                            <div className="space-y-1">
-                                <h4 className="font-bold text-sm tracking-wide">{p.name}</h4>
-                                <p className="text-[10px] text-white/50 tracking-wider uppercase">{p.description}</p>
-                                <div className="flex justify-end items-center mt-3 border-t border-white/10 pt-3">
-                                    <span className="font-secondary text-xs opacity-70">{p.price}</span>
+                                <div className="mt-5 pt-4 border-t border-white/10 flex items-baseline justify-between gap-4">
+                                    <div className="min-w-0">
+                                        <h3 className="font-manrope font-bold uppercase text-lg md:text-xl tracking-tight truncate">
+                                            {p.name}
+                                            {p.sold_out && (
+                                                <span className="ml-3 font-rajdhani font-semibold uppercase tracking-[0.2em] text-[11px] text-white/50">
+                                                    Sold out
+                                                </span>
+                                            )}
+                                        </h3>
+                                        <p className="mt-1 font-rajdhani uppercase tracking-[0.15em] text-[11px] text-white/40 truncate">
+                                            {p.description}
+                                        </p>
+                                    </div>
+                                    <span className="font-rajdhani font-semibold tracking-[0.15em] text-cs11-orange text-base md:text-lg shrink-0">
+                                        {formatPrice(p.price)}
+                                    </span>
                                 </div>
-                            </div>
-                        </div>
+                            </button>
+                        </motion.article>
                     ))}
-
                 </div>
             </div>
-            {/* Local Modal Removed */}
         </section>
-    )
+    );
 }

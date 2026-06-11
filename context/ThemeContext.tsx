@@ -11,10 +11,9 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function eventFromPath(path: string): string {
-    if (path === '/codesprint' || path.startsWith('/codesprint/')) return 'codesprint';
-    if (path === '/ix' || path.startsWith('/ix/')) return 'ix';
-    return 'general';
+// CodeSprint 11 is the only storefront — every route uses the codesprint theme.
+function eventFromPath(_path: string): string {
+    return 'codesprint';
 }
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {

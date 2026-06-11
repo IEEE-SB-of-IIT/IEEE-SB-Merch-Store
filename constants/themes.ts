@@ -20,57 +20,23 @@ export interface Theme {
     fonts: ThemeFonts;
 }
 
+// CodeSprint 11 is the only storefront — single theme, matching codesprint.lk.
 export const themes: Record<string, Theme> = {
-    general: {
-        id: 'general',
-        name: 'General',
-        colors: {
-            // primary: '#00629B', // IEEE Blue
-            primary: '#00f3ff', // Next Gen Cyan for primary actions
-            background: '#004B76', // Arctic Base
-            text: '#ffffff',
-            textSecondary: '#9ca3af', // gray-400
-            accent: '#171717', // neutral-900
-            headerBg: 'rgba(0, 75, 118, 0.8)',
-        },
-        fonts: {
-            main: 'var(--font-outfit)',
-            heading: 'var(--font-outfit)',
-            secondary: 'var(--font-space-mono)',
-        }
-    },
     codesprint: {
         id: 'codesprint',
         name: 'Codesprint',
         colors: {
-            primary: '#ff5b41',    // Dream Coral — CTA / accent
-            background: '#151922', // Midnight Slate — primary bg
-            text: '#EAECEF',       // Mist White — body text
-            textSecondary: '#4A5059', // Storm Gray — secondary text / borders
-            accent: '#F2A265',     // Sunset Amber — hover / gradient
-            headerBg: 'rgba(21, 25, 34, 0.85)',
+            primary: '#ff6a3d',    // CS11 orange — CTA / primary actions
+            background: '#000000', // Pure black — codesprint.lk base
+            text: '#ffffff',
+            textSecondary: 'rgba(255, 255, 255, 0.5)',
+            accent: '#ff6a3d',     // CS11 orange accent
+            headerBg: 'rgba(0, 0, 0, 0.8)',
         },
         fonts: {
-            main: 'var(--font-tommy)',
-            heading: 'Mortend, var(--font-druk), sans-serif',
-            secondary: 'var(--font-tommy)',
+            main: 'var(--font-manrope)',
+            heading: 'var(--font-garamond)',
+            secondary: 'var(--font-rajdhani)',
         }
     },
-    ix: {
-        id: 'ix',
-        name: 'IX',
-        colors: {
-            primary: '#bc13fe', // Neon Magenta
-            background: '#450a25', // Deep Purple
-            text: '#ffffff',
-            textSecondary: '#e5e7eb', // gray-200
-            accent: '#1a0525', // Dark purple accent
-            headerBg: 'rgba(69, 10, 37, 0.9)',
-        },
-        fonts: {
-            main: 'var(--font-outfit)',
-            heading: 'var(--font-outfit)',
-            secondary: 'var(--font-space-mono)',
-        }
-    }
 };

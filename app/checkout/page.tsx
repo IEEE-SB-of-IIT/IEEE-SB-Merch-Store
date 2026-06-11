@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
+import { formatPrice } from '@/lib/format';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { ArrowLeft, Truck, Copy, CheckCheck, Info } from 'lucide-react';
@@ -285,7 +286,7 @@ export default function CheckoutPage() {
                                         <p className="text-xs text-white/40 uppercase">
                                             {item.selectedColor !== 'Default' ? `${item.selectedColor} / ` : ''}{item.selectedSize}
                                         </p>
-                                        <p className={`text-sm font-mono mt-2 ${accentText}`}>{item.price}</p>
+                                        <p className={`text-sm font-mono mt-2 ${accentText}`}>{formatPrice(item.price)}</p>
                                     </div>
                                 </div>
                             ))}

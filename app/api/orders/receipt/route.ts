@@ -1,5 +1,13 @@
 import { NextResponse } from 'next/server';
-import { supabaseServer } from '../../../../lib/supabaseServer';
+import { supabaseServer, isUuid } from '../../../../lib/supabaseServer';
+
+// Extension is derived from the validated MIME type, never from user input.
+const EXT_BY_TYPE: Record<string, string> = {
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+    'application/pdf': 'pdf',
+};
 
 export async function POST(request: Request) {
     try {
@@ -9,6 +17,9 @@ export async function POST(request: Request) {
 
         if (!file || !orderId) {
             return NextResponse.json({ error: 'Missing file or orderId' }, { status: 400 });
+        }
+        if (!isUuid(orderId)) {
+            return NextResponse.json({ error: 'Invalid orderId' }, { status: 400 });
         }
 
         // Validate file type
@@ -22,7 +33,20 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'File too large. Maximum size is 5MB.' }, { status: 400 });
         }
 
-        const ext = file.name.split('.').pop() ?? 'jpg';
+        // The order must exist before we accept a file — stops anyone from
+        // spraying uploads keyed to random order IDs.
+        const { data: order, error: lookupError } = await supabaseServer
+            .from('orders')
+            .select('id')
+            .eq('id', orderId)
+            .single();
+
+        if (lookupError || !order) {
+            return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+        }
+
+        // Derive extension from the trusted MIME type, not the uploaded filename.
+        const ext = EXT_BY_TYPE[file.type] ?? 'bin';
         const fileName = `receipt_${orderId}_${Date.now()}.${ext}`;
 
         const arrayBuffer = await file.arrayBuffer();
