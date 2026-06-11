@@ -1,22 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useUI } from '../context/UIContext';
 import { formatPrice } from '../lib/format';
+import { groupProducts, MerchType, ProductRow } from '../lib/groupProducts';
 import ParallaxY from './codesprint/ParallaxY';
 
-interface Product {
-    id: number;
-    name: string;
-    description: string;
-    price: string | number;
-    image: string;
-    sold_out?: boolean;
-}
-
 interface ProductGridProps {
-    products?: Product[];
+    products?: ProductRow[];
 }
 
 const reveal = {
@@ -28,12 +21,112 @@ const reveal = {
     }),
 };
 
-/* CodeSprint 11 lineup — products float free on black, no card chrome. */
-export default function ProductGrid({ products }: ProductGridProps) {
+const SWATCH_BG: Record<string, string> = {
+    black: '#1a1a1a',
+    white: '#f2f2f2',
+};
+
+/* One merch type — image shows the active colorway, swatches switch it. */
+function MerchItem({ merch, index, anim }: { merch: MerchType; index: number; anim: (i: number) => object }) {
     const { openProductModal } = useUI();
+    const [activeIdx, setActiveIdx] = useState(0);
+
+    const active = merch.variants[activeIdx];
+    const product = active.product;
+    const hasColors = merch.variants.length > 1;
+    const allSoldOut = merch.variants.every((v) => v.product.sold_out);
+
+    const open = () => {
+        if (product.sold_out) return;
+        openProductModal({
+            ...product,
+            baseName: merch.name,
+            variants: hasColors ? merch.variants : undefined,
+        });
+    };
+
+    return (
+        <motion.article {...anim(index)} className="group">
+            <button
+                type="button"
+                onClick={open}
+                disabled={!!product.sold_out}
+                className="block w-full text-left disabled:cursor-not-allowed"
+                aria-label={`${product.name}, ${formatPrice(product.price)}${product.sold_out ? ', sold out' : ''}`}
+            >
+                <div className="relative aspect-[4/3]">
+                    <div
+                        aria-hidden
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[80%] rounded-full opacity-0 group-hover:opacity-25 transition-opacity duration-700 blur-3xl pointer-events-none"
+                        style={{ background: 'radial-gradient(circle, #ff6a3d 0%, transparent 70%)' }}
+                    />
+                    {/* Adjacent columns drift at different rates — staggered depth on scroll */}
+                    <ParallaxY range={index % 2 === 0 ? ['9%', '-5%'] : ['14%', '-9%']} className="absolute inset-0">
+                        {/* All colorways stay mounted; the active one crossfades in */}
+                        {merch.variants.map((v, vi) => (
+                            <Image
+                                key={v.product.id}
+                                src={v.product.image}
+                                alt={vi === activeIdx ? `${v.product.name} — ${merch.description}` : ''}
+                                aria-hidden={vi !== activeIdx}
+                                fill
+                                sizes="(max-width: 640px) 100vw, 700px"
+                                className={`object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.7)] transition-all duration-500 ease-out
+                                    ${vi !== activeIdx
+                                        ? 'opacity-0'
+                                        : v.product.sold_out
+                                            ? 'opacity-40 grayscale'
+                                            : 'opacity-100 group-hover:scale-[1.04] group-hover:-rotate-1'}`}
+                            />
+                        ))}
+                    </ParallaxY>
+                </div>
+            </button>
+            <div className="mt-5 pt-4 border-t border-white/10 flex items-baseline justify-between gap-4">
+                <div className="min-w-0">
+                    <h3 className="font-manrope font-bold uppercase text-lg md:text-xl tracking-tight truncate">
+                        {merch.name}
+                        {(allSoldOut || product.sold_out) && (
+                            <span className="ml-3 font-rajdhani font-semibold uppercase tracking-[0.2em] text-[11px] text-white/50">
+                                {allSoldOut ? 'Sold out' : `${active.color} sold out`}
+                            </span>
+                        )}
+                    </h3>
+                    <p className="mt-1 font-rajdhani uppercase tracking-[0.15em] text-[11px] text-white/40 truncate">
+                        {merch.description}
+                    </p>
+                </div>
+                <div className="flex items-center gap-4 shrink-0">
+                    {hasColors && (
+                        <div className="flex items-center gap-2" role="group" aria-label={`${merch.name} colors`}>
+                            {merch.variants.map((v, vi) => (
+                                <button
+                                    key={v.product.id}
+                                    type="button"
+                                    onClick={() => setActiveIdx(vi)}
+                                    aria-label={`${merch.name} in ${v.color}${v.product.sold_out ? ', sold out' : ''}`}
+                                    aria-pressed={vi === activeIdx}
+                                    className={`w-4 h-4 rounded-full border transition-all duration-300
+                                        ${vi === activeIdx ? 'border-cs11-orange scale-110' : 'border-white/30 hover:border-white/60'}`}
+                                    style={{ backgroundColor: SWATCH_BG[v.color.toLowerCase()] ?? '#666' }}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    <span className="font-rajdhani font-semibold tracking-[0.15em] text-cs11-orange text-base md:text-lg">
+                        {formatPrice(product.price)}
+                    </span>
+                </div>
+            </div>
+        </motion.article>
+    );
+}
+
+/* CodeSprint 11 lineup — four types, equal billing, no card chrome. */
+export default function ProductGrid({ products }: ProductGridProps) {
     const reduceMotion = useReducedMotion();
 
-    const allProducts = products || [];
+    const merchTypes = groupProducts(products || []);
 
     const anim = (i: number) => ({
         variants: reveal,
@@ -43,7 +136,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
         viewport: { once: true, margin: '-60px' },
     });
 
-    if (allProducts.length === 0) {
+    if (merchTypes.length === 0) {
         return (
             <section id="product-grid" className="text-white py-32 px-5 md:px-12 bg-cs11-bg border-t border-white/[0.06] text-center">
                 <p className="font-garamond italic text-3xl text-white/60">Nothing on the rack yet.</p>
@@ -51,8 +144,6 @@ export default function ProductGrid({ products }: ProductGridProps) {
             </section>
         );
     }
-
-    const [featured, ...rest] = allProducts;
 
     return (
         <section id="product-grid" className="bg-cs11-bg text-white py-24 md:py-36 px-5 md:px-12 relative overflow-hidden cs11-void">
@@ -67,113 +158,14 @@ export default function ProductGrid({ products }: ProductGridProps) {
                         The line<span className="cs11-outline">up</span>
                     </h2>
                     <p className="font-garamond italic text-xl md:text-3xl text-white/60">
-                        {allProducts.length} {allProducts.length === 1 ? 'piece' : 'pieces'}, one run.
+                        {merchTypes.length} {merchTypes.length === 1 ? 'piece' : 'pieces'}, one run.
                     </p>
                 </motion.div>
 
-                {/* Featured piece — full width */}
-                <motion.article {...anim(0)} className="group mb-8 md:mb-12">
-                    <button
-                        type="button"
-                        onClick={() => !featured.sold_out && openProductModal(featured)}
-                        disabled={featured.sold_out}
-                        className="block w-full text-left disabled:cursor-not-allowed"
-                        aria-label={`${featured.name}, ${formatPrice(featured.price)}${featured.sold_out ? ', sold out' : ''}`}
-                    >
-                        <div className="relative aspect-[16/9] md:aspect-[21/9]">
-                            {/* Register marks framing the featured piece */}
-                            <div aria-hidden className="absolute inset-0 pointer-events-none">
-                                <span className="cs11-tick tl" />
-                                <span className="cs11-tick tr" />
-                                <span className="cs11-tick bl" />
-                                <span className="cs11-tick br" />
-                            </div>
-                            <div
-                                aria-hidden
-                                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[80%] rounded-full opacity-0 group-hover:opacity-25 transition-opacity duration-700 blur-3xl pointer-events-none"
-                                style={{ background: 'radial-gradient(circle, #ff6a3d 0%, transparent 70%)' }}
-                            />
-                            <ParallaxY range={['5%', '-5%']} className="absolute inset-0">
-                                <Image
-                                    src={featured.image}
-                                    alt={`${featured.name} — ${featured.description}`}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 1400px"
-                                    className={`object-contain drop-shadow-[0_50px_70px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-out ${featured.sold_out ? 'opacity-40 grayscale' : 'group-hover:scale-[1.03]'}`}
-                                />
-                            </ParallaxY>
-                        </div>
-                        <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-baseline justify-between gap-3">
-                            <div className="flex items-baseline gap-4">
-                                <h3 className="font-manrope font-extrabold uppercase text-2xl md:text-4xl tracking-tight">
-                                    {featured.name}
-                                </h3>
-                                {featured.sold_out && (
-                                    <span className="font-rajdhani font-semibold uppercase tracking-[0.2em] text-xs text-white/50">
-                                        Sold out
-                                    </span>
-                                )}
-                            </div>
-                            <div className="flex items-baseline gap-6">
-                                <p className="font-garamond italic text-white/50 text-base md:text-lg hidden sm:block">
-                                    {featured.description}
-                                </p>
-                                <span className="font-rajdhani font-semibold tracking-[0.15em] text-cs11-orange text-lg md:text-2xl">
-                                    {formatPrice(featured.price)}
-                                </span>
-                            </div>
-                        </div>
-                    </button>
-                </motion.article>
-
-                {/* Remaining pieces */}
+                {/* Every piece gets the same stage */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-14 md:gap-y-20">
-                    {rest.map((p, i) => (
-                        <motion.article key={p.id} {...anim(i)} className="group">
-                            <button
-                                type="button"
-                                onClick={() => !p.sold_out && openProductModal(p)}
-                                disabled={p.sold_out}
-                                className="block w-full text-left disabled:cursor-not-allowed"
-                                aria-label={`${p.name}, ${formatPrice(p.price)}${p.sold_out ? ', sold out' : ''}`}
-                            >
-                                <div className="relative aspect-[4/3]">
-                                    <div
-                                        aria-hidden
-                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[80%] rounded-full opacity-0 group-hover:opacity-25 transition-opacity duration-700 blur-3xl pointer-events-none"
-                                        style={{ background: 'radial-gradient(circle, #ff6a3d 0%, transparent 70%)' }}
-                                    />
-                                    {/* Adjacent columns drift at different rates — staggered depth on scroll */}
-                                    <ParallaxY range={i % 2 === 0 ? ['9%', '-5%'] : ['14%', '-9%']} className="absolute inset-0">
-                                        <Image
-                                            src={p.image}
-                                            alt={`${p.name} — ${p.description}`}
-                                            fill
-                                            sizes="(max-width: 640px) 100vw, 700px"
-                                            className={`object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.7)] transition-transform duration-700 ease-out ${p.sold_out ? 'opacity-40 grayscale' : 'group-hover:scale-[1.04] group-hover:-rotate-1'}`}
-                                        />
-                                    </ParallaxY>
-                                </div>
-                                <div className="mt-5 pt-4 border-t border-white/10 flex items-baseline justify-between gap-4">
-                                    <div className="min-w-0">
-                                        <h3 className="font-manrope font-bold uppercase text-lg md:text-xl tracking-tight truncate">
-                                            {p.name}
-                                            {p.sold_out && (
-                                                <span className="ml-3 font-rajdhani font-semibold uppercase tracking-[0.2em] text-[11px] text-white/50">
-                                                    Sold out
-                                                </span>
-                                            )}
-                                        </h3>
-                                        <p className="mt-1 font-rajdhani uppercase tracking-[0.15em] text-[11px] text-white/40 truncate">
-                                            {p.description}
-                                        </p>
-                                    </div>
-                                    <span className="font-rajdhani font-semibold tracking-[0.15em] text-cs11-orange text-base md:text-lg shrink-0">
-                                        {formatPrice(p.price)}
-                                    </span>
-                                </div>
-                            </button>
-                        </motion.article>
+                    {merchTypes.map((merch, i) => (
+                        <MerchItem key={merch.name} merch={merch} index={i} anim={anim} />
                     ))}
                 </div>
             </div>

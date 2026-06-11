@@ -34,6 +34,7 @@ export default function LaunchScene() {
                     alt=""
                     fill
                     sizes="100vw"
+                    loading="eager"
                     className="object-cover"
                 />
             </motion.div>

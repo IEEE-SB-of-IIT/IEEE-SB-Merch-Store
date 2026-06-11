@@ -1,7 +1,12 @@
+'use client';
+
 import Image from 'next/image';
+import { motion, useReducedMotion } from 'framer-motion';
 
 // CodeSprint 11 footer — dark, matching codesprint.lk (black, orange #ff6a3d, Garamond/Manrope/Rajdhani).
 export default function Footer() {
+    const reduceMotion = useReducedMotion();
+
     return (
         <footer className="relative w-full bg-cs11-bg border-t border-white/[0.06] overflow-hidden">
             {/* Orange glow blob */}
@@ -9,7 +14,7 @@ export default function Footer() {
                 className="absolute -bottom-40 -left-20 w-[480px] h-[480px] rounded-full pointer-events-none opacity-20"
                 style={{ background: 'radial-gradient(circle, #ff6a3d 0%, transparent 70%)' }}
             />
-            <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 py-20 md:py-28">
+            <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 pt-20 md:pt-28 pb-12 md:pb-16">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
                     <h2 className="leading-[0.95] tracking-tight">
                         <span className="block font-garamond italic text-white text-4xl md:text-6xl font-normal">
@@ -33,6 +38,24 @@ export default function Footer() {
                         <Image src="/images/barcode.webp" alt="Barcode" fill sizes="192px" className="object-contain object-right" />
                     </div>
                 </div>
+            </div>
+
+            {/* Giant wordmark closer — rises out of the page bottom */}
+            <div aria-hidden className="relative z-10 overflow-hidden select-none pointer-events-none">
+                <motion.div
+                    initial={reduceMotion ? false : { y: '55%' }}
+                    whileInView={{ y: '0%' }}
+                    viewport={{ once: true, margin: '-5%' }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                >
+                    <div
+                        className="font-manrope font-extrabold uppercase text-white whitespace-nowrap text-center leading-[0.78] tracking-[-0.03em] translate-y-[0.06em]"
+                        style={{ fontSize: 'clamp(2.6rem, 13vw, 13rem)' }}
+                    >
+                        COD<span className="inline-block" style={{ transform: 'scaleX(-1)' }}>E</span>SPRINT
+                        <span className="text-cs11-orange">11</span>
+                    </div>
+                </motion.div>
             </div>
         </footer>
     );

@@ -3,7 +3,7 @@ import ProductGrid from '../../components/ProductGrid';
 import Footer from '../../components/Footer';
 import Preloader from '../../components/Preloader';
 import SmoothScroll from '../../components/SmoothScroll';
-import CodeSprintHero from '../../components/codesprint/CodeSprintHero';
+import HeroGeometric from '../../components/HeroGeometric';
 import DropMarquee from '../../components/codesprint/DropMarquee';
 import CollectionDetails from '../../components/codesprint/CollectionDetails';
 import LaunchScene from '../../components/codesprint/LaunchScene';
@@ -39,7 +39,14 @@ export default async function CodesprintPage() {
             <Preloader />
             <SmoothScroll />
             <Header />
-            <CodeSprintHero />
+            <HeroGeometric
+                title1="The battle has a uniform."
+                title2="CODESPRINT 11"
+                description="The official CodeSprint 11 drop, designed in-house by the IEEE Student Branch of IIT. One numbered run; when a batch sells out, it stays sold out."
+                color1="#ff6a3d"
+                color2="#fff4ee"
+                speed={1}
+            />
             <DropMarquee />
             <ProductGrid products={products?.length ? products : CS11_FALLBACK_PRODUCTS} />
             <CollectionDetails />

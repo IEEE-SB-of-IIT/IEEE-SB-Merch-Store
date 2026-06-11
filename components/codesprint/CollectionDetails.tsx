@@ -55,6 +55,7 @@ export default function CollectionDetails() {
                             width={2392}
                             height={2995}
                             sizes="(max-width: 768px) 78vw, 560px"
+                            loading="eager"
                             className="w-full h-auto opacity-90 [mask-image:linear-gradient(to_bottom,black_50%,transparent_96%)]"
                         />
                     </motion.div>

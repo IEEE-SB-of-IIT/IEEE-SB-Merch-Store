@@ -13,14 +13,14 @@ interface Product {
     price: string | number;
     image: string;
     sold_out?: boolean;
+    baseName?: string;
+    variants?: { color: string; product: Product }[];
 }
 
 interface ProductModalProps {
     product: Product;
     onClose: () => void;
 }
-
-
 
 const SIZES = ['S', 'M', 'L', 'XL'];
 
@@ -34,18 +34,28 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     const [selectedSize, setSelectedSize] = useState('M');
     const [quantity, setQuantity] = useState(1);
 
+    // Colorway selection — each variant is its own product row, so inventory
+    // and order lines stay per-color.
+    const variants = product.variants;
+    const [variantIdx, setVariantIdx] = useState(() =>
+        Math.max(0, variants?.findIndex((v) => v.product.id === product.id) ?? 0)
+    );
+    const activeVariant = variants?.[variantIdx];
+    const current = activeVariant?.product ?? product;
+    const displayName = product.baseName ?? current.name;
+
     // Use specific Nav Hover color, fallback to theme accent if not found
     const activeColor = NAV_COLORS[theme.id] || theme.colors.accent;
 
     const handleAddToCart = () => {
-        if (product.sold_out) return;
+        if (current.sold_out) return;
         addToCart({
-            id: `${product.id}-${selectedSize}`,
-            productId: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            selectedColor: 'Default',
+            id: `${current.id}-${selectedSize}`,
+            productId: current.id,
+            name: current.name,
+            price: current.price,
+            image: current.image,
+            selectedColor: activeVariant?.color || 'Default',
             selectedSize,
             quantity: quantity
         });
@@ -96,18 +106,19 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                                 className="text-5xl font-black leading-[0.9] drop-shadow-lg uppercase break-words max-w-[300px] transition-colors duration-500"
                                 style={{ color: activeColor }}
                             >
-                                {product.name}
+                                {displayName}
                             </h2>
                         </div>
 
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className="relative w-[350px] h-[450px]">
                                 <Image
-                                    src={product.image}
-                                    alt={product.name}
+                                    key={current.id}
+                                    src={current.image}
+                                    alt={current.name}
                                     fill
                                     sizes="350px"
-                                    className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                                    className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in fade-in duration-300"
                                 />
                             </div>
                         </div>
@@ -124,13 +135,45 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     </button>
 
                     <div className="mt-12 space-y-8">
-                        {/* Product Name Display (Replaces Color) */}
+                        {/* Product Name */}
                         <div className="space-y-2">
                             <span className="text-xs font-bold text-white/60 tracking-widest uppercase">Product</span>
                             <div className="text-xl font-bold tracking-wide text-white">
-                                {product.name}
+                                {displayName}
                             </div>
                         </div>
+
+                        {/* Color Selector — only when this type comes in more than one colorway */}
+                        {variants && variants.length > 1 && (
+                            <div className="space-y-3">
+                                <span className="text-xs font-bold text-white/60 tracking-widest uppercase">Color</span>
+                                <div className="flex items-center gap-3">
+                                    {variants.map((v, vi) => (
+                                        <button
+                                            key={v.product.id}
+                                            onClick={() => setVariantIdx(vi)}
+                                            className={`px-4 h-10 rounded-full border flex items-center gap-2 text-sm font-medium transition-all ${variantIdx === vi
+                                                ? 'bg-white/10 text-white border-transparent'
+                                                : 'border-white/20 hover:bg-white/5 text-white/60'
+                                                }`}
+                                            style={variantIdx === vi ? {
+                                                backgroundColor: `${activeColor}20`,
+                                                borderColor: activeColor,
+                                                color: activeColor
+                                            } : {}}
+                                        >
+                                            <span
+                                                aria-hidden
+                                                className="w-3 h-3 rounded-full border border-white/30"
+                                                style={{ backgroundColor: v.color.toLowerCase() === 'white' ? '#f2f2f2' : '#1a1a1a' }}
+                                            />
+                                            {v.color}
+                                            {v.product.sold_out && <span className="text-[10px] opacity-60">(sold out)</span>}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         {/* Size Selector */}
                         <div className="space-y-3">
@@ -160,7 +203,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                         <div className="space-y-2">
                             <span className="text-xs font-bold text-white/60 tracking-widest uppercase font-secondary">Description</span>
                             <p className="text-sm leading-relaxed text-white/80 font-secondary text-justify line-clamp-4">
-                                {product.description}
+                                {current.description}
                             </p>
                         </div>
 
@@ -187,7 +230,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     </div>
 
                     <div className="mt-auto pt-6">
-                        {product.sold_out ? (
+                        {current.sold_out ? (
                             <div className="w-full py-4 text-center font-black rounded-full uppercase tracking-widest text-sm bg-white/5 text-white/40 border border-white/10 cursor-not-allowed select-none">
                                 Sold Out
                             </div>

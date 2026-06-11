@@ -10,6 +10,10 @@ export interface Product {
     price: string | number;
     image: string;
     sold_out?: boolean;
+    /** Base merch-type name when this product is one colorway of a type. */
+    baseName?: string;
+    /** Sibling colorways (including this one) when the type has variants. */
+    variants?: { color: string; product: Product }[];
 }
 
 interface UIContextType {

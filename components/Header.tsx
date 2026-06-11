@@ -44,27 +44,27 @@ export default function Header() {
         >
             <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between relative">
 
-                {/* Left Brand - Logo */}
+                {/* Left Brand - Logo (white wordmark — inverted while over the light hero) */}
                 <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity">
                     <Image
                         src="/images/logo.png"
                         alt="CodeSprint 11"
                         width={3840}
                         height={389}
-                        className="h-5 md:h-7 w-auto"
+                        className={`h-5 md:h-7 w-auto transition-all duration-500 ${isScrolled ? '' : 'invert'}`}
                         priority
                     />
                 </Link>
 
                 {/* Right Section: Nav + Actions */}
-                <div className="flex items-center gap-6 md:gap-8 text-white">
+                <div className={`flex items-center gap-6 md:gap-8 transition-colors duration-500 ${isScrolled ? 'text-white' : 'text-black'}`}>
                     {/* Desktop Nav Links */}
                     <div className="hidden md:flex items-center gap-8 lg:gap-12 mr-4">
                         {NAV_LINKS.map((item) => (
                             <Link
                                 key={item.name}
                                 href={item.path}
-                                className="relative group text-sm md:text-base font-rajdhani font-semibold tracking-[0.2em] text-white overflow-hidden"
+                                className="relative group text-sm md:text-base font-rajdhani font-semibold tracking-[0.2em] overflow-hidden"
                             >
                                 <span className="block transition-transform duration-300 group-hover:-translate-y-full">
                                     {item.name}
