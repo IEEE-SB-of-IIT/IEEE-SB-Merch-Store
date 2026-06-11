@@ -29,11 +29,12 @@ export function UIProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-    // Simulate initial loading
+    // Brief branded intro — long enough for the hero to settle, short enough
+    // not to feel like a slow site.
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 2200); // 2.2s loading time
+        }, 1000);
         return () => clearTimeout(timer);
     }, []);
 

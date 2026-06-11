@@ -116,7 +116,7 @@ export default function SearchOverlay() {
                                         className="group flex items-center gap-4 p-4 rounded-lg hover:bg-white/5 cursor-pointer transition-colors border border-transparent hover:border-white/10"
                                     >
                                         <div className="relative w-16 h-16 bg-white/5 rounded-md overflow-hidden flex-shrink-0">
-                                            <Image src={product.image} alt={product.name} fill className="object-cover" />
+                                            <Image src={product.image} alt={product.name} fill sizes="64px" className="object-cover" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <h4 className="text-white font-bold tracking-wide truncate">{product.name}</h4>

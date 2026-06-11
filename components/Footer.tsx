@@ -30,7 +30,7 @@ export default function Footer() {
                         CodeSprint 11 × IEEE SB © 2026 — All Rights Reserved
                     </div>
                     <div className="relative w-48 h-10 opacity-60 invert">
-                        <Image src="/images/barcode.png" alt="Barcode" fill sizes="192px" className="object-contain object-right" />
+                        <Image src="/images/barcode.webp" alt="Barcode" fill sizes="192px" className="object-contain object-right" />
                     </div>
                 </div>
             </div>

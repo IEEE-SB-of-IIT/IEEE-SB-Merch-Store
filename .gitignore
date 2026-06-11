@@ -13,6 +13,10 @@ node_modules/
 # JetBrains IDE files
 .idea/
 
+# Build caches / non-pnpm lockfiles (pnpm is the package manager)
+tsconfig.tsbuildinfo
+package-lock.json
+
 
 .DS_Store
 .gstack/

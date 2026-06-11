@@ -67,7 +67,7 @@ export default function CartDrawer() {
                         cartItems.map((item) => (
                             <div key={item.id} className={`flex gap-4 p-4 rounded-xl bg-white/5 border border-white/5 ${hoverCard} hover:bg-white/[0.07] transition-all group backdrop-blur-md`}>
                                 <div className="relative w-20 h-24 bg-black/20 rounded-lg overflow-hidden flex-shrink-0 border border-white/5">
-                                    <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
+                                    <Image src={item.image} alt={item.name} fill sizes="80px" className="object-contain p-2" />
                                 </div>
 
                                 <div className="flex-1 flex flex-col justify-between">

@@ -648,7 +648,7 @@ function SuccessContent() {
                     {/* Header */}
                     <div className={`${cardHdr} px-8 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b ${borderCol}`}>
                         <div className="flex items-center gap-3">
-                            <Image src="/images/favicon.png" alt="CodeSprint 11" width={32} height={32} className="object-contain" />
+                            <Image src="/images/favicon.webp" alt="CodeSprint 11" width={32} height={32} className="object-contain" />
                             <div>
                                 <p className={`${accentText} font-black text-lg leading-none ${isCS ? 'font-mortend' : ''}`}>
                                     {isCS ? 'CODESPRINT' : 'IEEE SB'}

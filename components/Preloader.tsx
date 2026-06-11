@@ -9,12 +9,14 @@ export default function Preloader() {
     const { isLoading } = useUI();
 
     const [progress, setProgress] = useState(0);
-    const [isVisible, setIsVisible] = useState(true);
+    // Initialize from isLoading so remounts (client-side navigation back to
+    // the storefront) don't flash the overlay after the intro already ran.
+    const [isVisible, setIsVisible] = useState(isLoading);
     const rafRef = useRef<number | null>(null);
 
     useEffect(() => {
         const startTime = Date.now();
-        const duration = 1600;
+        const duration = 950;
 
         const progressFrame = () => {
             const elapsed = Date.now() - startTime;

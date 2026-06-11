@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useUI } from '../context/UIContext';
 import { formatPrice } from '../lib/format';
+import ParallaxY from './codesprint/ParallaxY';
 
 interface Product {
     id: number;
@@ -92,13 +93,15 @@ export default function ProductGrid({ products }: ProductGridProps) {
                                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[80%] rounded-full opacity-0 group-hover:opacity-25 transition-opacity duration-700 blur-3xl pointer-events-none"
                                 style={{ background: 'radial-gradient(circle, #ff6a3d 0%, transparent 70%)' }}
                             />
-                            <Image
-                                src={featured.image}
-                                alt={`${featured.name} — ${featured.description}`}
-                                fill
-                                sizes="(max-width: 768px) 100vw, 1400px"
-                                className={`object-contain drop-shadow-[0_50px_70px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-out ${featured.sold_out ? 'opacity-40 grayscale' : 'group-hover:scale-[1.03]'}`}
-                            />
+                            <ParallaxY range={['5%', '-5%']} className="absolute inset-0">
+                                <Image
+                                    src={featured.image}
+                                    alt={`${featured.name} — ${featured.description}`}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 1400px"
+                                    className={`object-contain drop-shadow-[0_50px_70px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-out ${featured.sold_out ? 'opacity-40 grayscale' : 'group-hover:scale-[1.03]'}`}
+                                />
+                            </ParallaxY>
                         </div>
                         <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-baseline justify-between gap-3">
                             <div className="flex items-baseline gap-4">
@@ -140,13 +143,16 @@ export default function ProductGrid({ products }: ProductGridProps) {
                                         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[80%] rounded-full opacity-0 group-hover:opacity-25 transition-opacity duration-700 blur-3xl pointer-events-none"
                                         style={{ background: 'radial-gradient(circle, #ff6a3d 0%, transparent 70%)' }}
                                     />
-                                    <Image
-                                        src={p.image}
-                                        alt={`${p.name} — ${p.description}`}
-                                        fill
-                                        sizes="(max-width: 640px) 100vw, 700px"
-                                        className={`object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.7)] transition-transform duration-700 ease-out ${p.sold_out ? 'opacity-40 grayscale' : 'group-hover:scale-[1.04] group-hover:-rotate-1'}`}
-                                    />
+                                    {/* Adjacent columns drift at different rates — staggered depth on scroll */}
+                                    <ParallaxY range={i % 2 === 0 ? ['9%', '-5%'] : ['14%', '-9%']} className="absolute inset-0">
+                                        <Image
+                                            src={p.image}
+                                            alt={`${p.name} — ${p.description}`}
+                                            fill
+                                            sizes="(max-width: 640px) 100vw, 700px"
+                                            className={`object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.7)] transition-transform duration-700 ease-out ${p.sold_out ? 'opacity-40 grayscale' : 'group-hover:scale-[1.04] group-hover:-rotate-1'}`}
+                                        />
+                                    </ParallaxY>
                                 </div>
                                 <div className="mt-5 pt-4 border-t border-white/10 flex items-baseline justify-between gap-4">
                                     <div className="min-w-0">

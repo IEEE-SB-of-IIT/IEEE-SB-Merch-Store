@@ -1,15 +1,19 @@
 import Header from '../../components/Header';
 import ProductGrid from '../../components/ProductGrid';
 import Footer from '../../components/Footer';
+import Preloader from '../../components/Preloader';
 import SmoothScroll from '../../components/SmoothScroll';
 import CodeSprintHero from '../../components/codesprint/CodeSprintHero';
 import DropMarquee from '../../components/codesprint/DropMarquee';
 import CollectionDetails from '../../components/codesprint/CollectionDetails';
+import LaunchScene from '../../components/codesprint/LaunchScene';
 import FinalCall from '../../components/codesprint/FinalCall';
 
 import { supabase } from '@/lib/supabase';
 
-export const revalidate = 0;
+// Serve a cached page and refresh product data in the background at most
+// every 60s — keeps TTFB fast without a Supabase round-trip per request.
+export const revalidate = 60;
 
 // The CS11 lineup. Shown whenever the Supabase codesprint collection is empty,
 // so the storefront never renders without the real merch. Prices are
@@ -32,12 +36,14 @@ export default async function CodesprintPage() {
 
     return (
         <main className="min-h-screen bg-cs11-bg text-white">
+            <Preloader />
             <SmoothScroll />
             <Header />
             <CodeSprintHero />
             <DropMarquee />
             <ProductGrid products={products?.length ? products : CS11_FALLBACK_PRODUCTS} />
             <CollectionDetails />
+            <LaunchScene />
             <FinalCall />
             <Footer />
         </main>

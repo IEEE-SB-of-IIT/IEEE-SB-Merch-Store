@@ -23,14 +23,13 @@ const drukBold = localFont({
 import { UIProvider } from "../context/UIContext";
 import SearchOverlay from "../components/SearchOverlay";
 import GlobalProductModalWrapper from "@/components/GlobalProductModalWrapper";
-import Preloader from "@/components/Preloader";
 
 export const metadata = {
     title: "CodeSprint 11 — Official Merch | IEEE SB IIT",
     description: "Official CodeSprint 11 merchandise — limited edition drops by the IEEE Student Branch of IIT",
     icons: {
-        icon: "/images/favicon.png",
-        apple: "/images/favicon.png",
+        icon: "/images/favicon.webp",
+        apple: "/images/favicon.webp",
     },
 };
 
@@ -46,7 +45,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                                 <CartDrawer />
                                 <SearchOverlay />
                                 <GlobalProductModalWrapper />
-                                <Preloader />
                             </CartProvider>
                         </AuthProvider>
                     </ThemeProvider>

@@ -106,6 +106,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                                     src={product.image}
                                     alt={product.name}
                                     fill
+                                    sizes="350px"
                                     className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
                                 />
                             </div>

@@ -373,7 +373,7 @@ export default function AdminPage() {
 
             return true;
         });
-    }, [orders, statusFilter, orderSearch, sizeFilter, productFilter, collectionFilter, products]);
+    }, [orders, statusFilter, paymentFilter, orderSearch, sizeFilter, productFilter, collectionFilter, products]);
 
     // Active filter count for badge
     const activeFilterCount = [
@@ -436,7 +436,7 @@ export default function AdminPage() {
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center p-2">
-                            <Image src="/images/favicon.png" alt="CodeSprint 11" width={32} height={32} className="object-contain" />
+                            <Image src="/images/favicon.webp" alt="CodeSprint 11" width={32} height={32} className="object-contain" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
