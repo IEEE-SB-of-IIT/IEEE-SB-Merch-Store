@@ -38,7 +38,7 @@ export default function CodeSprintHero() {
     return (
         <section
             ref={sectionRef}
-            className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden bg-cs11-bg cs11-grain"
+            className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden bg-cs11-bg cs11-grain cs11-void"
         >
             {/* Void: faint orange floor-glow behind the product */}
             <div

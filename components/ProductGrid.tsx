@@ -54,7 +54,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
     const [featured, ...rest] = allProducts;
 
     return (
-        <section id="product-grid" className="bg-cs11-bg text-white py-24 md:py-36 px-5 md:px-12 relative overflow-hidden">
+        <section id="product-grid" className="bg-cs11-bg text-white py-24 md:py-36 px-5 md:px-12 relative overflow-hidden cs11-void">
             <div className="w-full max-w-[1500px] mx-auto relative z-10">
 
                 {/* Section header */}
@@ -80,6 +80,13 @@ export default function ProductGrid({ products }: ProductGridProps) {
                         aria-label={`${featured.name}, ${formatPrice(featured.price)}${featured.sold_out ? ', sold out' : ''}`}
                     >
                         <div className="relative aspect-[16/9] md:aspect-[21/9]">
+                            {/* Register marks framing the featured piece */}
+                            <div aria-hidden className="absolute inset-0 pointer-events-none">
+                                <span className="cs11-tick tl" />
+                                <span className="cs11-tick tr" />
+                                <span className="cs11-tick bl" />
+                                <span className="cs11-tick br" />
+                            </div>
                             <div
                                 aria-hidden
                                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[80%] rounded-full opacity-0 group-hover:opacity-25 transition-opacity duration-700 blur-3xl pointer-events-none"

@@ -30,20 +30,31 @@ export default function CollectionDetails() {
     });
 
     return (
-        <section id="details" className="relative bg-cs11-bg border-t border-white/[0.06] overflow-hidden">
-            <div className="max-w-[1500px] mx-auto px-5 md:px-12 py-24 md:py-36 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-
-                {/* Statement + supporting image */}
-                <div className="relative">
-                    <motion.h2 {...anim(0)} className="leading-[0.95] tracking-tight">
+        <section id="details" className="relative bg-cs11-bg border-t border-white/[0.06] overflow-hidden cs11-void">
+            <div className="max-w-[1500px] mx-auto px-5 md:px-12 pt-24 md:pt-36 relative">
+                {/* Centered statement, flanked by edge-pinned technical labels */}
+                <motion.div {...anim(0)} className="relative">
+                    <span aria-hidden className="hidden lg:flex items-center gap-3 absolute left-0 top-1/2 -translate-y-1/2 font-rajdhani font-semibold uppercase tracking-[0.25em] text-[10px] text-white/35 max-w-[140px] leading-relaxed">
+                        Sampled, then printed in one batch
+                    </span>
+                    <span aria-hidden className="hidden lg:flex items-center gap-3 absolute right-0 top-1/2 -translate-y-1/2 font-rajdhani font-semibold uppercase tracking-[0.25em] text-[10px] text-white/35 max-w-[140px] leading-relaxed text-right">
+                        Original artwork, in-house
+                    </span>
+                    <h2 className="text-center leading-[0.95] tracking-tight mx-auto max-w-3xl" style={{ textWrap: 'balance' }}>
                         <span className="block font-garamond italic text-white text-4xl md:text-6xl font-normal">
                             Built right,
                         </span>
-                        <span className="block font-manrope font-extrabold uppercase text-3xl md:text-5xl text-white mt-2">
+                        <span className="block font-manrope font-extrabold uppercase text-3xl md:text-6xl text-white mt-2">
                             from the thread up.
                         </span>
-                    </motion.h2>
-                    <motion.p {...anim(1)} className="mt-8 font-manrope text-white/70 text-base leading-relaxed max-w-md">
+                    </h2>
+                </motion.div>
+            </div>
+            <div className="max-w-[1500px] mx-auto px-5 md:px-12 pt-16 md:pt-24 pb-24 md:pb-36 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 relative">
+
+                {/* Statement + supporting image */}
+                <div className="relative">
+                    <motion.p {...anim(1)} className="font-manrope text-white/70 text-base leading-relaxed max-w-md">
                         Every piece in the drop is sampled, stress-tested through a 24-hour
                         hackathon, and printed in one batch. The artwork is original, the
                         fabric is heavy, and the count is final.

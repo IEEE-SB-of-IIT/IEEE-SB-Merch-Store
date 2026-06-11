@@ -116,6 +116,37 @@
     will-change: transform;
   }
 
+  /* Engineered void: faint dot field + full-height column hairlines.
+     Sits behind section content via ::before; purely decorative. */
+  .cs11-void::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.5px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px, 25% 100%;
+    background-position: 28px 28px, 0 0;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 6%, black 94%, transparent);
+  }
+
+  /* Corner ticks — small L-shaped register marks for framed media. */
+  .cs11-tick {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(255, 106, 61, 0.55);
+    border-style: solid;
+    border-width: 0;
+  }
+  .cs11-tick.tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+  .cs11-tick.tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+  .cs11-tick.bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+  .cs11-tick.br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
   /* Grain/noise overlay for cinematic texture */
   .cs11-grain::after {
     content: '';

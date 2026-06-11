@@ -3,44 +3,18 @@
 import { useEffect, useState, useRef } from 'react';
 import { useUI } from '../context/UIContext';
 
-const TERMINAL_LINES = [
-    "LAUNCHING MISSION SEQUENCE...",
-    "CALIBRATING ORBITAL SYSTEMS...",
-    "SYNCING STAR CHARTS...",
-    "ENGAGING HYPERDRIVE...",
-    "DEPLOYING PAYLOAD...",
-    "T-MINUS ZERO. IGNITION."
-];
-
-// CS11 palette — matches codesprint.lk
-const PRIMARY = '#ff6a3d';
-const GOLD = '#ffc371';
-const BG = '#000000';
-
+/* CS11 preloader — the wordmark over the void with a single hairline progress
+   bar. Quiet and fast; no fake telemetry. */
 export default function Preloader() {
     const { isLoading } = useUI();
 
-    const [lines, setLines] = useState<string[]>([]);
     const [progress, setProgress] = useState(0);
     const [isVisible, setIsVisible] = useState(true);
     const rafRef = useRef<number | null>(null);
 
     useEffect(() => {
-        setLines([]);
-        setProgress(0);
-
-        let lineIndex = 0;
-        const lineInterval = setInterval(() => {
-            if (lineIndex < TERMINAL_LINES.length) {
-                setLines(prev => [...prev, TERMINAL_LINES[lineIndex]]);
-                lineIndex++;
-            } else {
-                clearInterval(lineInterval);
-            }
-        }, 300);
-
         const startTime = Date.now();
-        const duration = 2000;
+        const duration = 1600;
 
         const progressFrame = () => {
             const elapsed = Date.now() - startTime;
@@ -53,7 +27,6 @@ export default function Preloader() {
         rafRef.current = requestAnimationFrame(progressFrame);
 
         return () => {
-            clearInterval(lineInterval);
             if (rafRef.current) cancelAnimationFrame(rafRef.current);
         };
     }, []);
@@ -69,79 +42,27 @@ export default function Preloader() {
 
     return (
         <div
-            className={`fixed inset-0 z-[100] font-mono flex flex-col items-center justify-center p-4 transition-all duration-700 ease-in-out ${!isLoading ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100'}`}
-            style={{ backgroundColor: BG, color: '#ffffff', willChange: 'opacity, transform' }}
+            className={`fixed inset-0 z-[100] bg-black text-white flex flex-col items-center justify-center p-6 transition-opacity duration-700 ease-out ${!isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+            style={{ willChange: 'opacity' }}
         >
-            <div className="w-full max-w-md space-y-8">
+            <h1
+                aria-label="CodeSprint 11"
+                className="font-manrope font-extrabold uppercase tracking-[-0.02em] text-3xl md:text-5xl select-none"
+            >
+                COD<span className="inline-block" style={{ transform: 'scaleX(-1)' }}>E</span>SPRINT
+                <span className="text-cs11-orange">11</span>
+            </h1>
 
-                {/* Logo / Brand */}
-                <div className="flex justify-center mb-12">
-                    <div className="relative">
-
-                        <div className="relative text-center">
-                            <h1
-                                className="relative text-4xl md:text-5xl tracking-widest text-transparent bg-clip-text font-manrope font-extrabold uppercase"
-                                style={{ backgroundImage: `linear-gradient(135deg, ${PRIMARY}, ${GOLD})` }}
-                            >
-                                CODESPRINT
-                            </h1>
-                            <p
-                                className="text-[10px] tracking-[0.25em] uppercase mt-1 font-rajdhani"
-                                style={{ color: PRIMARY, opacity: 0.6 }}
-                            >
-                                MISSION CONTROL · ONLINE
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Progress Bar */}
-                <div className="space-y-2">
-                    <div
-                        className="flex justify-between text-xs tracking-wider"
-                        style={{ color: PRIMARY, opacity: 0.8 }}
-                    >
-                        <span>LAUNCH_SEQUENCE</span>
-                        <span>{Math.floor(progress)}%</span>
-                    </div>
-                    <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
-                        <div
-                            className="h-full transition-all duration-100 ease-linear"
-                            style={{
-                                width: `${progress}%`,
-                                background: `linear-gradient(to right, ${PRIMARY}, ${GOLD})`,
-                                boxShadow: `0 0 10px ${PRIMARY}`,
-                            }}
-                        />
-                    </div>
-                </div>
-
-                {/* Terminal Output */}
+            <div className="mt-8 w-48 md:w-64 h-px bg-white/15 overflow-hidden" role="progressbar" aria-valuenow={Math.floor(progress)} aria-valuemin={0} aria-valuemax={100}>
                 <div
-                    className="h-48 overflow-hidden text-xs md:text-sm space-y-1 p-4 border border-white/5 bg-white/[0.02] rounded-md shadow-inner font-rajdhani"
-                    style={{ color: PRIMARY }}
-                >
-                    {lines.map((line, i) => (
-                        <div key={i} className="animate-fade-in-up">
-                            <span className="opacity-50 mr-2">›</span>
-                            {line}
-                        </div>
-                    ))}
-                    <div
-                        className="w-2 h-4 animate-pulse inline-block align-middle ml-1"
-                        style={{ backgroundColor: PRIMARY, opacity: 0.5 }}
-                    />
-                </div>
+                    className="h-full bg-cs11-orange"
+                    style={{ width: `${progress}%`, transition: 'width 100ms linear' }}
+                />
             </div>
 
-            {/* Background grid */}
-            <div
-                className="absolute inset-0 pointer-events-none opacity-5 mix-blend-overlay z-[-1]"
-                style={{
-                    backgroundImage: `linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)`,
-                    backgroundSize: '40px 40px'
-                }}
-            />
+            <p className="mt-5 font-rajdhani font-semibold uppercase tracking-[0.3em] text-[10px] text-white/40">
+                Official drop — IEEE SB IIT
+            </p>
         </div>
     );
 }
