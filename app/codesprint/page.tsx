@@ -6,6 +6,7 @@ import SmoothScroll from '../../components/SmoothScroll';
 import HeroGeometric from '../../components/HeroGeometric';
 import DropMarquee from '../../components/codesprint/DropMarquee';
 import CollectionDetails from '../../components/codesprint/CollectionDetails';
+import FlightPath from '../../components/codesprint/FlightPath';
 import LaunchScene from '../../components/codesprint/LaunchScene';
 import FinalCall from '../../components/codesprint/FinalCall';
 
@@ -48,9 +49,13 @@ export default async function CodesprintPage() {
                 speed={1}
             />
             <DropMarquee />
-            <ProductGrid products={products?.length ? products : CS11_FALLBACK_PRODUCTS} />
-            <CollectionDetails />
-            <LaunchScene />
+            {/* Flight plan: trajectory draws with scroll, rocket descends into the launch scene */}
+            <div className="relative">
+                <FlightPath />
+                <ProductGrid products={products?.length ? products : CS11_FALLBACK_PRODUCTS} />
+                <CollectionDetails />
+                <LaunchScene />
+            </div>
             <FinalCall />
             <Footer />
         </main>
