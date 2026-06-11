@@ -134,7 +134,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                         <X className="w-4 h-4" />
                     </button>
 
-                    <div className="mt-12 space-y-8">
+                    <div className="mt-10 space-y-6 flex-1 min-h-0 overflow-y-auto pr-2 -mr-2">
                         {/* Product Name */}
                         <div className="space-y-2">
                             <span className="text-xs font-bold text-white/60 tracking-widest uppercase">Product</span>
@@ -202,7 +202,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                         {/* Product Description */}
                         <div className="space-y-2">
                             <span className="text-xs font-bold text-white/60 tracking-widest uppercase font-secondary">Description</span>
-                            <p className="text-sm leading-relaxed text-white/80 font-secondary text-justify line-clamp-4">
+                            <p className="text-sm leading-relaxed text-white/80 font-secondary text-justify line-clamp-3">
                                 {current.description}
                             </p>
                         </div>
@@ -229,7 +229,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                         </div>
                     </div>
 
-                    <div className="mt-auto pt-6">
+                    <div className="pt-6 shrink-0">
                         {current.sold_out ? (
                             <div className="w-full py-4 text-center font-black rounded-full uppercase tracking-widest text-sm bg-white/5 text-white/40 border border-white/10 cursor-not-allowed select-none">
                                 Sold Out
