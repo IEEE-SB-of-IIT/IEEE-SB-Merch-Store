@@ -302,7 +302,7 @@ function ReceiptUpload({ orderId, orderRef, total, isCS }: { orderId: string; or
                         <div className="flex items-center gap-4">
                             {preview ? (
                                 <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-white/10">
-                                    <Image src={preview} alt="Receipt preview" fill className="object-cover" />
+                                    <Image src={preview} alt="Receipt preview" fill sizes="64px" className="object-cover" />
                                 </div>
                             ) : (
                                 <div className="w-16 h-16 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0 border border-white/10">
@@ -717,7 +717,7 @@ function SuccessContent() {
                                     <div key={item.id} className="grid grid-cols-12 gap-2 py-3 items-center">
                                         <div className="col-span-5 flex items-center gap-3">
                                             <div className="relative w-10 h-12 bg-white/5 rounded flex-shrink-0 overflow-hidden">
-                                                <Image src={item.image} alt={item.name} fill className="object-contain p-1" />
+                                                <Image src={item.image} alt={item.name} fill sizes="40px" className="object-contain p-1" />
                                             </div>
                                             <div className="min-w-0">
                                                 <p className="font-bold text-white text-sm leading-tight truncate">{item.name}</p>

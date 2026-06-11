@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable react/no-unknown-property */
-import { Component, ReactNode, useRef, useMemo } from "react";
+import { Component, ReactNode, useRef, useMemo, useState } from "react";
 import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
 import * as THREE from "three";
 import { motion } from "framer-motion";
@@ -203,6 +203,10 @@ export default function HeroGeometric({
     speed = 1,
     className,
 }: HeroGeometricProps) {
+    // Browsers reclaim WebGL contexts under GPU pressure ("Context Lost");
+    // remounting the Canvas creates a fresh renderer instead of freezing.
+    const [canvasKey, setCanvasKey] = useState(0);
+
     return (
         <div
             className={cn("relative w-full min-h-screen flex flex-col items-center overflow-hidden bg-white text-black", className)}
@@ -212,11 +216,18 @@ export default function HeroGeometric({
             <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
                 <ShaderBoundary>
                     <Canvas
+                        key={canvasKey}
                         camera={{ position: [0, 0, 1] }}
                         dpr={[1, 1]}
                         gl={{
                             antialias: false,
                             alpha: true,
+                        }}
+                        onCreated={({ gl }) => {
+                            gl.domElement.addEventListener('webglcontextlost', (e) => {
+                                e.preventDefault();
+                                setCanvasKey((k) => k + 1);
+                            });
                         }}
                     >
                         <GradientPlane color1={color1} color2={color2} speed={speed} />

@@ -276,7 +276,7 @@ export default function CheckoutPage() {
                             {cartItems.map((item) => (
                                 <div key={item.id} className="flex gap-4">
                                     <div className="relative w-16 h-20 bg-white/5 rounded-lg flex-shrink-0 overflow-hidden">
-                                        <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
+                                        <Image src={item.image} alt={item.name} fill sizes="64px" className="object-contain p-2" />
                                         <div className={`absolute -top-2 -right-2 w-5 h-5 ${isCS ? 'bg-cs-coral' : 'bg-arctic-cyan text-black'} text-white font-black rounded-full flex items-center justify-center text-[10px]`}>
                                             {item.quantity}
                                         </div>
