@@ -8,14 +8,11 @@ import { motion } from "framer-motion";
 
 import { cn } from "../lib/utils";
 
-/* eslint-disable @typescript-eslint/no-namespace */
 declare module "react" {
     namespace JSX {
-        // eslint-disable-next-line @typescript-eslint/no-empty-interface
         interface IntrinsicElements extends ThreeElements { }
     }
 }
-/* eslint-enable @typescript-eslint/no-namespace */
 
 // --- Shader Code ---
 const vertexShader = `
