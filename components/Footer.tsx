@@ -41,7 +41,7 @@ export default function Footer() {
             </div>
 
             {/* Giant wordmark closer — rises out of the page bottom */}
-            <div aria-hidden className="relative z-10 overflow-hidden select-none pointer-events-none">
+            <div aria-hidden className="relative z-10 w-full overflow-x-hidden select-none pointer-events-none">
                 <motion.div
                     initial={reduceMotion ? false : { y: '55%' }}
                     whileInView={{ y: '0%' }}
@@ -49,8 +49,8 @@ export default function Footer() {
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 >
                     <div
-                        className="font-manrope font-extrabold uppercase text-white whitespace-nowrap text-center leading-[0.78] tracking-[-0.03em] translate-y-[0.06em]"
-                        style={{ fontSize: 'clamp(2.6rem, 13vw, 13rem)' }}
+                        className="font-manrope font-extrabold uppercase text-white whitespace-nowrap text-center leading-[0.78] tracking-[-0.04em] translate-y-[0.06em]"
+                        style={{ fontSize: 'clamp(1.4rem, 7vw, 7.5rem)' }}
                     >
                         COD<span className="inline-block" style={{ transform: 'scaleX(-1)' }}>E</span>SPRINT
                         <span className="text-cs11-orange"> × </span>CICADA

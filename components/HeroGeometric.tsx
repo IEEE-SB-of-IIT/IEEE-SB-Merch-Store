@@ -266,7 +266,7 @@ export default function HeroGeometric({
                                         alt="CodeSprint × Cicada"
                                         width={3840}
                                         height={389}
-                                        className="h-16 md:h-24 lg:h-28 w-auto"
+                                        className="w-[min(88vw,720px)] h-auto"
                                         priority
                                     />
                                 </motion.div>
