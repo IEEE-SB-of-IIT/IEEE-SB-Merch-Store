@@ -44,17 +44,17 @@ export default function Header() {
                 <div
                     className="transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto mx-auto"
                     style={{
-                        maxWidth: isScrolled ? '768px' : '100%',
-                        paddingLeft: isScrolled ? '0' : '0',
-                        paddingRight: isScrolled ? '0' : '0',
-                        marginTop: isScrolled ? '16px' : '0',
+                        maxWidth: isScrolled ? '1100px' : '100%',
+                        marginTop: isScrolled ? '14px' : '0',
+                        paddingLeft: isScrolled ? '16px' : '0',
+                        paddingRight: isScrolled ? '16px' : '0',
                     }}
                 >
                     <nav
                         className="transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                         style={isScrolled ? {
                             borderRadius: '16px',
-                            padding: '10px 20px',
+                            padding: '14px 28px',
                             background: 'rgba(15,12,10,0.6)',
                             backdropFilter: 'blur(32px) saturate(200%)',
                             WebkitBackdropFilter: 'blur(32px) saturate(200%)',
