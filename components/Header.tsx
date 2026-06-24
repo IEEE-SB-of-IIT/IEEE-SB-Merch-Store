@@ -73,49 +73,27 @@ export default function Header() {
                         <div className="flex items-center justify-between">
 
                             {/* Collab lockup: CS11 logo × Cicada wordmark */}
-                            <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity">
-                                <div className={`flex items-center gap-2 md:gap-3 transition-all duration-500 ${isScrolled ? 'h-6 md:h-7' : 'h-7 md:h-9'}`}>
-                                    {/* CS11 — logo.webp on light bg, white+orange variant on glass */}
-                                    <div className="relative h-full">
-                                        <Image
-                                            src="/images/logo.webp"
-                                            alt="CodeSprint 11"
-                                            width={3942}
-                                            height={389}
-                                            className={`h-full w-auto absolute top-0 left-0 transition-opacity duration-500 ${isScrolled ? 'opacity-0' : 'opacity-100'}`}
-                                            priority
-                                        />
-                                        <Image
-                                            src="/images/logo merch v2 - white n orange.webp"
-                                            alt="CodeSprint 11"
-                                            width={3840}
-                                            height={389}
-                                            className={`h-full w-auto transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
-                                            priority
-                                        />
-                                    </div>
-                                    {/* × separator */}
-                                    <span className="font-manrope font-extrabold text-[#ff6a3d] leading-none text-base md:text-lg select-none">×</span>
-                                    {/* Cicada wordmark — dark on light bg, white on glass */}
-                                    <div className="relative h-full flex items-center">
-                                        <Image
-                                            src="/images/Cicada - Black text.webp"
-                                            alt="Cicada"
-                                            width={2988}
-                                            height={1336}
-                                            className={`h-4 md:h-5 w-auto absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${isScrolled ? 'opacity-0' : 'opacity-100'}`}
-                                            priority
-                                        />
-                                        <Image
-                                            src="/images/Cicada - white text.webp"
-                                            alt="Cicada"
-                                            width={2988}
-                                            height={1336}
-                                            className={`h-4 md:h-5 w-auto transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
-                                            priority
-                                        />
-                                    </div>
-                                </div>
+                            <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity flex items-center gap-2 md:gap-3">
+                                {/* CS11 — show correct variant, no crossfade trick that breaks layout */}
+                                <Image
+                                    src={isScrolled ? '/images/logo merch v2 - white n orange.webp' : '/images/logo.webp'}
+                                    alt="CodeSprint 11"
+                                    width={3942}
+                                    height={389}
+                                    className="h-6 md:h-8 w-auto"
+                                    priority
+                                />
+                                {/* × separator */}
+                                <span className="font-manrope font-extrabold text-[#ff6a3d] leading-none text-sm md:text-base select-none">×</span>
+                                {/* Cicada wordmark */}
+                                <Image
+                                    src={isScrolled ? '/images/Cicada - white text.webp' : '/images/Cicada - Black text.webp'}
+                                    alt="Cicada"
+                                    width={2988}
+                                    height={1336}
+                                    className="h-4 md:h-5 w-auto"
+                                    priority
+                                />
                             </Link>
 
                             {/* Right: links + actions */}
