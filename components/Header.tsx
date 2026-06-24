@@ -97,13 +97,13 @@ export default function Header() {
                                     {/* × separator */}
                                     <span className="font-manrope font-extrabold text-[#ff6a3d] leading-none text-base md:text-lg select-none">×</span>
                                     {/* Cicada wordmark — dark on light bg, white on glass */}
-                                    <div className="relative h-full">
+                                    <div className="relative h-full flex items-center">
                                         <Image
                                             src="/images/Cicada - Black text.webp"
                                             alt="Cicada"
                                             width={2988}
                                             height={1336}
-                                            className={`h-full w-auto absolute top-0 left-0 transition-opacity duration-500 ${isScrolled ? 'opacity-0' : 'opacity-100'}`}
+                                            className={`h-4 md:h-5 w-auto absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${isScrolled ? 'opacity-0' : 'opacity-100'}`}
                                             priority
                                         />
                                         <Image
@@ -111,7 +111,7 @@ export default function Header() {
                                             alt="Cicada"
                                             width={2988}
                                             height={1336}
-                                            className={`h-full w-auto transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
+                                            className={`h-4 md:h-5 w-auto transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
                                             priority
                                         />
                                     </div>

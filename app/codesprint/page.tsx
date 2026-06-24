@@ -42,7 +42,7 @@ export default async function CodesprintPage() {
             <Header />
             <HeroGeometric
                 title1="The battle has a uniform."
-                logoImage="/images/logo merch v2 - black n orange.webp"
+                logoImage="/images/logo.webp"
                 description="The official CodeSprint 11 × Cicada collaborative drop, designed in-house by the IEEE Student Branch of IIT. One numbered run; when a batch sells out, it stays sold out."
                 color1="#ff6a3d"
                 color2="#fff4ee"
