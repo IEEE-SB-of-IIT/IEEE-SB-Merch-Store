@@ -35,90 +35,113 @@ export default function Header() {
 
     return (
         <>
-            {/* ── Nav bar ── */}
-            <div
-                className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    isScrolled
-                        ? 'top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-3xl px-0'
-                        : 'top-0 left-0 w-full px-0'
-                }`}
-                style={{ willChange: 'top, width' }}
-            >
-                <nav
-                    className={`transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                        isScrolled
-                            ? 'rounded-2xl px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(255,255,255,0.04)]'
-                            : 'rounded-none px-6 md:px-12 py-7'
-                    }`}
-                    style={isScrolled ? {
-                        background: 'rgba(18,14,12,0.55)',
-                        backdropFilter: 'blur(28px) saturate(180%)',
-                        WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-                        border: '1px solid rgba(255,255,255,0.10)',
-                    } : {
-                        background: 'transparent',
+            {/*
+              Outer wrapper always stays: fixed, full-width, top-0.
+              Never toggle left/translate on it — that's what caused the jump.
+              The pill shrinks inward via padding instead.
+            */}
+            <div className="fixed top-0 left-0 w-full z-50 pointer-events-none">
+                <div
+                    className="transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto mx-auto"
+                    style={{
+                        maxWidth: isScrolled ? '768px' : '100%',
+                        paddingLeft: isScrolled ? '0' : '0',
+                        paddingRight: isScrolled ? '0' : '0',
+                        marginTop: isScrolled ? '16px' : '0',
                     }}
                 >
-                    <div className="flex items-center justify-between">
-                        {/* Logo */}
-                        <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity">
-                            <Image
-                                src={isScrolled
-                                    ? '/images/logo merch v2 - white n orange.webp'
-                                    : '/images/logo merch v2 - black n orange.webp'}
-                                alt="CodeSprint × Cicada"
-                                width={3840}
-                                height={389}
-                                className={`w-auto transition-all duration-500 ${isScrolled ? 'h-6 md:h-7' : 'h-7 md:h-9'}`}
-                                priority
-                            />
-                        </Link>
+                    <nav
+                        className="transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                        style={isScrolled ? {
+                            borderRadius: '16px',
+                            padding: '10px 20px',
+                            background: 'rgba(15,12,10,0.6)',
+                            backdropFilter: 'blur(32px) saturate(200%)',
+                            WebkitBackdropFilter: 'blur(32px) saturate(200%)',
+                            border: '1px solid rgba(255,255,255,0.11)',
+                            boxShadow: '0 8px 32px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.14), inset 0 -1px 0 rgba(255,255,255,0.04)',
+                        } : {
+                            borderRadius: '0',
+                            padding: '28px 48px',
+                            background: 'transparent',
+                            backdropFilter: 'none',
+                            WebkitBackdropFilter: 'none',
+                            border: '1px solid transparent',
+                            boxShadow: 'none',
+                        }}
+                    >
+                        <div className="flex items-center justify-between">
 
-                        {/* Right: links + actions */}
-                        <div className={`flex items-center gap-5 md:gap-7 transition-colors duration-500 ${isScrolled ? 'text-white' : 'text-black'}`}>
-                            {/* Desktop nav */}
-                            <div className="hidden md:flex items-center gap-7 lg:gap-10 mr-2">
-                                {NAV_LINKS.map((item) => (
-                                    <Link
-                                        key={item.name}
-                                        href={item.path}
-                                        className="relative group text-sm font-rajdhani font-semibold tracking-[0.2em] overflow-hidden"
-                                    >
-                                        <span className="block transition-transform duration-300 group-hover:-translate-y-full">
-                                            {item.name}
+                            {/* Logo — both variants stacked, crossfaded to avoid src-swap flash */}
+                            <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity relative">
+                                <div className={`transition-all duration-500 ${isScrolled ? 'h-6 md:h-7' : 'h-7 md:h-9'}`}>
+                                    {/* Dark variant (unscrolled, light hero bg) */}
+                                    <Image
+                                        src="/images/logo merch v2 - black n orange.webp"
+                                        alt="CodeSprint × Cicada"
+                                        width={3840}
+                                        height={389}
+                                        className={`h-full w-auto absolute top-0 left-0 transition-opacity duration-500 ${isScrolled ? 'opacity-0' : 'opacity-100'}`}
+                                        priority
+                                    />
+                                    {/* Light variant (scrolled, dark glass bg) */}
+                                    <Image
+                                        src="/images/logo merch v2 - white n orange.webp"
+                                        alt="CodeSprint × Cicada"
+                                        width={3840}
+                                        height={389}
+                                        className={`h-full w-auto transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
+                                        priority
+                                    />
+                                </div>
+                            </Link>
+
+                            {/* Right: links + actions */}
+                            <div className={`flex items-center gap-5 md:gap-7 transition-colors duration-500 ${isScrolled ? 'text-white' : 'text-black'}`}>
+                                {/* Desktop nav */}
+                                <div className="hidden md:flex items-center gap-7 lg:gap-10 mr-2">
+                                    {NAV_LINKS.map((item) => (
+                                        <Link
+                                            key={item.name}
+                                            href={item.path}
+                                            className="relative group text-sm font-rajdhani font-semibold tracking-[0.2em] overflow-hidden"
+                                        >
+                                            <span className="block transition-transform duration-300 group-hover:-translate-y-full">
+                                                {item.name}
+                                            </span>
+                                            <span className="absolute top-0 left-0 block translate-y-full transition-transform duration-300 text-[#ff6a3d] group-hover:translate-y-0">
+                                                {item.name}
+                                            </span>
+                                        </Link>
+                                    ))}
+                                </div>
+
+                                <button onClick={openSearch} className="hover:text-[#ff6a3d] transition-colors">
+                                    <Search className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
+                                </button>
+
+                                <button onClick={toggleCart} className="relative hover:text-[#ff6a3d] transition-colors">
+                                    <ShoppingBag className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
+                                    {cartCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff6a3d] opacity-75" />
+                                            <span className="relative inline-flex rounded-full h-4 w-4 text-[10px] bg-[#ff6a3d] text-white font-bold items-center justify-center">
+                                                {cartCount}
+                                            </span>
                                         </span>
-                                        <span className="absolute top-0 left-0 block translate-y-full transition-transform duration-300 text-[#ff6a3d] group-hover:translate-y-0">
-                                            {item.name}
-                                        </span>
-                                    </Link>
-                                ))}
+                                    )}
+                                </button>
+
+                                <button
+                                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                    className="md:hidden hover:text-[#ff6a3d] transition-colors z-50"
+                                >
+                                    {isMobileMenuOpen ? <X className="w-6 h-6" strokeWidth={1.5} /> : <Menu className="w-6 h-6" strokeWidth={1.5} />}
+                                </button>
                             </div>
-
-                            <button onClick={openSearch} className="hover:text-[#ff6a3d] transition-colors">
-                                <Search className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
-                            </button>
-
-                            <button onClick={toggleCart} className="relative hover:text-[#ff6a3d] transition-colors">
-                                <ShoppingBag className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
-                                {cartCount > 0 && (
-                                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff6a3d] opacity-75" />
-                                        <span className="relative inline-flex rounded-full h-4 w-4 text-[10px] bg-[#ff6a3d] text-white font-bold items-center justify-center">
-                                            {cartCount}
-                                        </span>
-                                    </span>
-                                )}
-                            </button>
-
-                            <button
-                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                className="md:hidden hover:text-[#ff6a3d] transition-colors z-50"
-                            >
-                                {isMobileMenuOpen ? <X className="w-6 h-6" strokeWidth={1.5} /> : <Menu className="w-6 h-6" strokeWidth={1.5} />}
-                            </button>
                         </div>
-                    </div>
-                </nav>
+                    </nav>
+                </div>
             </div>
 
             {/* ── Mobile menu overlay ── */}
