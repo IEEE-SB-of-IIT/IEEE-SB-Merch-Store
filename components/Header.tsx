@@ -75,12 +75,12 @@ export default function Header() {
                             {/* Collab lockup: CS11 logo × Cicada wordmark */}
                             <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity">
                                 <div className={`flex items-center gap-2 md:gap-3 transition-all duration-500 ${isScrolled ? 'h-6 md:h-7' : 'h-7 md:h-9'}`}>
-                                    {/* CS11 — dark on light bg, white on glass */}
+                                    {/* CS11 — logo.webp on light bg, white+orange variant on glass */}
                                     <div className="relative h-full">
                                         <Image
-                                            src="/images/logo merch v2 - black n orange.webp"
+                                            src="/images/logo.webp"
                                             alt="CodeSprint 11"
-                                            width={3840}
+                                            width={3942}
                                             height={389}
                                             className={`h-full w-auto absolute top-0 left-0 transition-opacity duration-500 ${isScrolled ? 'opacity-0' : 'opacity-100'}`}
                                             priority
