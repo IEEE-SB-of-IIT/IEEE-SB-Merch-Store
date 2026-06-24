@@ -10,12 +10,12 @@ import { ArrowLeft, Truck, Copy, CheckCheck, Info } from 'lucide-react';
 import Link from 'next/link';
 
 const BANK_DETAILS = {
-    bankName: 'Bank of Ceylon',
-    accountName: 'IEEE Student Branch — IIT',
-    accountNumber: '8001234567890',
-    branch: 'Colombo Fort',
-    branchCode: '001',
-    swiftCode: 'BCEYLKLX',
+    bankName: 'Commercial Bank',
+    accountName: 'Sureshkumar Aneeshvara',
+    accountNumber: '8029950092',
+    branch: 'Wellawatte Branch',
+    branchCode: '',
+    swiftCode: 'CCEYLKLX',
 };
 
 export default function CheckoutPage() {
@@ -209,7 +209,6 @@ export default function CheckoutPage() {
                                         { label: 'Account Name',    value: BANK_DETAILS.accountName },
                                         { label: 'Account Number',  value: BANK_DETAILS.accountNumber, copyable: true },
                                         { label: 'Branch',          value: BANK_DETAILS.branch },
-                                        { label: 'Branch Code',     value: BANK_DETAILS.branchCode, copyable: true },
                                         { label: 'SWIFT Code',      value: BANK_DETAILS.swiftCode, copyable: true },
                                     ].map(({ label, value, copyable }) => (
                                         <div key={label} className="flex items-center justify-between px-6 py-3.5">

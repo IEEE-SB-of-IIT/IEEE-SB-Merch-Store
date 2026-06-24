@@ -36,11 +36,11 @@ interface OrderData {
 }
 
 const BANK_DETAILS = {
-    bankName: 'Bank of Ceylon',
-    accountName: 'IEEE Student Branch — IIT',
-    accountNumber: '8001234567890',
-    branch: 'Colombo Fort',
-    branchCode: '001',
+    bankName: 'Commercial Bank',
+    accountName: 'Sureshkumar Aneeshvara',
+    accountNumber: '8029950092',
+    branch: 'Wellawatte Branch',
+    branchCode: '',
 };
 
 function parsePrice(price: string | number): number {
@@ -248,7 +248,7 @@ function ReceiptUpload({ orderId, orderRef, total, isCS }: { orderId: string; or
                         { label: 'Bank', value: BANK_DETAILS.bankName },
                         { label: 'Account Name', value: BANK_DETAILS.accountName },
                         { label: 'Account No.', value: BANK_DETAILS.accountNumber, copyable: true },
-                        { label: 'Branch / Code', value: `${BANK_DETAILS.branch} / ${BANK_DETAILS.branchCode}` },
+                        { label: 'Branch', value: BANK_DETAILS.branch },
                         { label: 'Payment Reference', value: orderRef, copyable: true, highlight: true },
                     ].map(({ label, value, copyable, highlight }) => (
                         <div key={label} className="flex items-center justify-between px-6 py-3">
@@ -581,7 +581,7 @@ function SuccessContent() {
             y += 14;
             doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); setMuted();
             doc.text(`Bank: ${BANK_DETAILS.bankName}  |  Account: ${BANK_DETAILS.accountName}`, margin, y); y += 12;
-            doc.text(`Account No: ${BANK_DETAILS.accountNumber}  |  Branch: ${BANK_DETAILS.branch} (${BANK_DETAILS.branchCode})`, margin, y); y += 12;
+            doc.text(`Account No: ${BANK_DETAILS.accountNumber}  |  Branch: ${BANK_DETAILS.branch}`, margin, y); y += 12;
             setAccent(); doc.setFont('helvetica', 'bold');
             doc.text(`Payment Reference: ${orderRef}`, margin, y); y += 20;
 
