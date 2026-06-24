@@ -51,7 +51,7 @@ export default function Header() {
                         alt="CodeSprint × Cicada"
                         width={3840}
                         height={389}
-                        className="h-5 md:h-7 w-auto transition-all duration-500"
+                        className="h-7 md:h-9 w-auto transition-all duration-500"
                         priority
                     />
                 </Link>

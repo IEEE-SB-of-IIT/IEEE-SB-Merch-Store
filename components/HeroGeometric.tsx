@@ -5,6 +5,7 @@ import { Component, ReactNode, useRef, useMemo, useState } from "react";
 import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
 import * as THREE from "three";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 import { cn } from "../lib/utils";
 
@@ -184,6 +185,7 @@ class ShaderBoundary extends Component<{ children: ReactNode }, { failed: boolea
 interface HeroGeometricProps {
     title1?: string;
     title2?: string;
+    logoImage?: string; // replaces title2 with a full-colour image lockup
     description?: string;
     className?: string; // Explicitly included
     color1?: string;
@@ -194,6 +196,7 @@ interface HeroGeometricProps {
 export default function HeroGeometric({
     title1,
     title2,
+    logoImage,
     description,
     color1 = "#3B82F6", // Default soft blue
     color2 = "#F0F9FF", // Default pale blue
@@ -252,7 +255,22 @@ export default function HeroGeometric({
                                     </motion.h1>
                                 </div>
                             )}
-                            {title2 && (
+                            {logoImage ? (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
+                                >
+                                    <Image
+                                        src={logoImage}
+                                        alt="CodeSprint × Cicada"
+                                        width={3840}
+                                        height={389}
+                                        className="h-16 md:h-24 lg:h-28 w-auto"
+                                        priority
+                                    />
+                                </motion.div>
+                            ) : title2 ? (
                                 <div className="overflow-hidden">
                                     <motion.h1
                                         initial={{ y: "100%", opacity: 0 }}
@@ -263,7 +281,7 @@ export default function HeroGeometric({
                                         {title2}
                                     </motion.h1>
                                 </div>
-                            )}
+                            ) : null}
                         </div>
 
                         {/* Subheadline */}
