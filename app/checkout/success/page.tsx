@@ -357,7 +357,14 @@ function SuccessContent() {
     const [order, setOrder] = useState<OrderData | null>(null);
     const [hydrated, setHydrated] = useState(false);
     const [downloading, setDownloading] = useState(false);
+    const [pdfError, setPdfError] = useState(false);
     const invoiceRef = useRef<HTMLDivElement>(null);
+
+    // Warm the jspdf chunk while the connection is alive, so a later
+    // network hiccup can't break the download button.
+    useEffect(() => {
+        import('jspdf').catch(() => { /* retried on click */ });
+    }, []);
 
     useEffect(() => {
         setHydrated(true);
@@ -382,6 +389,7 @@ function SuccessContent() {
 
     const handleDownloadPDF = async () => {
         setDownloading(true);
+        setPdfError(false);
         try {
             const { jsPDF } = await import('jspdf');
             const doc = new jsPDF({ unit: 'pt', format: 'a4' });
@@ -594,6 +602,7 @@ function SuccessContent() {
             doc.save(`Invoice_${orderRef}.pdf`);
         } catch (err) {
             console.error('PDF failed', err);
+            setPdfError(true);
         } finally {
             setDownloading(false);
         }
@@ -781,7 +790,14 @@ function SuccessContent() {
                         <Download className="w-4 h-4" />
                         {downloading ? 'Generating…' : 'Download Invoice'}
                     </button>
-                    <p className="text-white/30 text-xs">Keep this invoice for your records.</p>
+                    {pdfError ? (
+                        <p className="text-red-400 text-xs flex items-center gap-1.5">
+                            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                            Couldn&apos;t generate the invoice — check your connection and try again.
+                        </p>
+                    ) : (
+                        <p className="text-white/30 text-xs">Keep this invoice for your records.</p>
+                    )}
                 </div>
 
                 {/* ── Receipt Upload Section ── */}
