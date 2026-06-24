@@ -47,7 +47,7 @@ export default function Header() {
                 {/* Left Brand - Logo (white wordmark — inverted while over the light hero) */}
                 <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity">
                     <Image
-                        src="/images/logo.png"
+                        src="/images/logo.webp"
                         alt="CodeSprint 11"
                         width={3840}
                         height={389}
