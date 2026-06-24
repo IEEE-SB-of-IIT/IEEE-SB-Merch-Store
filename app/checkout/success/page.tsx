@@ -596,7 +596,7 @@ function SuccessContent() {
             doc.rect(0, pageH - 44, pageW, 44, 'F');
             doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
             doc.setTextColor(120, 110, 105); // always legible on dark footer
-            doc.text(isCS ? 'CODESPRINT · IEEE Student Branch — Merch Store' : 'IEEE Student Branch — Merch Store', margin, pageH - 22);
+            doc.text('CODESPRINT × CICADA · IEEE Student Branch — Merch Store', margin, pageH - 22);
             doc.text('This is a computer-generated invoice. No signature required.', pageW - margin, pageH - 22, { align: 'right' });
 
             doc.save(`Invoice_${orderRef}.pdf`);
@@ -657,13 +657,8 @@ function SuccessContent() {
                     {/* Header */}
                     <div className={`${cardHdr} px-8 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b ${borderCol}`}>
                         <div className="flex items-center gap-3">
-                            <Image src="/images/favicon.webp" alt="CodeSprint 11" width={32} height={32} className="object-contain" />
-                            <div>
-                                <p className={`${accentText} font-black text-lg leading-none ${isCS ? 'font-mortend' : ''}`}>
-                                    {isCS ? 'CODESPRINT' : 'IEEE SB'}
-                                </p>
-                                <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Merch Store</p>
-                            </div>
+                            <Image src="/images/logo merch v2 - white n orange.webp" alt="CodeSprint × Cicada" width={160} height={16} className="h-6 w-auto object-contain" />
+                            <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest self-end mb-0.5">Merch Store</p>
                         </div>
                         <div className="text-right">
                             <p className="text-white/40 text-xs font-bold uppercase tracking-widest">Invoice</p>

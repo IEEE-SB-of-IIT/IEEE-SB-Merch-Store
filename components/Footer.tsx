@@ -25,14 +25,14 @@ export default function Footer() {
                         </span>
                     </h2>
                     <p className="font-manrope text-base text-white/50 max-w-md leading-relaxed">
-                        CodeSprint merch is designed, sampled, and shipped by the IEEE Student Branch of IIT.
+                        A collaborative drop between CodeSprint 11 and Cicada, designed and shipped by the IEEE Student Branch of IIT.
                         For the builders, by the builders.
                     </p>
                 </div>
 
                 <div className="mt-20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 border-t border-white/[0.08] pt-8">
                     <div className="font-rajdhani text-xs uppercase tracking-widest text-white/40">
-                        CodeSprint 11 × IEEE SB © 2026 — All Rights Reserved
+                        CodeSprint 11 × Cicada × IEEE SB © 2026 — All Rights Reserved
                     </div>
                     <div className="relative w-48 h-10 opacity-60 invert">
                         <Image src="/images/barcode.webp" alt="Barcode" fill sizes="192px" className="object-contain object-right" />
@@ -53,7 +53,7 @@ export default function Footer() {
                         style={{ fontSize: 'clamp(2.6rem, 13vw, 13rem)' }}
                     >
                         COD<span className="inline-block" style={{ transform: 'scaleX(-1)' }}>E</span>SPRINT
-                        <span className="text-cs11-orange">11</span>
+                        <span className="text-cs11-orange"> × </span>CICADA
                     </div>
                 </motion.div>
             </div>

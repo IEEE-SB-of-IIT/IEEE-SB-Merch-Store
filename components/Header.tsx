@@ -44,14 +44,14 @@ export default function Header() {
         >
             <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between relative">
 
-                {/* Left Brand - Logo (white wordmark — inverted while over the light hero) */}
+                {/* Left Brand - collab lockup (dark bg → white+orange, light bg → black+orange) */}
                 <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity">
                     <Image
-                        src="/images/logo.webp"
-                        alt="CodeSprint 11"
+                        src={isScrolled ? '/images/logo merch v2 - black n orange.webp' : '/images/logo merch v2 - white n orange.webp'}
+                        alt="CodeSprint × Cicada"
                         width={3840}
                         height={389}
-                        className={`h-5 md:h-7 w-auto transition-all duration-500 ${isScrolled ? '' : 'invert'}`}
+                        className="h-5 md:h-7 w-auto transition-all duration-500"
                         priority
                     />
                 </Link>
@@ -127,7 +127,7 @@ export default function Header() {
 
                 <div className="absolute bottom-12 flex flex-col items-center gap-4">
                     <div className="w-12 h-[1px] bg-white/20" />
-                    <p className="text-xs font-rajdhani text-white/40 uppercase tracking-widest">CodeSprint 11 · IEEE SB IIT</p>
+                    <p className="text-xs font-rajdhani text-white/40 uppercase tracking-widest">CodeSprint × Cicada · IEEE SB IIT</p>
                 </div>
             </div>
         </nav >

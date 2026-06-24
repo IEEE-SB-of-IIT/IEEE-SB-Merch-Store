@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import { useUI } from '../context/UIContext';
 
 /* CS11 preloader — the wordmark over the void with a single hairline progress
@@ -47,13 +48,14 @@ export default function Preloader() {
             className={`fixed inset-0 z-[100] bg-black text-white flex flex-col items-center justify-center p-6 transition-opacity duration-700 ease-out ${!isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
             style={{ willChange: 'opacity' }}
         >
-            <h1
-                aria-label="CodeSprint 11"
-                className="font-manrope font-extrabold uppercase tracking-[-0.02em] text-3xl md:text-5xl select-none"
-            >
-                COD<span className="inline-block" style={{ transform: 'scaleX(-1)' }}>E</span>SPRINT
-                <span className="text-cs11-orange">11</span>
-            </h1>
+            <Image
+                src="/images/logo merch v2 - white n orange.webp"
+                alt="CodeSprint × Cicada"
+                width={3840}
+                height={389}
+                className="h-10 md:h-14 w-auto select-none"
+                priority
+            />
 
             <div className="mt-8 w-48 md:w-64 h-px bg-white/15 overflow-hidden" role="progressbar" aria-valuenow={Math.floor(progress)} aria-valuemin={0} aria-valuemax={100}>
                 <div
@@ -63,7 +65,7 @@ export default function Preloader() {
             </div>
 
             <p className="mt-5 font-rajdhani font-semibold uppercase tracking-[0.3em] text-[10px] text-white/40">
-                Official drop — IEEE SB IIT
+                CodeSprint × Cicada · IEEE SB IIT
             </p>
         </div>
     );

@@ -25,8 +25,8 @@ import SearchOverlay from "../components/SearchOverlay";
 import GlobalProductModalWrapper from "@/components/GlobalProductModalWrapper";
 
 export const metadata = {
-    title: "CodeSprint 11 — Official Merch | IEEE SB IIT",
-    description: "Official CodeSprint 11 merchandise — limited edition drops by the IEEE Student Branch of IIT",
+    title: "CodeSprint 11 × Cicada — Official Merch | IEEE SB IIT",
+    description: "Official CodeSprint 11 × Cicada collaborative merchandise — limited edition drops by the IEEE Student Branch of IIT",
     icons: {
         icon: "/images/favicon.webp",
         apple: "/images/favicon.webp",
