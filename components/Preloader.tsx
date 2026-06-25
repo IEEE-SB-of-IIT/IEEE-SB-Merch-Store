@@ -4,40 +4,46 @@ import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { useUI } from '../context/UIContext';
 
-/* CS11 preloader — the wordmark over the void with a single hairline progress
-   bar. Quiet and fast; no fake telemetry. */
+/**
+ * CS11 Preloader — minimal brand identity loader.
+ *
+ * Black void · collab lockup centred · % counter top-right ·
+ * hairline wipe bar at bottom · curtain-slide exit upward.
+ *
+ * No product imagery. No fake status. Just the mark.
+ * CSS lives in globals.css (pl-* classes).
+ */
 export default function Preloader() {
     const { isLoading } = useUI();
-
-    const [progress, setProgress] = useState(0);
-    // Initialize from isLoading so remounts (client-side navigation back to
-    // the storefront) don't flash the overlay after the intro already ran.
+    const [count, setCount] = useState(0);
     const [isVisible, setIsVisible] = useState(isLoading);
+    const [mounted, setMounted] = useState(false);
     const rafRef = useRef<number | null>(null);
 
     useEffect(() => {
-        const startTime = Date.now();
-        const duration = 950;
+        // tiny delay so the initial paint settles before animating
+        const tMount = setTimeout(() => setMounted(true), 40);
 
-        const progressFrame = () => {
-            const elapsed = Date.now() - startTime;
-            const p = Math.min(100, (elapsed / duration) * 100);
-            setProgress(p);
-            if (p < 100) {
-                rafRef.current = requestAnimationFrame(progressFrame);
-            }
+        const startTime = Date.now();
+        const duration = 900;
+        const frame = () => {
+            const p = Math.min(100, ((Date.now() - startTime) / duration) * 100);
+            setCount(Math.floor(p));
+            if (p < 100) rafRef.current = requestAnimationFrame(frame);
         };
-        rafRef.current = requestAnimationFrame(progressFrame);
+        rafRef.current = requestAnimationFrame(frame);
 
         return () => {
+            clearTimeout(tMount);
             if (rafRef.current) cancelAnimationFrame(rafRef.current);
         };
     }, []);
 
+    // Unmount after curtain-slide finishes (550 ms)
     useEffect(() => {
         if (!isLoading) {
-            const timeout = setTimeout(() => setIsVisible(false), 200);
-            return () => clearTimeout(timeout);
+            const t = setTimeout(() => setIsVisible(false), 580);
+            return () => clearTimeout(t);
         }
     }, [isLoading]);
 
@@ -45,28 +51,38 @@ export default function Preloader() {
 
     return (
         <div
-            className={`fixed inset-0 z-[100] bg-black text-white flex flex-col items-center justify-center p-6 transition-opacity duration-700 ease-out ${!isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-            style={{ willChange: 'opacity' }}
+            className="pl-root"
+            data-out={!isLoading ? 'true' : 'false'}
+            aria-hidden="true"
         >
-            <Image
-                src="/images/logo merch v2 - white n orange.webp"
-                alt="CodeSprint × Cicada"
-                width={3840}
-                height={389}
-                className="h-10 md:h-14 w-auto select-none"
-                priority
-            />
-
-            <div className="mt-8 w-48 md:w-64 h-px bg-white/15 overflow-hidden" role="progressbar" aria-valuenow={Math.floor(progress)} aria-valuemin={0} aria-valuemax={100}>
-                <div
-                    className="h-full bg-cs11-orange"
-                    style={{ width: `${progress}%`, transition: 'width 100ms linear' }}
+            {/* ── Collab lockup — dead centre ── */}
+            <div className="pl-centre" data-in={mounted ? 'true' : 'false'}>
+                <Image
+                    src="/images/logo merch v2 - white n orange.webp"
+                    alt="CodeSprint 11 × Cicada"
+                    width={3840}
+                    height={389}
+                    className="pl-logo"
+                    priority
                 />
+                <p className="pl-sub">Official Drop · IEEE SB IIT</p>
             </div>
 
-            <p className="mt-5 font-rajdhani font-semibold uppercase tracking-[0.3em] text-[10px] text-white/40">
-                CodeSprint × Cicada · IEEE SB IIT
-            </p>
+            {/* ── Counter — top right ── */}
+            <span className="pl-counter" data-in={mounted ? 'true' : 'false'}>
+                {String(count).padStart(2, '0')}
+            </span>
+
+            {/* ── Hairline progress bar — bottom ── */}
+            <div
+                className="pl-bar-track"
+                role="progressbar"
+                aria-valuenow={count}
+                aria-valuemin={0}
+                aria-valuemax={100}
+            >
+                <div className="pl-bar-fill" style={{ transform: `scaleX(${count / 100})` }} />
+            </div>
         </div>
     );
 }

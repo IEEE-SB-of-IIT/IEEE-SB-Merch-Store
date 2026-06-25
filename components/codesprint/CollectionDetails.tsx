@@ -1,9 +1,17 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import ParallaxY from './ParallaxY';
+
+const TEES = [
+    '/images/codesprint-merch-images/cut/tee-sublimation-v5.png',
+    '/images/codesprint-merch-images/cut/tee-minimal-black-v3.png',
+    '/images/codesprint-merch-images/cut/tee-minimal-white-v2.png',
+    '/images/codesprint-merch-images/cut/tee-minimal-black-v5.png',
+    '/images/codesprint-merch-images/cut/tee-minimal-white-v4.png',
+];
 
 const SPECS = [
     { label: 'Fabric', value: '300 GSM heavyweight cotton, pre-shrunk' },
@@ -24,6 +32,19 @@ const reveal = {
 export default function CollectionDetails() {
     const sectionRef = useRef<HTMLElement>(null);
     const reduceMotion = useReducedMotion();
+    const [teeIdx, setTeeIdx] = useState(0);
+    const [teeVisible, setTeeVisible] = useState(true);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTeeVisible(false);
+            setTimeout(() => {
+                setTeeIdx(i => (i + 1) % TEES.length);
+                setTeeVisible(true);
+            }, 400);
+        }, 2800);
+        return () => clearInterval(interval);
+    }, []);
     const anim = (i: number) => ({
         variants: reveal,
         custom: i,
@@ -96,11 +117,16 @@ export default function CollectionDetails() {
                         />
                         <ParallaxY range={['6%', '-6%']} className="absolute inset-0">
                             <Image
-                                src="/images/codesprint-merch-images/cut/tee-sublimation-v5.png"
-                                alt="Ember jersey, black fading to ember orange, front and back"
+                                key={TEES[teeIdx]}
+                                src={TEES[teeIdx]}
+                                alt="CS11 tee from the drop"
                                 fill
                                 sizes="(max-width: 1024px) 78vw, 460px"
                                 className="object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.7)]"
+                                style={{
+                                    opacity: teeVisible ? 1 : 0,
+                                    transition: 'opacity 0.4s ease',
+                                }}
                             />
                         </ParallaxY>
                     </motion.div>

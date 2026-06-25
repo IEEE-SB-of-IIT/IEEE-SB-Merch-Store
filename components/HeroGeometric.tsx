@@ -260,26 +260,14 @@ export default function HeroGeometric({
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
-                                    className="flex items-center justify-center gap-4 md:gap-6"
+                                    className="flex items-center justify-center"
                                 >
-                                    {/* CS11 wordmark — width-based so the wide logo doesn't overflow */}
                                     <Image
                                         src={logoImage}
                                         alt="CodeSprint 11"
                                         width={3942}
                                         height={389}
-                                        className="w-[42vw] max-w-[480px] h-auto"
-                                        priority
-                                    />
-                                    {/* × separator */}
-                                    <span className="font-manrope font-extrabold text-[#ff6a3d] leading-none text-3xl md:text-5xl select-none">×</span>
-                                    {/* Cicada wordmark */}
-                                    <Image
-                                        src="/images/Cicada - Black text.webp"
-                                        alt="Cicada"
-                                        width={2988}
-                                        height={1336}
-                                        className="w-[18vw] max-w-[200px] h-auto"
+                                        className="w-[52vw] max-w-[560px] h-auto"
                                         priority
                                     />
                                 </motion.div>

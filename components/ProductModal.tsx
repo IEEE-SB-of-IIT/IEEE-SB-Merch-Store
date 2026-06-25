@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { X, Check, Minus, Plus } from 'lucide-react';
+import { X, Minus, Plus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -25,7 +25,7 @@ interface ProductModalProps {
 const SIZES = ['S', 'M', 'L', 'XL'];
 
 const NAV_COLORS: Record<string, string> = {
-    codesprint: '#ff6a3d', // CS11 orange (matches codesprint.lk accent)
+    codesprint: '#ff6a3d',
 };
 
 export default function ProductModal({ product, onClose }: ProductModalProps) {
@@ -34,8 +34,6 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     const [selectedSize, setSelectedSize] = useState('M');
     const [quantity, setQuantity] = useState(1);
 
-    // Colorway selection — each variant is its own product row, so inventory
-    // and order lines stay per-color.
     const variants = product.variants;
     const [variantIdx, setVariantIdx] = useState(() =>
         Math.max(0, variants?.findIndex((v) => v.product.id === product.id) ?? 0)
@@ -44,7 +42,6 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     const current = activeVariant?.product ?? product;
     const displayName = product.baseName ?? current.name;
 
-    // Use specific Nav Hover color, fallback to theme accent if not found
     const activeColor = NAV_COLORS[theme.id] || theme.colors.accent;
 
     const handleAddToCart = () => {
@@ -57,141 +54,138 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             image: current.image,
             selectedColor: activeVariant?.color || 'Default',
             selectedSize,
-            quantity: quantity
+            quantity,
         });
         onClose();
     };
 
     useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') onClose();
-        };
+        const handleKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+        document.body.style.overflow = 'hidden';
         window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', handleKeyDown);
+        };
     }, [onClose]);
 
-    const adjustQuantity = (delta: number) => {
-        setQuantity(prev => Math.max(1, prev + delta));
-    };
+    const adjustQuantity = (delta: number) => setQuantity(prev => Math.max(1, prev + delta));
+
+    const priceNum = typeof current.price === 'string' ? parseFloat(current.price) : current.price;
+    const formattedPrice = `LKR ${priceNum.toLocaleString()}`;
 
     return (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center md:p-6">
             {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-md" onClick={onClose} />
+
+            {/* Modal — bottom sheet on mobile, fixed 560px card on desktop */}
             <div
-                className="absolute inset-0 bg-black/60 backdrop-blur-md"
-                onClick={onClose}
-                style={{ willChange: 'opacity' }}
-            />
+                className="relative w-full md:max-w-5xl md:h-[560px] bg-[#0d0b09] rounded-t-2xl md:rounded-[28px] border border-white/10 shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 md:zoom-in-95 duration-300 flex flex-col md:flex-row"
+                style={{ maxHeight: '82dvh' }}
+            >
+                {/* Close */}
+                <button
+                    onClick={onClose}
+                    className="absolute top-4 right-4 z-20 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+                >
+                    <X className="w-4 h-4 text-white" />
+                </button>
 
-            {/* Modal Container */}
-            <div className="relative w-full max-w-5xl h-[600px] bg-white/5 backdrop-blur-xl rounded-[30px] border border-white/10 shadow-2xl flex overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                {/* ── LEFT: image panel ── fixed height on mobile, flex-fill on desktop */}
+                <div className="relative md:flex-1 h-[220px] md:h-auto flex items-center justify-center bg-gradient-to-br from-white/5 to-transparent overflow-hidden shrink-0">
+                    {/* Glow blob */}
+                    <div
+                        className="absolute inset-0 opacity-20 pointer-events-none"
+                        style={{
+                            background: `radial-gradient(circle at 50% 60%, ${activeColor} 0%, transparent 65%)`,
+                            transition: 'background 0.5s ease',
+                        }}
+                    />
 
-                {/* Left Side - Product Image */}
-                <div className="relative flex-1 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center p-12">
-                    {/* Background abstract shape */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] opacity-20 pointer-events-none">
-                        <div
-                            className="w-full h-full blur-[100px] rounded-full transition-colors duration-500 gpu-accelerated"
-                            style={{ backgroundColor: activeColor }}
-                        />
+                    {/* Product title overlay — top-left */}
+                    <div className="absolute top-4 left-4 md:top-6 md:left-6 z-10 max-w-[55%]">
+                        <h2
+                            className="font-manrope font-black text-2xl md:text-5xl leading-[0.88] uppercase break-words drop-shadow-lg"
+                            style={{ color: activeColor }}
+                        >
+                            {displayName}
+                        </h2>
                     </div>
 
-                    <div className="relative z-10 w-full h-full">
-                        <div className="absolute top-0 left-0">
-                            <div className="flex items-center gap-2 opacity-70 mb-2">
-                                <div className="w-6 h-6 bg-white/20 rounded-full" />
-                                <span className="font-bold text-white tracking-wide">IEEE SB</span>
-                            </div>
-                            <h2
-                                className="text-5xl font-black leading-[0.9] drop-shadow-lg uppercase break-words max-w-[300px] transition-colors duration-500"
-                                style={{ color: activeColor }}
-                            >
-                                {displayName}
-                            </h2>
-                        </div>
-
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="relative w-[350px] h-[450px]">
-                                <Image
-                                    key={current.id}
-                                    src={current.image}
-                                    alt={current.name}
-                                    fill
-                                    sizes="350px"
-                                    className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in fade-in duration-300"
-                                />
-                            </div>
-                        </div>
+                    {/* Product image */}
+                    <div className="relative w-[160px] h-[200px] md:w-[360px] md:h-[460px]">
+                        <Image
+                            key={current.id}
+                            src={current.image}
+                            alt={current.name}
+                            fill
+                            sizes="(max-width: 768px) 260px, 340px"
+                            className="object-contain drop-shadow-[0_24px_48px_rgba(0,0,0,0.6)] animate-in fade-in duration-300"
+                        />
                     </div>
                 </div>
 
-                {/* Right Side - Controls */}
-                <div className="w-[350px] backdrop-blur-3xl flex flex-col p-10 text-white border-l border-white/5 bg-black/80">
-                    <button
-                        onClick={onClose}
-                        className="absolute top-6 right-6 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-                    >
-                        <X className="w-4 h-4" />
-                    </button>
+                {/* ── RIGHT: controls panel ── */}
+                <div className="w-full md:w-[340px] lg:w-[380px] flex flex-col border-t md:border-t-0 md:border-l border-white/[0.08] bg-black/60 min-h-0">
+                    <div className="p-5 md:p-8 space-y-4 md:space-y-6 flex-1 overflow-y-auto">
 
-                    <div className="mt-10 space-y-6 flex-1 min-h-0 overflow-y-auto pr-2 -mr-2">
-                        {/* Product Name */}
-                        <div className="space-y-2">
-                            <span className="text-xs font-bold text-white/60 tracking-widest uppercase">Product</span>
-                            <div className="text-xl font-bold tracking-wide text-white">
-                                {displayName}
-                            </div>
+                        {/* Name + price */}
+                        <div>
+                            <p className="font-manrope text-white/50 text-xs uppercase tracking-widest mb-1">Product</p>
+                            <p className="font-manrope font-bold text-white text-lg leading-snug">{displayName}</p>
+                            <p className="font-manrope font-extrabold text-2xl mt-1" style={{ color: activeColor }}>{formattedPrice}</p>
                         </div>
 
-                        {/* Color Selector — only when this type comes in more than one colorway */}
+                        {/* Color variants */}
                         {variants && variants.length > 1 && (
-                            <div className="space-y-3">
-                                <span className="text-xs font-bold text-white/60 tracking-widest uppercase">Color</span>
-                                <div className="flex items-center gap-3">
+                            <div>
+                                <p className="font-manrope text-white/50 text-xs uppercase tracking-widest mb-3">Color</p>
+                                <div className="flex flex-wrap gap-2">
                                     {variants.map((v, vi) => (
                                         <button
                                             key={v.product.id}
                                             onClick={() => setVariantIdx(vi)}
-                                            className={`px-4 h-10 rounded-full border flex items-center gap-2 text-sm font-medium transition-all ${variantIdx === vi
-                                                ? 'bg-white/10 text-white border-transparent'
-                                                : 'border-white/20 hover:bg-white/5 text-white/60'
-                                                }`}
+                                            className="px-4 h-9 rounded-full border text-sm font-manrope font-semibold transition-all"
                                             style={variantIdx === vi ? {
                                                 backgroundColor: `${activeColor}20`,
                                                 borderColor: activeColor,
-                                                color: activeColor
-                                            } : {}}
+                                                color: activeColor,
+                                            } : {
+                                                borderColor: 'rgba(255,255,255,0.2)',
+                                                color: 'rgba(255,255,255,0.5)',
+                                            }}
                                         >
                                             <span
                                                 aria-hidden
-                                                className="w-3 h-3 rounded-full border border-white/30"
+                                                className="inline-block w-2.5 h-2.5 rounded-full border border-white/30 mr-1.5 align-middle"
                                                 style={{ backgroundColor: v.color.toLowerCase() === 'white' ? '#f2f2f2' : '#1a1a1a' }}
                                             />
                                             {v.color}
-                                            {v.product.sold_out && <span className="text-[10px] opacity-60">(sold out)</span>}
+                                            {v.product.sold_out && <span className="text-[10px] opacity-60 ml-1">(sold out)</span>}
                                         </button>
                                     ))}
                                 </div>
                             </div>
                         )}
 
-                        {/* Size Selector */}
-                        <div className="space-y-3">
-                            <span className="text-xs font-bold text-white/60 tracking-widest uppercase">Size</span>
-                            <div className="flex items-center gap-3">
+                        {/* Size */}
+                        <div>
+                            <p className="font-manrope text-white/50 text-xs uppercase tracking-widest mb-3">Size</p>
+                            <div className="flex gap-2">
                                 {SIZES.map((size) => (
                                     <button
                                         key={size}
                                         onClick={() => setSelectedSize(size)}
-                                        className={`w-10 h-10 rounded-full border flex items-center justify-center text-sm font-medium transition-all ${selectedSize === size
-                                            ? 'bg-white/10 text-white border-transparent'
-                                            : 'border-white/20 hover:bg-white/5 text-white/60'
-                                            }`}
+                                        className="w-10 h-10 rounded-full border text-sm font-manrope font-bold transition-all"
                                         style={selectedSize === size ? {
                                             backgroundColor: `${activeColor}20`,
                                             borderColor: activeColor,
-                                            color: activeColor
-                                        } : {}}
+                                            color: activeColor,
+                                        } : {
+                                            borderColor: 'rgba(255,255,255,0.2)',
+                                            color: 'rgba(255,255,255,0.5)',
+                                        }}
                                     >
                                         {size}
                                     </button>
@@ -199,49 +193,48 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                             </div>
                         </div>
 
-                        {/* Product Description */}
-                        <div className="space-y-2">
-                            <span className="text-xs font-bold text-white/60 tracking-widest uppercase font-secondary">Description</span>
-                            <p className="text-sm leading-relaxed text-white/80 font-secondary text-justify line-clamp-3">
-                                {current.description}
-                            </p>
+                        {/* Description */}
+                        <div>
+                            <p className="font-manrope text-white/50 text-xs uppercase tracking-widest mb-2">Description</p>
+                            <p className="font-manrope text-white/70 text-sm leading-relaxed">{current.description}</p>
                         </div>
 
-                        {/* Quantity Selector */}
-                        <div className="space-y-2">
-                            <span className="text-xs font-bold text-white/60 tracking-widest uppercase">Quantity</span>
-                            <div className="flex items-center gap-4 bg-white/5 rounded-full w-fit p-1 border border-white/10">
+                        {/* Quantity */}
+                        <div>
+                            <p className="font-manrope text-white/50 text-xs uppercase tracking-widest mb-3">Quantity</p>
+                            <div className="flex items-center gap-4 bg-white/5 rounded-full w-fit px-2 py-1 border border-white/10">
                                 <button
                                     onClick={() => adjustQuantity(-1)}
-                                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
                                     disabled={quantity <= 1}
+                                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors disabled:opacity-30"
                                 >
-                                    <Minus className="w-3 h-3" />
+                                    <Minus className="w-3 h-3 text-white" />
                                 </button>
-                                <span className="font-mono font-bold w-4 text-center">{quantity}</span>
+                                <span className="font-manrope font-bold text-white w-4 text-center">{quantity}</span>
                                 <button
                                     onClick={() => adjustQuantity(1)}
                                     className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
                                 >
-                                    <Plus className="w-3 h-3" />
+                                    <Plus className="w-3 h-3 text-white" />
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <div className="pt-6 shrink-0">
+                    {/* Add to cart — pinned outside scroll area */}
+                    <div className="px-5 pb-5 pt-3 md:px-8 md:pb-8 md:pt-4 shrink-0 border-t border-white/[0.06] bg-black/60">
                         {current.sold_out ? (
-                            <div className="w-full py-4 text-center font-black rounded-full uppercase tracking-widest text-sm bg-white/5 text-white/40 border border-white/10 cursor-not-allowed select-none">
+                            <div className="w-full py-4 text-center font-manrope font-black rounded-full uppercase tracking-widest text-sm bg-white/5 text-white/40 border border-white/10 cursor-not-allowed select-none">
                                 Sold Out
                             </div>
                         ) : (
                             <button
                                 onClick={handleAddToCart}
-                                className="w-full py-4 font-black rounded-full shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-widest text-sm"
+                                className="w-full py-4 font-manrope font-black rounded-full shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-widest text-sm"
                                 style={{
                                     backgroundColor: activeColor,
                                     color: '#000',
-                                    boxShadow: `0 0 20px ${activeColor}40`
+                                    boxShadow: `0 0 24px ${activeColor}50`,
                                 }}
                             >
                                 Add to Cart
