@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, ShoppingBag, Menu, X } from 'lucide-react';
@@ -9,161 +9,170 @@ import { useUI } from '../context/UIContext';
 
 const NAV_LINKS = [
     { name: 'HOME', path: '/codesprint' },
-    { name: 'SHOP', path: '/codesprint#product-grid' }
+    { name: 'SHOP', path: '/codesprint#product-grid' },
 ];
 
 export default function Header() {
-    const [isScrolled, setIsScrolled] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const { toggleCart, cartCount } = useCart();
     const { openSearch } = useUI();
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const navRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         let ticking = false;
-        const handleScroll = () => {
+        const onScroll = () => {
             if (!ticking) {
                 requestAnimationFrame(() => {
-                    setIsScrolled(window.scrollY > 60);
+                    setScrolled(window.scrollY > 60);
                     ticking = false;
                 });
                 ticking = true;
             }
         };
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
+
+    // Close mobile menu on viewport resize to desktop
+    useEffect(() => {
+        if (!mobileOpen) return;
+        const close = () => setMobileOpen(false);
+        window.addEventListener('resize', close);
+        return () => window.removeEventListener('resize', close);
+    }, [mobileOpen]);
 
     return (
         <>
-            {/*
-              Outer wrapper always stays: fixed, full-width, top-0.
-              Never toggle left/translate on it — that's what caused the jump.
-              The pill shrinks inward via padding instead.
-            */}
-            <div className="fixed top-0 left-0 w-full z-50 pointer-events-none">
-                <div
-                    className="transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto mx-auto"
-                    style={{
-                        maxWidth: isScrolled ? '1100px' : '100%',
-                        marginTop: isScrolled ? '14px' : '0',
-                        paddingLeft: isScrolled ? '16px' : '0',
-                        paddingRight: isScrolled ? '16px' : '0',
-                    }}
+            {/* ── Navbar ──────────────────────────────────────────────── */}
+            <div
+                ref={navRef}
+                className="header-root"
+                data-scrolled={scrolled ? 'true' : 'false'}
+            >
+                {/* Liquid glass shimmer highlight (decorative) */}
+                <div className="header-shimmer" aria-hidden="true" />
+
+                {/* ── Left: Logo lockup ─────────────────────────────── */}
+                <Link
+                    href="/codesprint"
+                    className="header-logo"
+                    onClick={() => setMobileOpen(false)}
                 >
-                    <nav
-                        className="transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                        style={isScrolled ? {
-                            borderRadius: '16px',
-                            padding: '14px 28px',
-                            background: 'rgba(15,12,10,0.6)',
-                            backdropFilter: 'blur(32px) saturate(200%)',
-                            WebkitBackdropFilter: 'blur(32px) saturate(200%)',
-                            border: '1px solid rgba(255,255,255,0.11)',
-                            boxShadow: '0 8px 32px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.14), inset 0 -1px 0 rgba(255,255,255,0.04)',
-                        } : {
-                            borderRadius: '0',
-                            padding: '28px 48px',
-                            background: 'transparent',
-                            backdropFilter: 'none',
-                            WebkitBackdropFilter: 'none',
-                            border: '1px solid transparent',
-                            boxShadow: 'none',
-                        }}
-                    >
-                        <div className="flex items-center justify-between">
+                    <Image
+                        src="/images/logo.webp"
+                        alt="CodeSprint 11"
+                        width={3942}
+                        height={389}
+                        className="header-logo-cs"
+                        priority
+                    />
 
-                            {/* Collab lockup: CS11 logo × Cicada wordmark */}
-                            <Link href="/codesprint" className="flex-shrink-0 opacity-90 hover:opacity-100 transition-opacity flex items-center gap-2 md:gap-3">
-                                {/* CS11 — show correct variant, no crossfade trick that breaks layout */}
-                                <Image
-                                    src={isScrolled ? '/images/logo merch v2 - white n orange.webp' : '/images/logo.webp'}
-                                    alt="CodeSprint 11"
-                                    width={3942}
-                                    height={389}
-                                    className="h-6 md:h-8 w-auto"
-                                    priority
-                                />
-                                {/* × separator */}
-                                <span className="font-manrope font-extrabold text-[#ff6a3d] leading-none text-sm md:text-base select-none">×</span>
-                                {/* Cicada wordmark */}
-                                <Image
-                                    src={isScrolled ? '/images/Cicada - white text.webp' : '/images/Cicada - Black text.webp'}
-                                    alt="Cicada"
-                                    width={2988}
-                                    height={1336}
-                                    className="h-4 md:h-5 w-auto"
-                                    priority
-                                />
+                    <span className="header-logo-x">×</span>
+
+                    {/* Both Cicada images always rendered — CSS opacity cross-fades.
+                        No src-swap means no flash/reload glitch on scroll. */}
+                    <span className="header-logo-cicada-wrap">
+                        <Image
+                            src="/images/Cicada - white text.webp"
+                            alt="Cicada"
+                            width={2988}
+                            height={1336}
+                            className="header-logo-cicada header-logo-cicada--white"
+                            priority
+                        />
+                        <Image
+                            src="/images/Cicada - Black text.webp"
+                            alt=""
+                            aria-hidden="true"
+                            width={2988}
+                            height={1336}
+                            className="header-logo-cicada header-logo-cicada--black"
+                            priority
+                        />
+                    </span>
+                </Link>
+
+                {/* ── Right: actions + nav links ────────────────────── */}
+                <div className="header-actions">
+                    {/* Desktop nav links */}
+                    <nav className="header-nav" aria-label="Main navigation">
+                        {NAV_LINKS.map((item) => (
+                            <Link key={item.name} href={item.path} className="header-nav-link">
+                                <span className="header-nav-text">{item.name}</span>
+                                <span className="header-nav-text header-nav-text--hover" aria-hidden="true">
+                                    {item.name}
+                                </span>
                             </Link>
-
-                            {/* Right: links + actions */}
-                            <div className={`flex items-center gap-5 md:gap-7 transition-colors duration-500 ${isScrolled ? 'text-white' : 'text-black'}`}>
-                                {/* Desktop nav */}
-                                <div className="hidden md:flex items-center gap-7 lg:gap-10 mr-2">
-                                    {NAV_LINKS.map((item) => (
-                                        <Link
-                                            key={item.name}
-                                            href={item.path}
-                                            className="relative group text-sm font-rajdhani font-semibold tracking-[0.2em] overflow-hidden"
-                                        >
-                                            <span className="block transition-transform duration-300 group-hover:-translate-y-full">
-                                                {item.name}
-                                            </span>
-                                            <span className="absolute top-0 left-0 block translate-y-full transition-transform duration-300 text-[#ff6a3d] group-hover:translate-y-0">
-                                                {item.name}
-                                            </span>
-                                        </Link>
-                                    ))}
-                                </div>
-
-                                <button onClick={openSearch} className="hover:text-[#ff6a3d] transition-colors">
-                                    <Search className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
-                                </button>
-
-                                <button onClick={toggleCart} className="relative hover:text-[#ff6a3d] transition-colors">
-                                    <ShoppingBag className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
-                                    {cartCount > 0 && (
-                                        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center">
-                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff6a3d] opacity-75" />
-                                            <span className="relative inline-flex rounded-full h-4 w-4 text-[10px] bg-[#ff6a3d] text-white font-bold items-center justify-center">
-                                                {cartCount}
-                                            </span>
-                                        </span>
-                                    )}
-                                </button>
-
-                                <button
-                                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                    className="md:hidden hover:text-[#ff6a3d] transition-colors z-50"
-                                >
-                                    {isMobileMenuOpen ? <X className="w-6 h-6" strokeWidth={1.5} /> : <Menu className="w-6 h-6" strokeWidth={1.5} />}
-                                </button>
-                            </div>
-                        </div>
+                        ))}
                     </nav>
+
+                    {/* Search */}
+                    <button
+                        onClick={openSearch}
+                        className="header-icon-btn"
+                        aria-label="Open search"
+                    >
+                        <Search strokeWidth={1.5} className="w-5 h-5 md:w-[22px] md:h-[22px]" />
+                    </button>
+
+                    {/* Cart */}
+                    <button
+                        onClick={toggleCart}
+                        className="header-icon-btn header-cart-btn"
+                        aria-label={`Open cart, ${cartCount} items`}
+                    >
+                        <ShoppingBag strokeWidth={1.5} className="w-5 h-5 md:w-[22px] md:h-[22px]" />
+                        {cartCount > 0 && (
+                            <span className="header-cart-badge" aria-live="polite">
+                                <span className="header-cart-ping" />
+                                <span className="header-cart-count">{cartCount}</span>
+                            </span>
+                        )}
+                    </button>
+
+                    {/* Mobile hamburger */}
+                    <button
+                        onClick={() => setMobileOpen((v) => !v)}
+                        className="header-icon-btn md:hidden"
+                        aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+                        aria-expanded={mobileOpen}
+                    >
+                        {mobileOpen
+                            ? <X strokeWidth={1.5} className="w-6 h-6" />
+                            : <Menu strokeWidth={1.5} className="w-6 h-6" />
+                        }
+                    </button>
                 </div>
             </div>
 
-            {/* ── Mobile menu overlay ── */}
+            {/* ── Mobile fullscreen menu ─────────────────────────────── */}
             <div
-                className={`fixed inset-0 z-40 backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}
-                style={{ background: 'rgba(10,8,6,0.96)' }}
+                className="mobile-menu"
+                data-open={mobileOpen ? 'true' : 'false'}
+                aria-hidden={!mobileOpen}
             >
-                {NAV_LINKS.map((item, i) => (
-                    <Link
-                        key={item.name}
-                        href={item.path}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`text-3xl font-rajdhani font-semibold tracking-[0.2em] text-white transition-all duration-300 hover:text-[#ff6a3d] ${isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-                        style={{ transitionDelay: `${i * 100}ms` }}
-                    >
-                        {item.name}
-                    </Link>
-                ))}
-                <div className="absolute bottom-12 flex flex-col items-center gap-4">
-                    <div className="w-12 h-px bg-white/20" />
-                    <p className="text-xs font-rajdhani text-white/40 uppercase tracking-widest">CodeSprint × Cicada · IEEE SB IIT</p>
-                </div>
+                <div className="mobile-menu-bg" aria-hidden="true" />
+
+                <nav className="mobile-menu-links" aria-label="Mobile navigation">
+                    {NAV_LINKS.map((item, i) => (
+                        <Link
+                            key={item.name}
+                            href={item.path}
+                            onClick={() => setMobileOpen(false)}
+                            className="mobile-menu-link"
+                            style={{ '--i': i } as React.CSSProperties}
+                        >
+                            <span className="mobile-menu-link-num">0{i + 1}</span>
+                            {item.name}
+                        </Link>
+                    ))}
+                </nav>
+
+                <footer className="mobile-menu-footer">
+                    <div className="mobile-menu-footer-line" />
+                    <p className="mobile-menu-footer-text">CodeSprint 11 × Cicada · IEEE SB IIT</p>
+                </footer>
             </div>
         </>
     );

@@ -124,3 +124,406 @@
     }
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Header / Navbar — liquid glass pill
+   All rules here so Next.js SSR never touches them (no hydration mismatch).
+   Attribute selectors [data-scrolled="true"] are fine in a real stylesheet.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Root pill ────────────────────────────────────────────────────────────── */
+.header-root {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* default (top of page): full-width transparent bar */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  padding: 0 20px;
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  transition:
+    top           0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    left          0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    right         0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    height        0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    padding       0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background    0.4s ease,
+    border-color  0.4s ease,
+    box-shadow    0.4s ease,
+    backdrop-filter 0.4s ease;
+}
+
+/* scrolled: collapse into floating pill */
+.header-root[data-scrolled="true"] {
+  top: 12px;
+  left: 16px;
+  right: 16px;
+  height: 56px;
+  padding: 0 18px;
+  border-radius: 20px;
+
+  /* liquid glass fill */
+  background: rgba(8, 6, 5, 0.55);
+  backdrop-filter: blur(28px) saturate(200%) brightness(0.9);
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(0.9);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+
+  /* multi-layer shadow: glow ring + depth + bloom */
+  box-shadow:
+    0 0 0 1px rgba(255, 106, 61, 0.18),
+    0 0 0 1.5px rgba(255, 255, 255, 0.07),
+    0 8px 32px rgba(0, 0, 0, 0.55),
+    0 2px 8px rgba(255, 106, 61, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .header-root[data-scrolled="true"] {
+    left: 48px;
+    right: 48px;
+  }
+}
+@media (min-width: 1024px) {
+  .header-root[data-scrolled="true"] {
+    left: 80px;
+    right: 80px;
+  }
+}
+
+/* ── Inner shimmer line (decorative top-edge liquid-glass highlight) ────────── */
+.header-shimmer {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  border-radius: 99px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.0) 10%,
+    rgba(255, 255, 255, 0.22) 40%,
+    rgba(255, 106, 61, 0.35) 55%,
+    rgba(255, 255, 255, 0.12) 75%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.header-root[data-scrolled="true"] .header-shimmer {
+  opacity: 1;
+}
+
+/* ── Logo lockup ────────────────────────────────────────────────────────────── */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  opacity: 0.92;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+.header-logo:hover  { opacity: 1; }
+.header-logo:focus  { outline: none; }
+.header-logo:focus-visible { outline: none; }
+
+.header-logo-cs {
+  height: 20px;
+  width: auto;
+  filter: none;
+  transition: filter 0.4s ease;
+}
+
+.header-logo-x {
+  font-family: var(--font-manrope), Manrope, sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1;
+  color: #ff6a3d;
+  user-select: none;
+}
+
+/* Cicada logo: both images stacked; opacity cross-fades — no src-swap flash */
+.header-logo-cicada-wrap {
+  position: relative;
+  height: 20px;
+}
+.header-logo-cicada {
+  height: 20px;
+  width: auto;
+  display: block;
+  transition: opacity 0.4s ease;
+}
+/* White version: always visible (site background is always black) */
+.header-logo-cicada--white {
+  position: relative;
+  opacity: 1;
+}
+/* Black version: hidden overlay (reserved for potential light-bg contexts) */
+.header-logo-cicada--black {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .header-logo           { gap: 12px; }
+  .header-logo-cs        { height: 28px; }
+  .header-logo-cicada    { height: 28px; }
+  .header-logo-cicada-wrap { height: 28px; }
+  .header-logo-x         { font-size: 16px; }
+}
+
+/* ── Actions row ────────────────────────────────────────────────────────────── */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+@media (min-width: 768px) {
+  .header-actions { gap: 28px; }
+}
+
+/* ── Desktop nav links ────────────────────────────────────────────────────── */
+.header-nav {
+  display: none;
+  align-items: center;
+  gap: 28px;
+  margin-right: 4px;
+}
+@media (min-width: 768px) {
+  .header-nav { display: flex; gap: 36px; }
+}
+
+.header-nav-link {
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  text-decoration: none;
+  font-family: var(--font-rajdhani), Rajdhani, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1;
+  display: inline-flex;
+  flex-direction: column;
+  height: 1em;
+  transition: color 0.2s ease;
+}
+.header-nav-text {
+  display: block;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.header-nav-text--hover {
+  position: absolute;
+  top: 0; left: 0;
+  transform: translateY(110%);
+  color: #ff6a3d;
+}
+.header-nav-link:hover .header-nav-text:first-child {
+  transform: translateY(-110%);
+}
+.header-nav-link:hover .header-nav-text--hover {
+  transform: translateY(0);
+}
+
+/* ── Icon buttons ────────────────────────────────────────────────────────── */
+.header-icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+.header-icon-btn:focus        { outline: none; }
+.header-icon-btn:focus-visible { outline: none; }
+.header-icon-btn:hover  { color: #ff6a3d; transform: scale(1.08); }
+.header-icon-btn:active { transform: scale(0.95); }
+
+/* Cart badge */
+.header-cart-btn { position: relative; }
+.header-cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+.header-cart-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #ff6a3d;
+  opacity: 0.75;
+  animation: header-ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.header-cart-count {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ff6a3d;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  font-family: var(--font-manrope), Manrope, sans-serif;
+  line-height: 1;
+}
+@keyframes header-ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+/* ── Mobile fullscreen menu ────────────────────────────────────────────────── */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%);
+  transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+  overflow: hidden;
+}
+.mobile-menu[data-open="true"] {
+  transform: translateY(0);
+}
+@media (min-width: 768px) {
+  .mobile-menu { display: none; }
+}
+
+.mobile-menu-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 4, 3, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 0;
+}
+
+.mobile-menu-links {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-manrope), Manrope, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  padding: 8px 0;
+  opacity: 0;
+  transform: translateY(24px);
+  /* staggered entrance via --i CSS custom property */
+  transition:
+    color 0.25s ease,
+    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 80ms + 100ms),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 80ms + 100ms);
+}
+.mobile-menu[data-open="true"] .mobile-menu-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+.mobile-menu-link:hover { color: #ff6a3d; }
+
+.mobile-menu-link-num {
+  font-family: var(--font-rajdhani), Rajdhani, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #ff6a3d;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+.mobile-menu-footer {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.4s;
+}
+.mobile-menu[data-open="true"] .mobile-menu-footer {
+  opacity: 1;
+}
+.mobile-menu-footer-line {
+  width: 40px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.mobile-menu-footer-text {
+  font-family: var(--font-rajdhani), Rajdhani, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Reduced motion overrides ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .header-root,
+  .header-shimmer,
+  .header-nav-text,
+  .header-logo-cs,
+  .header-logo-cicada,
+  .header-icon-btn,
+  .mobile-menu,
+  .mobile-menu-link,
+  .mobile-menu-footer {
+    transition: none !important;
+    animation: none !important;
+  }
+  .header-cart-ping { animation: none; }
+}
+

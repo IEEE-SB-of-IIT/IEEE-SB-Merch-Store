@@ -40,23 +40,19 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Giant wordmark closer — rises out of the page bottom */}
-            <div aria-hidden className="relative z-10 w-full overflow-hidden select-none pointer-events-none" style={{ height: 'clamp(3.5rem, 11vw, 10rem)' }}>
-                <motion.div
-                    className="absolute inset-x-0 bottom-0"
-                    initial={reduceMotion ? false : { y: '100%' }}
-                    whileInView={{ y: '0%' }}
-                    viewport={{ once: true, margin: '-5%' }}
-                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            {/* Giant wordmark — always visible, no scroll-gated animation */}
+            <div
+                aria-hidden
+                className="relative z-10 w-full overflow-hidden select-none pointer-events-none"
+                style={{ height: 'clamp(3.5rem, 11vw, 10rem)' }}
+            >
+                <div
+                    className="font-manrope font-extrabold uppercase text-white whitespace-nowrap text-center leading-none tracking-[-0.04em]"
+                    style={{ fontSize: 'clamp(3.5rem, 11vw, 10rem)' }}
                 >
-                    <div
-                        className="font-manrope font-extrabold uppercase text-white whitespace-nowrap text-center leading-none tracking-[-0.04em]"
-                        style={{ fontSize: 'clamp(3.5rem, 11vw, 10rem)' }}
-                    >
-                        COD<span className="inline-block" style={{ transform: 'scaleX(-1)' }}>E</span>SPRINT
-                        <span className="text-cs11-orange"> × </span>CICADA
-                    </div>
-                </motion.div>
+                    CODESPRINT
+                    <span className="text-cs11-orange"> × </span>CICADA
+                </div>
             </div>
         </footer>
     );
