@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -35,6 +35,72 @@ function AstronautImg({ src, greyscale = false }: { src: string; greyscale?: boo
   );
 }
 
+function StarField() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let raf: number;
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+    resize();
+
+    const stars = Array.from({ length: 110 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.1 + 0.2,
+      op: Math.random() * 0.28 + 0.04,
+      target: Math.random() * 0.28 + 0.04,
+      vx: (Math.random() - 0.5) * 0.00007,
+      vy: (Math.random() - 0.5) * 0.00007,
+      orange: Math.random() < 0.07,
+    }));
+
+    const tick = () => {
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      ctx.clearRect(0, 0, w, h);
+      for (const s of stars) {
+        s.x += s.vx;
+        s.y += s.vy;
+        if (s.x < 0) s.x = 1;
+        if (s.x > 1) s.x = 0;
+        if (s.y < 0) s.y = 1;
+        if (s.y > 1) s.y = 0;
+        s.op += (s.target - s.op) * 0.018;
+        if (Math.abs(s.op - s.target) < 0.004) s.target = Math.random() * 0.28 + 0.04;
+        ctx.beginPath();
+        ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = s.orange
+          ? `rgba(255,106,61,${(s.op * 1.8).toFixed(3)})`
+          : `rgba(255,255,255,${s.op.toFixed(3)})`;
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    tick();
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{ zIndex: 2 }}
+    />
+  );
+}
+
 const HEADLINE = [
   { text: "The battle", outline: false },
   { text: "has a",      outline: true  },
@@ -43,9 +109,21 @@ const HEADLINE = [
 
 export default function HeroReveal() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [dims, setDims] = useState({ w: 1, h: 1 });
   const [local, setLocal] = useState({ x: 0, y: 0 });
   const [client, setClient] = useState({ x: 0, y: 0 });
   const [on, setOn] = useState(false);
+
+  useEffect(() => {
+    const measure = () => {
+      const r = heroRef.current?.getBoundingClientRect();
+      if (r) setDims({ w: r.width, h: r.height });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (heroRef.current) ro.observe(heroRef.current);
+    return () => ro.disconnect();
+  }, []);
 
   const updatePosition = useCallback((x: number, y: number) => {
     const rect = heroRef.current?.getBoundingClientRect();
@@ -76,6 +154,13 @@ export default function HeroReveal() {
     ? `radial-gradient(circle ${r}px at ${local.x}px ${local.y}px, transparent ${r}px, black ${r}px)`
     : "none";
 
+  // Normalised cursor offset from center: -0.5 → 0.5. Resets to 0 when cursor leaves.
+  const nx = on ? local.x / dims.w - 0.5 : 0;
+  const ny = on ? local.y / dims.h - 0.5 : 0;
+  const EASE = "transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)";
+  const px = (mul: number) =>
+    ({ transform: `translate(${nx * mul}px, ${ny * mul}px)`, transition: EASE }) as React.CSSProperties;
+
   return (
     <section
       ref={heroRef}
@@ -97,6 +182,78 @@ export default function HeroReveal() {
         style={{ WebkitMaskImage: holeMask, maskImage: holeMask }}
       >
         <AstronautImg src="/images/astro1.webp" greyscale />
+      </div>
+
+      {/* Star field */}
+      <StarField />
+
+      {/* ── Rock field ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 3 }}>
+
+        {/* Rock collection — bottom-right corner, mirrored so cluster is on the right. mul=6 */}
+        <div
+          className="absolute w-[60%] md:w-[48%]"
+          style={{ bottom: "-8%", right: "-4%", opacity: 0.90, ...px(6) }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/rock-collection-nobg.png"
+            alt=""
+            className="w-full h-auto block"
+            style={{ transform: "scaleX(-1)" }}
+          />
+        </div>
+
+        {/* ── Individual rocks — blur increases as they get closer to camera ── */}
+
+        {/* Depth 5 (furthest) — tiny, pin-sharp */}
+        <div className="absolute" style={{ top: "12%", left: "5%", width: "4%", filter: "blur(0px)", opacity: 0.5, ...px(4) }}>
+          <div style={{ transform: "rotate(-22deg)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
+          </div>
+        </div>
+
+        {/* Depth 4 — small, sharp */}
+        <div className="absolute" style={{ top: "6%", left: "40%", width: "4.5%", filter: "blur(0px)", opacity: 0.42, ...px(5) }}>
+          <div style={{ transform: "rotate(65deg)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
+          </div>
+        </div>
+
+        {/* Depth 3 — medium-small, slight blur */}
+        <div className="absolute" style={{ top: "30%", right: "10%", width: "7%", filter: "blur(1.5px)", opacity: 0.48, ...px(10) }}>
+          <div style={{ transform: "rotate(135deg)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
+          </div>
+        </div>
+
+        {/* Depth 2 — medium, moderate blur */}
+        <div className="absolute" style={{ top: "60%", left: "38%", width: "11%", filter: "blur(3px)", opacity: 0.45, ...px(16) }}>
+          <div style={{ transform: "rotate(-80deg)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
+          </div>
+        </div>
+
+        {/* Depth 1 — large, heavy blur */}
+        <div className="absolute" style={{ top: "5%", right: "24%", width: "15%", filter: "blur(6px)", opacity: 0.28, ...px(22) }}>
+          <div style={{ transform: "rotate(-50deg)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
+          </div>
+        </div>
+
+        {/* Depth 0 (closest) — very large, maximum blur */}
+        <div className="absolute" style={{ bottom: "22%", left: "-6%", width: "20%", filter: "blur(10px)", opacity: 0.18, ...px(30) }}>
+          <div style={{ transform: "rotate(25deg)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
+          </div>
+        </div>
+
       </div>
 
       {/* Mobile text backdrop — gradient from bottom so text stays legible */}
@@ -144,7 +301,7 @@ export default function HeroReveal() {
 
           {/* Three-line headline */}
           {HEADLINE.map(({ text, outline }, i) => (
-            <div key={text} className="overflow-hidden">
+            <div key={text} className="overflow-hidden pt-[4px] -mt-[4px]">
               <motion.h1
                 initial={{ y: "110%" }}
                 animate={{ y: 0 }}
