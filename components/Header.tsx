@@ -44,6 +44,23 @@ export default function Header() {
 
     return (
         <>
+            {/* SVG filter: maps black→white, leaves orange #ff6a3d unchanged.
+                R channel: always 1 (black R=0 → 1, orange R=1 → 1)
+                G channel: −R + G + 1  (black G=0 → 1, orange G=0.416 → 0.416)
+                B channel: −R + 0.5754·G + 1  (black B=0 → 1, orange B=0.239 → 0.239) */}
+            <svg style={{ display: 'none', position: 'absolute' }} aria-hidden="true">
+                <defs>
+                    <filter id="cs-logo-white-filter" colorInterpolationFilters="sRGB">
+                        <feColorMatrix type="matrix" values="
+                            0  0       0  0  1
+                           -1  1       0  0  1
+                           -1  0.5754  0  0  1
+                            0  0       0  1  0
+                        " />
+                    </filter>
+                </defs>
+            </svg>
+
             {/* ── Navbar ──────────────────────────────────────────────── */}
             <div
                 ref={navRef}
@@ -59,14 +76,26 @@ export default function Header() {
                     className="header-logo"
                     onClick={() => setMobileOpen(false)}
                 >
-                    <Image
-                        src="/images/logo.webp"
-                        alt="CodeSprint 11"
-                        width={3942}
-                        height={389}
-                        className="header-logo-cs"
-                        priority
-                    />
+                    {/* Both CS11 logos always rendered — opacity cross-fades on scroll */}
+                    <span className="header-logo-cs-wrap">
+                        <Image
+                            src="/images/logo.webp"
+                            alt="CodeSprint 11"
+                            width={3942}
+                            height={389}
+                            className="header-logo-cs header-logo-cs--white"
+                            priority
+                        />
+                        <Image
+                            src="/images/logo.webp"
+                            alt=""
+                            aria-hidden="true"
+                            width={3942}
+                            height={389}
+                            className="header-logo-cs header-logo-cs--black"
+                            priority
+                        />
+                    </span>
 
                     <span className="header-logo-x">×</span>
 

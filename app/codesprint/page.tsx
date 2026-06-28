@@ -3,7 +3,7 @@ import ProductGrid from '../../components/ProductGrid';
 import Footer from '../../components/Footer';
 import Preloader from '../../components/Preloader';
 import SmoothScroll from '../../components/SmoothScroll';
-import HeroGeometric from '../../components/HeroGeometric';
+import HeroReveal from '../../components/HeroReveal';
 import DropMarquee from '../../components/codesprint/DropMarquee';
 import CollectionDetails from '../../components/codesprint/CollectionDetails';
 import FlightPath from '../../components/codesprint/FlightPath';
@@ -40,14 +40,7 @@ export default async function CodesprintPage() {
             <Preloader />
             <SmoothScroll />
             <Header />
-            <HeroGeometric
-                title1="The battle has a uniform."
-                logoImage="/images/logo.webp"
-                description="The official CodeSprint 11 × Cicada collaborative drop, designed in-house by the IEEE Student Branch of IIT. One numbered run; when a batch sells out, it stays sold out."
-                color1="#ff6a3d"
-                color2="#fff4ee"
-                speed={1}
-            />
+            <HeroReveal />
             <DropMarquee />
             {/* Flight plan: trajectory draws with scroll, rocket descends into the launch scene */}
             <div className="relative">

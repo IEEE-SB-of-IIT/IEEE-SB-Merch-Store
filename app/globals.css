@@ -245,12 +245,33 @@
 .header-logo:focus  { outline: none; }
 .header-logo:focus-visible { outline: none; }
 
+/* CS11 logo: stacked white + black, opacity cross-fades on scroll */
+.header-logo-cs-wrap {
+  position: relative;
+  height: 20px;
+}
 .header-logo-cs {
   height: 20px;
   width: auto;
-  filter: none;
-  transition: filter 0.4s ease;
+  display: block;
+  transition: opacity 0.4s ease;
 }
+/* Hero state (not scrolled): white CODESPRINT, orange 11 via SVG filter */
+.header-logo-cs--white {
+  position: relative;
+  filter: url(#cs-logo-white-filter);
+  opacity: 1;
+  pointer-events: none;
+}
+/* Pill state (scrolled): original black CODESPRINT, orange 11 */
+.header-logo-cs--black {
+  position: absolute;
+  inset: 0;
+  filter: none;
+  opacity: 0;
+}
+.header-root[data-scrolled="true"] .header-logo-cs--white { opacity: 0; }
+.header-root[data-scrolled="true"] .header-logo-cs--black { opacity: 1; }
 
 .header-logo-x {
   font-family: var(--font-manrope), Manrope, sans-serif;
@@ -272,26 +293,28 @@
   display: block;
   transition: opacity 0.4s ease;
 }
-/* Cicada logo: black-text version always shown — both the white hero and the
-   white glass pill are light surfaces. White-text version is never needed. */
+/* Hero state (not scrolled): white Cicada on dark background */
 .header-logo-cicada--white {
   position: relative;
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
 }
+/* Pill state (scrolled): black Cicada on white glass */
 .header-logo-cicada--black {
   position: absolute;
   inset: 0;
-  opacity: 1;
+  opacity: 0;
 }
-/* No scroll-state swap needed — pill is white, so black text stays legible */
+.header-root[data-scrolled="true"] .header-logo-cicada--white { opacity: 0; }
+.header-root[data-scrolled="true"] .header-logo-cicada--black { opacity: 1; }
 
 @media (min-width: 768px) {
-  .header-logo           { gap: 12px; }
-  .header-logo-cs        { height: 28px; }
-  .header-logo-cicada    { height: 28px; }
+  .header-logo             { gap: 12px; }
+  .header-logo-cs-wrap     { height: 28px; }
+  .header-logo-cs          { height: 28px; }
+  .header-logo-cicada      { height: 28px; }
   .header-logo-cicada-wrap { height: 28px; }
-  .header-logo-x         { font-size: 16px; }
+  .header-logo-x           { font-size: 16px; }
 }
 
 /* ── Actions row ────────────────────────────────────────────────────────────── */
@@ -326,13 +349,16 @@
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.2em;
-  /* dark — navbar is always over a light surface (white hero or white glass pill) */
   color: rgba(0, 0, 0, 0.75);
   line-height: 1;
   display: inline-flex;
   flex-direction: column;
   height: 1em;
   transition: color 0.4s ease;
+}
+/* Hero state: white nav links on dark background */
+.header-root:not([data-scrolled="true"]) .header-nav-link {
+  color: rgba(255, 255, 255, 0.75);
 }
 .header-nav-text {
   display: block;
@@ -358,12 +384,15 @@
   padding: 0;
   cursor: pointer;
   outline: none;
-  /* dark — always over a light surface (white hero or white glass pill) */
   color: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: color 0.4s ease, transform 0.2s ease;
+}
+/* Hero state: white icons on dark background */
+.header-root:not([data-scrolled="true"]) .header-icon-btn {
+  color: rgba(255, 255, 255, 0.75);
 }
 .header-icon-btn:focus        { outline: none; }
 .header-icon-btn:focus-visible { outline: none; }
