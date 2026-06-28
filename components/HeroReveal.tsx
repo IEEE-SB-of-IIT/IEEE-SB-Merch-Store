@@ -35,71 +35,6 @@ function AstronautImg({ src, greyscale = false }: { src: string; greyscale?: boo
   );
 }
 
-function StarField() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let raf: number;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-    resize();
-
-    const stars = Array.from({ length: 110 }, () => ({
-      x: Math.random(),
-      y: Math.random(),
-      r: Math.random() * 1.1 + 0.2,
-      op: Math.random() * 0.28 + 0.04,
-      target: Math.random() * 0.28 + 0.04,
-      vx: (Math.random() - 0.5) * 0.00007,
-      vy: (Math.random() - 0.5) * 0.00007,
-      orange: Math.random() < 0.07,
-    }));
-
-    const tick = () => {
-      const w = canvas.offsetWidth;
-      const h = canvas.offsetHeight;
-      ctx.clearRect(0, 0, w, h);
-      for (const s of stars) {
-        s.x += s.vx;
-        s.y += s.vy;
-        if (s.x < 0) s.x = 1;
-        if (s.x > 1) s.x = 0;
-        if (s.y < 0) s.y = 1;
-        if (s.y > 1) s.y = 0;
-        s.op += (s.target - s.op) * 0.018;
-        if (Math.abs(s.op - s.target) < 0.004) s.target = Math.random() * 0.28 + 0.04;
-        ctx.beginPath();
-        ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = s.orange
-          ? `rgba(255,106,61,${(s.op * 1.8).toFixed(3)})`
-          : `rgba(255,255,255,${s.op.toFixed(3)})`;
-        ctx.fill();
-      }
-      raf = requestAnimationFrame(tick);
-    };
-
-    tick();
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 2 }}
-    />
-  );
-}
 
 const HEADLINE = [
   { text: "The battle", outline: false },
@@ -183,9 +118,6 @@ export default function HeroReveal() {
       >
         <AstronautImg src="/images/astro1.webp" greyscale />
       </div>
-
-      {/* Star field */}
-      <StarField />
 
       {/* ── Rock field ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 3 }}>
