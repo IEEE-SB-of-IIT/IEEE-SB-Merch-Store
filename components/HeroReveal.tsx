@@ -190,64 +190,56 @@ export default function HeroReveal() {
       {/* ── Rock field ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 3 }}>
 
-        {/* Rock collection — bottom-right corner, mirrored so cluster is on the right. mul=6 */}
-        <div
-          className="absolute w-[60%] md:w-[48%]"
-          style={{ bottom: "-8%", right: "-4%", opacity: 0.90, ...px(6) }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/rock-collection-nobg.png"
-            alt=""
-            className="w-full h-auto block"
-            style={{ transform: "scaleX(-1)" }}
-          />
+        {/* Rock collection — bottom-right, flipped vertically. Parallax mul=6 (anchored) */}
+        <div className="absolute bottom-0 right-0 w-[55%] md:w-[44%]" style={{ opacity: 0.88, ...px(6) }}>
+          <div style={{ transform: "scaleY(-1)", transformOrigin: "bottom right" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/rock-collection-nobg.png" alt="" className="w-full h-auto block" />
+          </div>
         </div>
 
-        {/* ── Individual rocks — blur increases as they get closer to camera ── */}
-
-        {/* Depth 5 (furthest) — tiny, pin-sharp */}
-        <div className="absolute" style={{ top: "12%", left: "5%", width: "4%", filter: "blur(0px)", opacity: 0.5, ...px(4) }}>
+        {/* Far — top-left, tiny, sharp. mul=5 */}
+        <div className="absolute" style={{ top: "14%", left: "3%", width: "5%", filter: "blur(0px)", opacity: 0.55, ...px(5) }}>
           <div style={{ transform: "rotate(-22deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
           </div>
         </div>
 
-        {/* Depth 4 — small, sharp */}
-        <div className="absolute" style={{ top: "6%", left: "40%", width: "4.5%", filter: "blur(0px)", opacity: 0.42, ...px(5) }}>
+        {/* Far — upper-center, small, no blur. mul=4 */}
+        <div className="absolute" style={{ top: "7%", left: "38%", width: "4%", filter: "blur(0px)", opacity: 0.45, ...px(4) }}>
           <div style={{ transform: "rotate(65deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
           </div>
         </div>
 
-        {/* Depth 3 — medium-small, slight blur */}
-        <div className="absolute" style={{ top: "30%", right: "10%", width: "7%", filter: "blur(1.5px)", opacity: 0.48, ...px(10) }}>
+        {/* Mid-far — right side, blur 1px. mul=11 */}
+        <div className="absolute" style={{ top: "28%", right: "12%", width: "7%", filter: "blur(1px)", opacity: 0.5, ...px(11) }}>
           <div style={{ transform: "rotate(135deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
           </div>
         </div>
 
-        {/* Depth 2 — medium, moderate blur */}
-        <div className="absolute" style={{ top: "60%", left: "38%", width: "11%", filter: "blur(3px)", opacity: 0.45, ...px(16) }}>
+        {/* Mid — lower-center, blur 2.5px. mul=17 */}
+        <div className="absolute" style={{ top: "62%", left: "40%", width: "10%", filter: "blur(2.5px)", opacity: 0.5, ...px(17) }}>
           <div style={{ transform: "rotate(-80deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
           </div>
         </div>
 
-        {/* Depth 1 — large, heavy blur */}
-        <div className="absolute" style={{ top: "5%", right: "24%", width: "15%", filter: "blur(6px)", opacity: 0.28, ...px(22) }}>
+        {/* Close — upper-right, blur 5px. mul=24 */}
+        <div className="absolute" style={{ top: "6%", right: "22%", width: "16%", filter: "blur(5px)", opacity: 0.3, ...px(24) }}>
           <div style={{ transform: "rotate(-50deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
           </div>
         </div>
 
-        {/* Depth 0 (closest) — very large, maximum blur */}
-        <div className="absolute" style={{ bottom: "22%", left: "-6%", width: "20%", filter: "blur(10px)", opacity: 0.18, ...px(30) }}>
+        {/* Very close foreground — left, blur 9px. mul=32 */}
+        <div className="absolute" style={{ bottom: "18%", left: "-8%", width: "22%", filter: "blur(9px)", opacity: 0.22, ...px(32) }}>
           <div style={{ transform: "rotate(25deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
