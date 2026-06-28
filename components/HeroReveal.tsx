@@ -47,12 +47,29 @@ export default function HeroReveal() {
   const [client, setClient] = useState({ x: 0, y: 0 });
   const [on, setOn] = useState(false);
 
-  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+  const updatePosition = useCallback((x: number, y: number) => {
     const rect = heroRef.current?.getBoundingClientRect();
     if (!rect) return;
-    setLocal({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    setClient({ x: e.clientX, y: e.clientY });
+    setLocal({ x: x - rect.left, y: y - rect.top });
+    setClient({ x, y });
   }, []);
+
+  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    updatePosition(e.clientX, e.clientY);
+  }, [updatePosition]);
+
+  const onTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    setOn(true);
+    updatePosition(touch.clientX, touch.clientY);
+  }, [updatePosition]);
+
+  const onTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    updatePosition(touch.clientX, touch.clientY);
+  }, [updatePosition]);
 
   const r = LENS / 2;
   const holeMask = on
@@ -66,6 +83,10 @@ export default function HeroReveal() {
       onMouseMove={onMove}
       onMouseEnter={() => setOn(true)}
       onMouseLeave={() => setOn(false)}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={() => setOn(false)}
+      onTouchCancel={() => setOn(false)}
     >
       {/* Layer 0: astro2 — merch astronaut (bottom) */}
       <AstronautImg src="/images/astro2.webp" />
