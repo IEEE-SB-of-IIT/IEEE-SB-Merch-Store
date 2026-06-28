@@ -190,14 +190,6 @@ export default function HeroReveal() {
       {/* ── Rock field ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 3 }}>
 
-        {/* Rock collection — bottom-right, flipped vertically. Parallax mul=6 (anchored) */}
-        <div className="absolute bottom-0 right-0 w-[55%] md:w-[44%]" style={{ opacity: 0.88, ...px(6) }}>
-          <div style={{ transform: "scaleY(-1)", transformOrigin: "bottom right" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/rock-collection-nobg.png" alt="" className="w-full h-auto block" />
-          </div>
-        </div>
-
         {/* Far — top-left, tiny, sharp. mul=5 */}
         <div className="absolute" style={{ top: "14%", left: "3%", width: "5%", filter: "blur(0px)", opacity: 0.55, ...px(5) }}>
           <div style={{ transform: "rotate(-22deg)" }}>
