@@ -120,7 +120,7 @@ export default function HeroReveal() {
       </div>
 
       {/* ── Rock field ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 3 }}>
+      <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 3 }}>
 
         {/* Far — top-left, tiny, sharp. mul=5 */}
         <div className="absolute" style={{ top: "14%", left: "3%", width: "5%", filter: "blur(0px)", opacity: 0.55, ...px(5) }}>
