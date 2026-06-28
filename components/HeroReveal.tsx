@@ -215,7 +215,7 @@ export default function HeroReveal() {
         </div>
 
         {/* Mid-far — right side, blur 1px. mul=11 */}
-        <div className="absolute" style={{ top: "28%", right: "12%", width: "7%", filter: "blur(1px)", opacity: 0.5, ...px(11) }}>
+        <div className="absolute" style={{ top: "90%", right: "0%", width: "7%", filter: "blur(0px)", opacity: 0.5, ...px(11) }}>
           <div style={{ transform: "rotate(135deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
@@ -223,7 +223,7 @@ export default function HeroReveal() {
         </div>
 
         {/* Mid — lower-center, blur 2.5px. mul=17 */}
-        <div className="absolute" style={{ top: "62%", left: "40%", width: "10%", filter: "blur(2.5px)", opacity: 0.5, ...px(17) }}>
+        <div className="absolute" style={{ top: "62%", left: "40%", width: "10%", filter: "blur(1px)", opacity: 0.5, ...px(17) }}>
           <div style={{ transform: "rotate(-80deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
@@ -231,7 +231,7 @@ export default function HeroReveal() {
         </div>
 
         {/* Close — upper-right, blur 5px. mul=24 */}
-        <div className="absolute" style={{ top: "6%", right: "22%", width: "16%", filter: "blur(5px)", opacity: 0.3, ...px(24) }}>
+        <div className="absolute" style={{ top: "6%", right: "-6%", width: "16%", filter: "blur(3px)", opacity: 0.9, ...px(24) }}>
           <div style={{ transform: "rotate(-50deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
@@ -239,7 +239,7 @@ export default function HeroReveal() {
         </div>
 
         {/* Very close foreground — left, blur 9px. mul=32 */}
-        <div className="absolute" style={{ bottom: "18%", left: "-8%", width: "22%", filter: "blur(9px)", opacity: 0.22, ...px(32) }}>
+        <div className="absolute" style={{ bottom: "18%", left: "-8%", width: "22%", filter: "blur(1px)", opacity: 0.22, ...px(32) }}>
           <div style={{ transform: "rotate(25deg)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/rock-nobg.png" alt="" className="w-full h-auto block" />
@@ -300,7 +300,7 @@ export default function HeroReveal() {
                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.48 + i * 0.1 }}
                 className="block font-sans uppercase tracking-[-0.02em]"
                 style={{
-                  fontSize: "clamp(2.75rem, 9vw, 9.5rem)",
+                  fontSize: "clamp(3.5rem, 9vw, 9.5rem)",
                   lineHeight: "0.85",
                   color: outline ? "transparent" : "white",
                   WebkitTextStroke: outline ? "1.5px #ff6a3d" : undefined,
