@@ -96,7 +96,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 </button>
 
                 {/* ── LEFT: image panel ── fixed height on mobile, flex-fill on desktop */}
-                <div className="relative md:flex-1 h-[220px] md:h-auto flex items-center justify-center bg-gradient-to-br from-white/5 to-transparent overflow-hidden shrink-0">
+                <div className="relative md:flex-1 h-[260px] md:h-auto flex items-center justify-center bg-gradient-to-br from-white/5 to-transparent overflow-hidden shrink-0">
                     {/* Glow blob */}
                     <div
                         className="absolute inset-0 opacity-20 pointer-events-none"
@@ -117,13 +117,13 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     </div>
 
                     {/* Product image */}
-                    <div className="relative w-[160px] h-[200px] md:w-[360px] md:h-[460px]">
+                    <div className="relative w-[200px] h-[240px] md:w-[460px] md:h-[520px]">
                         <Image
                             key={current.id}
                             src={current.image}
                             alt={current.name}
                             fill
-                            sizes="(max-width: 768px) 260px, 340px"
+                            sizes="(max-width: 768px) 300px, 500px"
                             className="object-contain drop-shadow-[0_24px_48px_rgba(0,0,0,0.6)] animate-in fade-in duration-300"
                         />
                     </div>
