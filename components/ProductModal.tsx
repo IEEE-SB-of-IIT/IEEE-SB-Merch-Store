@@ -11,6 +11,7 @@ interface Product {
     name: string;
     description: string;
     price: string | number;
+    normal_price?: string | number;
     image: string;
     sold_out?: boolean;
     baseName?: string;
