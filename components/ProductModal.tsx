@@ -73,6 +73,8 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
     const priceNum = typeof current.price === 'string' ? parseFloat(current.price) : current.price;
     const formattedPrice = `LKR ${priceNum.toLocaleString()}`;
+    const normalPriceNum = current.normal_price ? (typeof current.normal_price === 'string' ? parseFloat(current.normal_price) : current.normal_price) : null;
+    const formattedNormalPrice = normalPriceNum ? `LKR ${normalPriceNum.toLocaleString()}` : null;
 
     return (
         <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center md:p-6">
@@ -134,7 +136,14 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                         <div>
                             <p className="font-manrope text-white/50 text-xs uppercase tracking-widest mb-1">Product</p>
                             <p className="font-manrope font-bold text-white text-lg leading-snug">{displayName}</p>
-                            <p className="font-manrope font-extrabold text-2xl mt-1" style={{ color: activeColor }}>{formattedPrice}</p>
+                            <div className="flex items-baseline gap-3 mt-1">
+                                <p className="font-manrope font-extrabold text-2xl" style={{ color: activeColor }}>{formattedPrice}</p>
+                                {formattedNormalPrice && (
+                                    <p className="font-manrope font-semibold text-lg line-through text-white/40">
+                                        {formattedNormalPrice}
+                                    </p>
+                                )}
+                            </div>
                         </div>
 
                         {/* Color variants */}

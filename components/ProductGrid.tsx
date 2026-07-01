@@ -128,9 +128,16 @@ function MerchItem({ merch, index, anim }: { merch: MerchType; index: number; an
                     )}
                 </div>
                 <div className="flex flex-col items-end gap-2 shrink-0">
-                    <span className="font-rajdhani font-semibold tracking-[0.1em] text-cs11-orange text-base md:text-lg">
-                        {formatPrice(product.price)}
-                    </span>
+                    <div className="flex flex-col items-end leading-none gap-1">
+                        {product.normal_price && (
+                            <span className="font-rajdhani font-medium tracking-[0.1em] text-white/40 line-through text-xs md:text-sm">
+                                {formatPrice(product.normal_price)}
+                            </span>
+                        )}
+                        <span className="font-rajdhani font-semibold tracking-[0.1em] text-cs11-orange text-base md:text-lg">
+                            {formatPrice(product.price)}
+                        </span>
+                    </div>
                     {hasColors && (
                         <div className="flex items-center gap-2" role="group" aria-label={`${merch.name} colors`}>
                             {merch.variants.map((v, vi) => (

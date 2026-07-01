@@ -8,6 +8,7 @@ export interface Product {
     name: string;
     description: string;
     price: string | number;
+    normal_price?: string | number;
     image: string;
     sold_out?: boolean;
     /** Base merch-type name when this product is one colorway of a type. */
