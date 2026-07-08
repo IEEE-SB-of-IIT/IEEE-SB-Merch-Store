@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { X, Minus, Plus } from 'lucide-react';
+import Link from 'next/link';
+import { X, Minus, Plus, Ruler } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -181,7 +182,18 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
                         {/* Size */}
                         <div>
-                            <p className="font-manrope text-white/50 text-xs uppercase tracking-widest mb-3">Size</p>
+                            <div className="flex items-center justify-between mb-3">
+                                <p className="font-manrope text-white/50 text-xs uppercase tracking-widest">Size</p>
+                                <Link
+                                    href="/codesprint/size-chart"
+                                    onClick={onClose}
+                                    className="inline-flex items-center gap-1.5 font-manrope text-[11px] uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity"
+                                    style={{ color: activeColor }}
+                                >
+                                    <Ruler className="w-3 h-3" strokeWidth={2} />
+                                    Size chart
+                                </Link>
+                            </div>
                             <div className="flex gap-2">
                                 {SIZES.map((size) => (
                                     <button

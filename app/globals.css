@@ -117,9 +117,30 @@
     z-index: 0;
   }
 
+  /* Slow Ken Burns drift for the hero image plate — barely-there life at idle */
+  @keyframes cs11-drift {
+    0%, 100% { transform: scale(1) translate(0, 0); }
+    50%      { transform: scale(1.03) translate(-0.4%, 0.5%); }
+  }
+  .cs11-drift {
+    animation: cs11-drift 22s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Ultra-slow full rotation for hero rocks; duration set per rock via --rock-spin */
+  @keyframes cs11-rock-spin {
+    to { transform: rotate(360deg); }
+  }
+  .cs11-rock-spin {
+    animation: cs11-rock-spin var(--rock-spin, 120s) linear infinite;
+    will-change: transform;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .cs11-marquee-track,
-    .cs11-float {
+    .cs11-float,
+    .cs11-drift,
+    .cs11-rock-spin {
       animation: none;
     }
   }

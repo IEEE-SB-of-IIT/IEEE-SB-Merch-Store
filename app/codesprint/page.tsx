@@ -9,6 +9,7 @@ import CollectionDetails from '../../components/codesprint/CollectionDetails';
 import FlightPath from '../../components/codesprint/FlightPath';
 import LaunchScene from '../../components/codesprint/LaunchScene';
 import FinalCall from '../../components/codesprint/FinalCall';
+import { CS11_FALLBACK_PRODUCTS, HOME_MERCH_NAMES } from '../../constants/cs11Products';
 
 import { supabase } from '@/lib/supabase';
 
@@ -16,24 +17,24 @@ import { supabase } from '@/lib/supabase';
 // every 60s — keeps TTFB fast without a Supabase round-trip per request.
 export const revalidate = 60;
 
-// The CS11 lineup. Shown whenever the Supabase codesprint collection is empty,
-// so the storefront never renders without the real merch. Prices are
-// placeholders — set the real ones when adding products via Admin.
-const IMG = '/images/codesprint-merch-images/cut';
-const CS11_FALLBACK_PRODUCTS = [
-    { id: -1, name: 'CS11 Zip Hoodie', description: 'Heavyweight zip hoodie · signal-orange drawstrings', price: 4500, image: `${IMG}/hoodie-black-orange-lace.png`, sold_out: false },
-    { id: -2, name: 'Ember Jersey', description: 'All-over sublimation · black-to-ember fade', price: 3000, image: `${IMG}/tee-sublimation-v5.png`, sold_out: false },
-    { id: -3, name: 'Dream Tee — Black', description: 'Premium cotton · astronaut back print', price: 2500, image: `${IMG}/tee-minimal-black-v3.png`, sold_out: false },
-    { id: -4, name: 'Dream Tee — White', description: 'Premium cotton · astronaut back print', price: 2500, image: `${IMG}/tee-minimal-white-v2.png`, sold_out: false },
-    { id: -5, name: 'Spine Tee — Black', description: 'Premium cotton · vertical spine print', price: 2500, image: `${IMG}/tee-minimal-black-v5.png`, sold_out: false },
-    { id: -6, name: 'Spine Tee — White', description: 'Premium cotton · vertical spine print', price: 2500, image: `${IMG}/tee-minimal-white-v4.png`, sold_out: false },
-];
+// Home page always shows the original 4-piece lineup, pulled live from
+// Supabase so price/sold-out edits reflect immediately — scoped by base merch
+// name so products added via Admin only surface on the shop page, never here.
+// Base-name matching (any dash style) keeps this resilient to colorway
+// suffixes and minor renames, unlike an exact-name DB filter.
+const HOME_BASES = HOME_MERCH_NAMES.map((n) => n.toLowerCase());
+const baseNameOf = (name: string) => name.split(/\s+[—–-]\s+/)[0].trim().toLowerCase();
 
 export default async function CodesprintPage() {
     const { data: products } = await supabase
         .from('products')
         .select('*')
         .eq('collection', 'codesprint');
+
+    const homeProducts = (products ?? [])
+        .filter((p) => HOME_BASES.includes(baseNameOf(p.name)))
+        // Stable sort → lineup order fixed, colorways keep their DB order
+        .sort((a, b) => HOME_BASES.indexOf(baseNameOf(a.name)) - HOME_BASES.indexOf(baseNameOf(b.name)));
 
     return (
         <main className="min-h-screen bg-cs11-bg text-white">
@@ -45,7 +46,7 @@ export default async function CodesprintPage() {
             {/* Flight plan: trajectory draws with scroll, rocket descends into the launch scene */}
             <div className="relative">
                 <FlightPath />
-                <ProductGrid products={products?.length ? products : CS11_FALLBACK_PRODUCTS} />
+                <ProductGrid products={homeProducts.length ? homeProducts : CS11_FALLBACK_PRODUCTS} />
                 <CollectionDetails />
                 <LaunchScene />
             </div>

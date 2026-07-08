@@ -9,7 +9,7 @@ import { useUI } from '../context/UIContext';
 
 const NAV_LINKS = [
     { name: 'HOME', path: '/codesprint' },
-    { name: 'SHOP', path: '/codesprint#product-grid' },
+    { name: 'SHOP', path: '/codesprint/shop' },
 ];
 
 export default function Header() {
